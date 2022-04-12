@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>test</title>
+    <link href="/2022/04/12/test/"/>
+    <url>/2022/04/12/test/</url>
+    
+    <content type="html"><![CDATA[<p>正文</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>测试</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>第一个</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Hello World</title>
     <link href="/2022/04/12/hello-world/"/>
     <url>/2022/04/12/hello-world/</url>
