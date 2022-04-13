@@ -16,21 +16,21 @@
   <meta name="author" content="Peter Pan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="正文">
+    <meta name="description" content="数组与矩阵3、数组中重复的数字4、二维数组中的查找描述 在一个二维数组array中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。  [ [1,2,8,9],[2,4,9,12],[4,7,10,13],[6,8,11,15]]  给定 target &#x3D; 7，返回 tru">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test">
-<meta property="og:url" content="http://example.com/2022/04/12/test/index.html">
+<meta property="og:title" content="剑指offer">
+<meta property="og:url" content="http://example.com/2022/04/12/%E5%89%91%E6%8C%87offer/index.html">
 <meta property="og:site_name" content="PPStudy">
-<meta property="og:description" content="正文">
+<meta property="og:description" content="数组与矩阵3、数组中重复的数字4、二维数组中的查找描述 在一个二维数组array中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。  [ [1,2,8,9],[2,4,9,12],[4,7,10,13],[6,8,11,15]]  给定 target &#x3D; 7，返回 tru">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-04-12T05:36:52.000Z">
-<meta property="article:modified_time" content="2022-04-12T05:38:09.588Z">
+<meta property="article:published_time" content="2022-04-12T15:04:50.000Z">
+<meta property="article:modified_time" content="2022-04-13T07:27:56.527Z">
 <meta property="article:author" content="Peter Pan">
-<meta property="article:tag" content="第一个">
+<meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>test - PPStudy</title>
+  <title>剑指offer - PPStudy</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -176,9 +176,9 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="test">
+            <span class="h2" id="subtitle" title="剑指offer">
               
-                test
+                剑指offer
               
             </span>
 
@@ -188,7 +188,7 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-04-12 13:36" pubdate>
+      <time datetime="2022-04-12 23:04" pubdate>
         April 12, 2022 pm
       </time>
     </span>
@@ -199,7 +199,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2 字
+      791 字
     </span>
   
 
@@ -208,7 +208,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1 分钟
+      7 分钟
     </span>
   
 
@@ -237,10 +237,18 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">test</h1>
+            <h1 style="display: none">剑指offer</h1>
             
             <div class="markdown-body">
-              <p>正文</p>
+              <h1 id="数组与矩阵"><a href="#数组与矩阵" class="headerlink" title="数组与矩阵"></a>数组与矩阵</h1><h2 id="3、数组中重复的数字"><a href="#3、数组中重复的数字" class="headerlink" title="3、数组中重复的数字"></a>3、数组中重复的数字</h2><h2 id="4、二维数组中的查找"><a href="#4、二维数组中的查找" class="headerlink" title="4、二维数组中的查找"></a>4、二维数组中的查找</h2><p><strong>描述</strong></p>
+<p>在一个二维数组array中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。 </p>
+<p>[ [1,2,8,9],<br>[2,4,9,12],<br>[4,7,10,13],<br>[6,8,11,15]] </p>
+<p>给定 target = 7，返回 true。 </p>
+<p>给定 target = 3，返回 false。</p>
+<p><strong>解法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">Find</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span> [][] array)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">row</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">col</span> <span class="hljs-operator">=</span> array[<span class="hljs-number">0</span>].length - <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> search;<br>      <br>		<span class="hljs-comment">//不越界的情况下search</span><br>    <span class="hljs-keyword">while</span>(row &lt;= (array.length - <span class="hljs-number">1</span>) &amp;&amp; col &gt;= <span class="hljs-number">0</span>)&#123;<br>        search = array[row][col]; <span class="hljs-comment">// 初始化</span><br>        <span class="hljs-keyword">if</span>(search == target)&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(search &gt; target)&#123;<br>            col--;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(search &lt; target)&#123;<br>            row++;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>(1)对于数组 arr [row] [col] 的row和col，我们是按先行后列来看的。用二维数组举例，arr.length 表示的是row的长度，arr[0].length 表示的是列的长度。</p>
+<p>(2)这种问题的通常思路一般是双循环，时间复杂度自然到达了o(n^2)，所以最直接的优化方式就是降低时间复杂度，把二维数组的处理展平变成一围的地图然后通过排序的规律来找到突破口。</p>
 
             </div>
             <hr>
@@ -250,7 +258,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E6%B5%8B%E8%AF%95/">测试</a>
+                      <a class="hover-with-bg" href="/categories/algorithm/">algorithm</a>
                     
                   </div>
                 
@@ -258,7 +266,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E7%AC%AC%E4%B8%80%E4%B8%AA/">第一个</a>
+                      <a class="hover-with-bg" href="/tags/algorithm/">algorithm</a>
                     
                   </div>
                 
@@ -414,6 +422,48 @@
 
 
 
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
 
 
 
