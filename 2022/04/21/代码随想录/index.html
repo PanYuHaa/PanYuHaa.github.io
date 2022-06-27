@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/PanYuHaa/PicGo/img/circularlinkedlist.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/PanYuHaa/PicGo/img/java-hashset-hierarchy.png">
 <meta property="article:published_time" content="2022-04-21T01:38:37.000Z">
-<meta property="article:modified_time" content="2022-06-26T04:13:55.876Z">
+<meta property="article:modified_time" content="2022-06-27T01:28:13.874Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary_large_image">
@@ -205,7 +205,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      45k 字
+      47k 字
     </span>
   
 
@@ -214,7 +214,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      377 分钟
+      388 分钟
     </span>
   
 
@@ -712,6 +712,24 @@
 </ul>
 </li>
 </ul>
+<h2 id="8-22-修剪二叉搜索树"><a href="#8-22-修剪二叉搜索树" class="headerlink" title="8.22 修剪二叉搜索树"></a>8.22 修剪二叉搜索树</h2><p><strong>669. Trim a Binary Search Tree</strong></p>
+<p><strong>Q：</strong>Given the <code>root</code> of a binary search tree and the lowest and highest boundaries as <code>low</code> and <code>high</code>, trim the tree so that all its elements lies in <code>[low, high]</code>. Trimming the tree should <strong>not</strong> change the relative structure of the elements that will remain in the tree (i.e., any node’s descendant should remain a descendant). It can be proven that there is a <strong>unique answer</strong>.</p>
+<p>Return <em>the root of the trimmed binary search tree</em>. Note that the root may change depending on the given bounds.</p>
+<p><strong>A：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">trimBST</span><span class="hljs-params">(root *TreeNode, low <span class="hljs-type">int</span>, high <span class="hljs-type">int</span>)</span></span> *TreeNode &#123;<br>    <span class="hljs-keyword">if</span> root == <span class="hljs-literal">nil</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span> &#125;<br>    <br>    <span class="hljs-keyword">if</span> root.Val &lt; low &#123;<br>        right := trimBST(root.Right, low, high)<br>        <span class="hljs-keyword">return</span> right<br>    &#125;<br>    <span class="hljs-keyword">if</span> root.Val &gt; high &#123;<br>        left := trimBST(root.Left, low, high)<br>        <span class="hljs-keyword">return</span> left<br>    &#125;<br>    <br>    root.Right = trimBST(root.Right, low, high)<br>    root.Left = trimBST(root.Left, low, high)<br>    <span class="hljs-keyword">return</span> root<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>确定终止条件</li>
+</ul>
+<p>修剪的操作并不是在终止条件上进行的，所以就是遇到空节点返回就可以了。</p>
+<p>思路：</p>
+<p>1、如果此时的节点值小于了最小边界（因为是闭区间），那这个节点就废掉，我们找比他大的（他的右子树中是否有符合的节点）</p>
+<p>2、如果此时的节点值大于了最大边界（因为是闭区间），那这个节点就废掉，我们找比他小的（他的左子树中是否有符合的节点）</p>
+<p>3、拼接分支，类似于之前的用法，如果没有裁剪就返回的是root（当前的节点）如果有裁剪，返回的就是获取的left或者right</p>
+<h2 id="8-23-构建一棵平衡二叉树"><a href="#8-23-构建一棵平衡二叉树" class="headerlink" title="8.23 构建一棵平衡二叉树"></a>8.23 构建一棵平衡二叉树</h2><p><strong>108. Convert Sorted Array to Binary Search Tree</strong></p>
+<p><strong>Q：</strong>Given an integer array <code>nums</code> where the elements are sorted in <strong>ascending order</strong>, convert <em>it to a <strong>height-balanced</strong> binary search tree</em>.</p>
+<p>A <strong>height-balanced</strong> binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.</p>
+<p><strong>A：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
