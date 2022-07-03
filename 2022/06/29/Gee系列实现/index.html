@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon1.png">
+  <link rel="icon" href="/img/favicon1.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Peter Pan">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Web框架 - Gee0.1 基本的net包建立tcp连接的步骤(server端)  设置tcp地址 设立监听对象 建立连接  1234567tcpAddr, _ :&#x3D; net.ResolveTCPAddr(&quot;tcp&quot;, &quot;:8888&quot;)listener, _ :&#x3D; net.ListenTCP(&quot;tcp&quot;, tcpAddr)conn, e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gee系列实现">
+<meta property="og:url" content="http://example.com/2022/06/29/Gee%E7%B3%BB%E5%88%97%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="PPStudy">
+<meta property="og:description" content="Web框架 - Gee0.1 基本的net包建立tcp连接的步骤(server端)  设置tcp地址 设立监听对象 建立连接  1234567tcpAddr, _ :&#x3D; net.ResolveTCPAddr(&quot;tcp&quot;, &quot;:8888&quot;)listener, _ :&#x3D; net.ListenTCP(&quot;tcp&quot;, tcpAddr)conn, e">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-06-29T04:14:31.000Z">
+<meta property="article:modified_time" content="2022-07-02T01:20:20.501Z">
+<meta property="article:author" content="Peter Pan">
+<meta property="article:tag" content="TCP, UDP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Gee系列实现 - PPStudy</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/banner2.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Gee系列实现">
+              
+                Gee系列实现
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-06-29 12:14" pubdate>
+        June 29, 2022 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      53 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Gee系列实现</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Web框架-Gee"><a href="#Web框架-Gee" class="headerlink" title="Web框架 - Gee"></a>Web框架 - Gee</h1><h2 id="0-1-基本的net包"><a href="#0-1-基本的net包" class="headerlink" title="0.1 基本的net包"></a>0.1 基本的net包</h2><p>建立tcp连接的步骤(server端)</p>
+<ol>
+<li>设置tcp地址</li>
+<li>设立监听对象</li>
+<li>建立连接</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><pre><code class="hljs go">tcpAddr, _ := net.ResolveTCPAddr(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8888&quot;</span>)<br>listener, _ := net.ListenTCP(<span class="hljs-string">&quot;tcp&quot;</span>, tcpAddr)<br>conn, err := listener.AcceptTCP()<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>	<span class="hljs-comment">// 创建好一个tcp的服务端</span><br>	<span class="hljs-keyword">return</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>优化，循环链接，要处理很多tcp请求。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>  &#123;<br>    tcpAddr, _ := net.ResolveTCPAddr(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8888&quot;</span>)<br>    listener, _ := net.ListenTCP(<span class="hljs-string">&quot;tcp&quot;</span>, tcpAddr)<br>    <span class="hljs-keyword">for</span> &#123;<br>        conn, err := listener.AcceptTCP()<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>          fmt.Println(err)<br>          <span class="hljs-keyword">return</span><br>          <span class="hljs-comment">// handle error</span><br>        &#125;<br>        <span class="hljs-keyword">go</span> handleConnection(conn)<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handleConnection</span><span class="hljs-params">(conn *net.TCPConn)</span></span> &#123;<br>		<span class="hljs-keyword">for</span> &#123;<br>		buf := <span class="hljs-built_in">make</span>([]<span class="hljs-type">byte</span>, <span class="hljs-number">1024</span>)<br>		n, err := conn.Read(buf)<br>		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Println(err)<br>        <span class="hljs-keyword">break</span><br>		&#125;<br>		fmt.Println(conn.RemoteAddr().String() + <span class="hljs-type">string</span>(buf[<span class="hljs-number">0</span> : n])) <span class="hljs-comment">// 获取连接进来的地址 + 字符串</span><br>		str := <span class="hljs-string">&quot;received success! message: &quot;</span> + <span class="hljs-type">string</span>(buf[<span class="hljs-number">0</span> : n])<br>		conn.Write([]<span class="hljs-type">byte</span>(str))<br>		&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>(dial端)</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>  &#123;<br>    tcpAddr, _ := net.ResolveTCPAddr(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8888&quot;</span>)<br>    conn, _ := net.DialTCP(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-literal">nil</span>, tcpAddr)<br>    reader := bufio.NewReader(os.Stdin)<br>    <span class="hljs-keyword">for</span> &#123;<br>        bytes, _, _ := reader.ReadLine()<br>        conn.Write(bytes)<br>        rb := <span class="hljs-built_in">make</span>([]<span class="hljs-type">byte</span>, <span class="hljs-number">1024</span>)<br>        rn, _ := conn.Read(rb)<br>        fmt.Println(<span class="hljs-type">string</span>(rb[<span class="hljs-number">0</span> : rn])) <span class="hljs-comment">// string处理要不就是ASCII码</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="0-2-Http包"><a href="#0-2-Http包" class="headerlink" title="0.2 Http包"></a>0.2 Http包</h2><p><strong>Get请求的实现</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;net/http&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(res http.ResponseWriter, req *http.Request)</span></span> &#123;<br>		res.Write([]<span class="hljs-type">byte</span>(<span class="hljs-string">&quot;我收到了给你返回&quot;</span>))<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>  &#123;<br>    http.HandleFunc(<span class="hljs-string">&quot;/test&quot;</span>, handler)<br>    server := http.Server&#123;<br>      Addr: <span class="hljs-string">&quot;:8080&quot;</span>,<br>      Handler: <span class="hljs-literal">nil</span>,<br>    &#125;<br>    server.ListenAndServe()<br>    <span class="hljs-comment">// http.ListenAndServe(&quot;:8080&quot;, nil)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>为什么不用判断req的方法就可以实现呢get呢？因为默认是get请求？</p>
+<p>其中为什么前者response不是指针，而后者request是指针呢？因为request是外部传来的（这个有待以后check源码）</p>
+<p><strong>server</strong> 服务，包含地址、端口、处理器等等</p>
+<p><strong>conn</strong> 链接，用户请求来的</p>
+<p><strong>response</strong> 返回信息</p>
+<p><strong>request</strong> 用户的请求信息</p>
+<p><strong>Handle</strong> 对于接收的信息进行处理并且返回的一个处理器</p>
+<p>Step：</p>
+<p>1、通过 Header() 来设置头map</p>
+<p>2、通过 WriteHeader(code) 来设置状态码</p>
+<p>3、通过 Write 写入这个io.writer 来控制返回值</p>
+<p>4、通过 req.Body 以请求过来的body内容</p>
+<p>5、剩下的就是组装，e.g. 一个内置的方法，把路径当静态显示</p>
+<p>http.Handle(“/“, http.FileServer(http.dir(“/“)))</p>
+<p>res是我们要返回的值，req是前端传给我们的值。</p>
+<pre><code class=" mermaid">graph LR;
+	http请求 --&gt; DefaultServeMux;
+	DefaultServeMux --&gt; Handler1;
+	DefaultServeMux --&gt; Handler2;
+	DefaultServeMux --&gt; ......;
+	DefaultServeMux --&gt; Handler3;
+</code></pre>
+<p>有自定义的handler的话就是这个样子。</p>
+<pre><code class=" mermaid">graph LR;
+	http请求 --&gt; myHandler;
+</code></pre>
+<p>Multiplexer（多路复用器）</p>
+<p>他也是一个handler</p>
+<p><strong>url通用格式</strong></p>
+<p>Scheme : // [ userinfo@ ] host / path [ ?query ] [ #fragment ]</p>
+<p>如果从浏览器发出的请求，那么你无法提取处 Fragment 字段的值（浏览器在发送请求时会把 fragment 部分去掉）</p>
+<h3 id="FORM-表单"><a href="#FORM-表单" class="headerlink" title="FORM 表单"></a>FORM 表单</h3><h4 id="表单的-enctype-属性"><a href="#表单的-enctype-属性" class="headerlink" title="表单的 enctype 属性"></a>表单的 enctype 属性</h4><ul>
+<li>如果 enctype 是 application/x-www-form-urlencoded，那么浏览器会将表单数据编码到查询字符串里面。例如：</li>
+</ul>
+<p>​            frist_name=peter&amp;last_name=pan</p>
+<ul>
+<li><p>如果 enctype 是 multipart/form-data，那么</p>
+<p>​     每一个 name-value 对都会被转换为一个MIME消息部分</p>
+<p>​     每一个部分都有自己的 Content Type 和 Content Dispostion</p>
+</li>
+</ul>
+<p><strong>如何选择呢？</strong></p>
+<p>简单文本：表单URL编码</p>
+<p>大量数据，例如上传文件：multipart-MIME</p>
+<p>​        甚至可以把二进制数据通过base64编码，来当作文本进行发送</p>
+<h4 id="FORM-字段"><a href="#FORM-字段" class="headerlink" title="FORM 字段"></a>FORM 字段</h4><p>提取Request上的字段有三个，Form，PostForm，MultipartForm</p>
+<p>通常做法调用 ParseForm 或 ParseMultipartForm 来解析 Request，然后相应的访问 Form、PostForm 或 MultipartForm 字段</p>
+<h4 id="PostForm-字段"><a href="#PostForm-字段" class="headerlink" title="PostForm 字段"></a>PostForm 字段</h4><p>由于表单和 URL 里有同样的 Key，那么他们都会放在一个 slice 里面，（表单在前面，url的在后面）。如果只想要表单的 key - value 对，不要 URL 的，可以使用PostForm 字段</p>
+<p>PostForm 和 Form 只支持 application/x-www-form-urlencoded</p>
+<p>MultipartForm 字段支持 multipart key-value 对，返回类型是个 struct 不是 map。1⃣️ key—-string，value—-[]string 2⃣️ 空的（key—-string，value—-文件）所以这个是用来传输文件的</p>
+<p>FormValue 方法会返回 Form 字段中指定 key 对应的第一个 value，无需调用ParseForm（无需解析）</p>
+<p>PostFromValue 相同，但如果 enctype 设为 multipart/form-data</p>
+<h4 id="FromFile方法"><a href="#FromFile方法" class="headerlink" title="FromFile方法"></a>FromFile方法</h4><p>上传文件还有一个简便方法：FormFile（例子）</p>
+<p>​        无需调用 ParseMultipartForm 方法</p>
+<p>​        返回指定 key 对应的第一个 value</p>
+<p>​        同时返回 File 和FileHeader，以及错误信息</p>
+<p>​        如果只上传一个文件，那么这种方式会快一些        </p>
+<h3 id="ResponseWriter"><a href="#ResponseWriter" class="headerlink" title="ResponseWriter"></a>ResponseWriter</h3><p>从服务器向客户端返回响应需要使用 ResponseWriter</p>
+<p>ResponseWriter 是一个接口，handler 用它来返回响应</p>
+<p>真正支撑 ResponseWriter 的幕后 struct 是非导出的 http.response</p>
+<p><strong>Q：为什么 Handler 的 ServeHTTP(w ResponseWriter, r *Request)，只有一个是指针类型？而 w 是按值传递的吗？</strong></p>
+<p><strong>A：</strong>ResponseWriter是一个接口它代表了一个指针，w 和 r 都是按照引用传递的</p>
+<h4 id="Header-方法"><a href="#Header-方法" class="headerlink" title="Header 方法"></a>Header 方法</h4><p>Header 方法返回 headers 的 map，可以进行修改</p>
+<p>修改后的 headers 将会体现在返回给客户端的 HTTP 响应里</p>
+<h4 id="Write-方法"><a href="#Write-方法" class="headerlink" title="Write 方法"></a>Write 方法</h4><p>写入body</p>
+<h4 id="WriteHeader-方法"><a href="#WriteHeader-方法" class="headerlink" title="WriteHeader 方法"></a>WriteHeader 方法</h4><p>WriteHeader 方法接受一个整数类型（HTTP 状态码）作为参数，并把它作为 HTTP 响应的状态码返回</p>
+<p>如果该方法没有显式调用，那么在第一次调用 Write 方法前，会隐式的调用 WriteHeader（http.StatusOK）</p>
+<p>​        所以 WriteHeader 主要用来发送错误类的 HTTP 状态码</p>
+<p>调用完 WriteHeader 方法之后，仍然可以写入到 ResponseWriter，但无法再修改 header 了</p>
+<h4 id="内置的-Response"><a href="#内置的-Response" class="headerlink" title="内置的 Response"></a>内置的 Response</h4><p>NotFound 函数，404 + 额外的信息</p>
+<p>ServeFile 函数，从文件系统提供文件，返回给请求者</p>
+<p>ServeContent 函数，可以请求range内的内容</p>
+<p>Redirect 函数，重定向</p>
+<h3 id="模版"><a href="#模版" class="headerlink" title="模版"></a>模版</h3><pre><code class=" mermaid">graph LR;
+	模版 --&gt; 模版引擎;
+	数据 --&gt; 模版引擎;
+	模版引擎 --&gt; HTML
+</code></pre>
+<p>两种理想的模版引擎：1、无逻辑模版引擎 2、逻辑嵌入模版引擎</p>
+<p>go使用的是text/template，HTML相关部分用的是html/template，是混合体</p>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><h4 id="controller的角色"><a href="#controller的角色" class="headerlink" title="controller的角色"></a>controller的角色</h4><p>main()：设置类工作</p>
+<p>controller：</p>
+<p>​        静态资源</p>
+<p>​        把不同的请求送到不同的controller进行处理</p>
+<pre><code class=" mermaid">graph LR;
+		前置controller --&gt; home_handler;
+		前置controller --&gt; page1_handler;
+		前置controller --&gt; page2_handler;
+</code></pre>
+<h4 id="路由参数"><a href="#路由参数" class="headerlink" title="路由参数"></a>路由参数</h4><p>静态路由：一个路径对应一个页面</p>
+<p>/home</p>
+<p>/about</p>
+<p>带参数的路由：根据路由参数，创建出一族不同的页面</p>
+<p>/companies/123</p>
+<p>/companies/Microsoft</p>
+<h4 id="第三方路由器"><a href="#第三方路由器" class="headerlink" title="第三方路由器"></a>第三方路由器</h4><h3 id="Json"><a href="#Json" class="headerlink" title="Json"></a>Json</h3><p>Marshal和Unmarshal</p>
+<p>Marshal（编码）：把 go struct 转化为 json 格式</p>
+<p>​        MarshalIndent，（内容，换行，缩进）</p>
+<p>Unmarshal（解码）：把 json 转化为 go struct</p>
+<p><strong>针对 string 或 bytes：</strong></p>
+<p>​        Marshal =&gt; String</p>
+<p>​        Unmarshal &lt;= String</p>
+<p><strong>针对stream：</strong></p>
+<p>​        Encode =&gt; Stream，把数据写入到 io.Writer</p>
+<p>​        Decode &lt;= Stream，从 io.Reader 读取数据</p>
+<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><p>创建中间件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> MyMiddleware <span class="hljs-keyword">struct</span> &#123;<br>  	Next http.Handler<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m MyMiddleware)</span></span> ServeHTTP(w http.ResponseWriter, r *http.Request) &#123;<br>  	<span class="hljs-comment">// 在 next handler之前做一些事情</span><br>  	m.Next.ServeHTTP(w,r)<br>  	<span class="hljs-comment">// 在 next handler之后做一些事情（处理一些响应里面的内容）</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="中间件的用途"><a href="#中间件的用途" class="headerlink" title="中间件的用途"></a>中间件的用途</h4><ul>
+<li><p>Logging 日志</p>
+</li>
+<li><p>安全</p>
+</li>
+<li><p>请求超时</p>
+</li>
+<li><p>响应压缩</p>
+</li>
+<li><p>拦截器</p>
+</li>
+</ul>
+<h3 id="使用请求上下文"><a href="#使用请求上下文" class="headerlink" title="使用请求上下文"></a>使用请求上下文</h3><h4 id="Request-Context"><a href="#Request-Context" class="headerlink" title="Request Context"></a>Request Context</h4><p>func(*Request) Context() context.Context</p>
+<p>​        返回当前请求的上下文</p>
+<p>func(*Request) WithContext(ctx context.Context) context.Context</p>
+<p>​        基于 Context 进行 ”修改“，（实际上）创建一个新的 Context</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Context <span class="hljs-keyword">interface</span> &#123;<br>    Deadline() (deadline time.Time, ok <span class="hljs-type">bool</span>)<br><br>    Done() &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;<br><br>    Err() <span class="hljs-type">error</span><br><br>    Value(key <span class="hljs-keyword">interface</span>&#123;&#125;) <span class="hljs-keyword">interface</span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这些方法都是用于读的，要更新的话得创建新的context</p>
+<h4 id="Context-API-可以返回新-Context"><a href="#Context-API-可以返回新-Context" class="headerlink" title="Context API - 可以返回新 Context"></a>Context API - 可以返回新 Context</h4><p>WithCancel()，它有一个 CancelFunc</p>
+<p>WithDeadline()，带有一个时间戳（time.Time）</p>
+<p>WithTimeout()，带有一个具体的时间段（time.Duration)</p>
+<p>WithValue()，在里面添加一些值</p>
+<p>PS：new创建结构体返回的是一个对应类型的指针，而普通结构体的创建需要加&amp;才能是指针要不就是个普通的结构体无人指向它</p>
+<h3 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h3><p>TLS —— 传输层安全</p>
+<h4 id="HTTP-Listener"><a href="#HTTP-Listener" class="headerlink" title="HTTP Listener"></a>HTTP Listener</h4><p>http.ListenAndServe 函数</p>
+<p>http.ListenAndServeTLS 函数</p>
+<p>用 https 会让http协议从1.1升级到2</p>
+<p>他建立长连接，所以分成各种frame，可以数据类型来进行优化从而提高处理效率。</p>
+<p>Server Push可以提前预加载好要加载的文件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> pusher, ok := w.(http.Pusher); ok &#123;<br>    pusher.Push(<span class="hljs-string">&quot;/css/app.css&quot;</span>, &amp;http.PushOptions&#123;<br>    	  Header: http.Header&#123;<span class="hljs-string">&quot;Content-Type&quot;</span>: []<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;text/css&quot;</span>&#125;&#125;,<br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>测试model层</p>
+<p>user<strong>_test</strong>.go</p>
+<ul>
+<li><p>测试代码所在文件的名称以 _test 结尾</p>
+</li>
+<li><p>对于生产编译，不会包含以 _test 结尾的文件</p>
+</li>
+<li><p>对于测试编译，会包含以 _test 结尾的文件</p>
+</li>
+</ul>
+<p>func <strong>Test</strong>UpdatesModifiedTime( <strong>t *testing.T</strong> )</p>
+<ul>
+<li>测试函数名应以 Test 开头（需要导出）</li>
+<li>函数名需要表达出被验证的特征</li>
+<li>测试函数的参数类型是 *testing.T，它会提供测试相关的一些工具</li>
+</ul>
+<h3 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h3><p>Import _ “net/http/pprof”</p>
+<ul>
+<li>设置一些监听的 URL，它们会提供各类诊断信息</li>
+</ul>
+<p>go tool pprof <a target="_blank" rel="noopener" href="http://localhost:8080/debug/pprof/heap">http://localhost:8080/debug/pprof/heap</a> // 内存</p>
+<ul>
+<li>从应用获取内存dump：应用在使用哪些内存，他们会去哪</li>
+</ul>
+<p>go tool pprof <a target="_blank" rel="noopener" href="http://localhost:8080/debug/pprof/profile">http://localhost:8080/debug/pprof/profile</a> // CPU</p>
+<ul>
+<li>CPU的快照，可以看到谁在用 CPU</li>
+</ul>
+<p>go tool pprof <a target="_blank" rel="noopener" href="http://localhost:8080/debug/pprof/block">http://localhost:8080/debug/pprof/block</a> // goroutine</p>
+<ul>
+<li>看到阻塞的 goroutine</li>
+</ul>
+<p>go tool pprof <a target="_blank" rel="noopener" href="http://localhost:8080/debug/pprof/trace?second=5">http://localhost:8080/debug/pprof/trace?second=5</a> // trace</p>
+<ul>
+<li>监控这段时间内，什么在执行，什么在调用什么</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/debug/pprof">http://localhost:8080/debug/pprof</a> // 网址</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Backend-development/">Backend development</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/TCP-UDP/">TCP, UDP</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/06/18/golang%E5%8E%9F%E7%90%86/">
+                        <span class="hidden-mobile">golang原理</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> & <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
