@@ -24,7 +24,7 @@
 <meta property="og:description" content="Web框架 - Gee0.1 基本的net包建立tcp连接的步骤(server端)  设置tcp地址 设立监听对象 建立连接  1234567tcpAddr, _ :&#x3D; net.ResolveTCPAddr(&quot;tcp&quot;, &quot;:8888&quot;)listener, _ :&#x3D; net.ListenTCP(&quot;tcp&quot;, tcpAddr)conn, e">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-29T04:14:31.000Z">
-<meta property="article:modified_time" content="2022-07-02T01:20:20.501Z">
+<meta property="article:modified_time" content="2022-07-10T12:08:13.712Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="TCP, UDP">
 <meta name="twitter:card" content="summary_large_image">
@@ -199,7 +199,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.3k 字
+      14k 字
     </span>
   
 
@@ -208,7 +208,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      53 分钟
+      115 分钟
     </span>
   
 
@@ -427,6 +427,111 @@
 <li>监控这段时间内，什么在执行，什么在调用什么</li>
 </ul>
 <p><a target="_blank" rel="noopener" href="http://localhost:8080/debug/pprof">http://localhost:8080/debug/pprof</a> // 网址</p>
+<h2 id="Day-1-HTTP基础"><a href="#Day-1-HTTP基础" class="headerlink" title="Day 1 HTTP基础"></a>Day 1 HTTP基础</h2><p>在实现<code>Engine</code>之前，我们调用 <em>http.HandleFunc</em> 实现了路由和Handler的映射，也就是只能针对具体的路由写处理逻辑。比如<code>/hello</code>。但是在实现<code>Engine</code>之后，我们拦截了所有的HTTP请求，拥有了统一的控制入口。在这里我们可以自由定义路由映射的规则，也可以统一添加一些处理逻辑，例如日志、异常处理等</p>
+<p><code>gee.go</code>内容</p>
+<ul>
+<li>首先定义了类型<code>HandlerFunc</code>，这是提供给框架用户的，用来定义路由映射的处理方法。我们在<code>Engine</code>中，添加了一张路由映射表<code>router</code>，key 由请求方法和静态路由地址构成，例如<code>GET-/</code>、<code>GET-/hello</code>、<code>POST-/hello</code>，这样针对相同的路由，如果请求方法不同,可以映射不同的处理方法(Handler)，value 是用户映射的处理方法。</li>
+<li>当用户调用<code>(*Engine).GET()</code>方法时，会将路由和处理方法注册到映射表 <em>router</em>中，<code>(*Engine).Run()</code>方法，是 <em>ListenAndServe</em> 的包装。</li>
+<li><code>Engine</code>实现的 <em>ServeHTTP</em> 方法的作用就是，解析请求的路径，查找路由映射表，如果查到，就执行注册的处理方法。如果查不到，就返回 <em>404 NOT FOUND</em> 。</li>
+</ul>
+<p>第二个参数类型是接口类型 <code>http.Handler</code>，<code>Handler</code> 的定义博文中已经贴了，是从 <code>http</code> 的源码中找到的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Handler <span class="hljs-keyword">interface</span> &#123;<br>    ServeHTTP(w ResponseWriter, r *Request)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ListenAndServe</span><span class="hljs-params">(address <span class="hljs-type">string</span>, h Handler)</span></span> <span class="hljs-type">error</span><br></code></pre></td></tr></table></figure>
+<p>在 Go 语言中，实现了接口方法的 struct 都可以强制转换为接口类型。你可以这么写：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go">handler := (http.Handler)(engine) <span class="hljs-comment">// 手动转换为借口类型</span><br>log.Fatal(http.ListenAndServe(<span class="hljs-string">&quot;:9999&quot;</span>, handler))<br></code></pre></td></tr></table></figure>
+<p>然后，<code>ListenAndServe</code> 方法里面会去调用 <code>handler.ServeHTTP()</code> 方法，你感兴趣，可以在 http 的源码中找到调用的地方。但是这么写是多余的，传参时，会自动进行参数转换的。所以直接传入engine 即可。</p>
+<p>在没有 engine 的情况下我们默认的是一个 DefaultServeMux 他负责识别所有的 handler，但他不能给 handler 分类，所以我们要引入 engine。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liuqun0319/article/details/106136338">https://blog.csdn.net/liuqun0319/article/details/106136338</a> 详解 type func() 用法分析</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	one(<span class="hljs-number">2</span>, callback)<br>&#125;<br><br><span class="hljs-comment">//需要传递函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">callback</span><span class="hljs-params">(i <span class="hljs-type">int</span>)</span></span> &#123;<br>	fmt.Println(<span class="hljs-string">&quot;i am callBack&quot;</span>)<br>	fmt.Println(i)<br>&#125;<br><br><span class="hljs-comment">//main 中调用的函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">one</span><span class="hljs-params">(i <span class="hljs-type">int</span>, f <span class="hljs-keyword">func</span>(<span class="hljs-type">int</span>)</span></span>) &#123;<br>	two(i,fun(f))<br>&#125;<br><br><span class="hljs-comment">//one() 中调用的函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">two</span><span class="hljs-params">(i <span class="hljs-type">int</span>, c Call)</span></span> &#123;<br>	c.call(i)<br>&#125;<br><br><span class="hljs-comment">//定义的type函数</span><br><span class="hljs-keyword">type</span> fun <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span><br><br><span class="hljs-comment">//fun实现的Call接口的call()函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f fun)</span></span> call(i <span class="hljs-type">int</span>) &#123;<br>	f(i)<br>&#125;<br><br><span class="hljs-comment">//call接口</span><br><span class="hljs-keyword">type</span> Call <span class="hljs-keyword">interface</span> &#123;<br>	call(<span class="hljs-type">int</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里解释清楚了上述的调用关系。首先 one() 参数中的函数调用 two() 参数中的接口，并且通过该接口为这个函数赋值，但最终真正运行的还是 one() 中的函数 callback，只不过 callback 代表着一个 fun 函数实现了一个接口，接口的功能是用来给 fun 函数赋值。如下转换</p>
+<p><strong>流程图：</strong></p>
+<pre><code class=" mermaid">graph LR;
+		http请求 --&gt; engine;
+		engine --&gt; GET请求;
+		engine --&gt; POST请求;
+</code></pre>
+<p>其中 engine 是用来鉴别请求的（有两部分），它里面有一个路由map，用来存放我们设定好的路由。第二部分就是一个ServeHTTP方法（这个是在 GET 和 POST 方法中转换的，因为go中结构体放入函数中的参数接口可以自动转换为别的类型）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 所有的handler都要有SeverHTTP这样一个函数，还要有ResponseWriter, *Request这两个参数）</span><br><span class="hljs-keyword">type</span> Handler <span class="hljs-keyword">interface</span> &#123;<br>   ServeHTTP(ResponseWriter, *Request)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>engine 中的 ServeHTTP 目的是为了实现转换成 handler 的 engine 该有的接口。第一步通过 listenAndServer 将 engine 变成 handler 接口。因为变成了handler接口（如上），所以第二步 engine 也要实现 ServeHTTP 函数。第三步里面实现的内容就是 1.查找是否有对应的路由注册 2. 若查找到就直接为这个 handlerFunc 赋入参 3. 没找到就404</p>
+<p>其中为什么可以直接写成</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> handler, ok := e.Router[key]; ok &#123;<br>		handler(w, r) <span class="hljs-comment">// 调用存储在 map 中的函数，执行并赋值。</span><br></code></pre></td></tr></table></figure>
+<p>handler 本身就是个 func 类型，所以这一步就是赋值并运行。</p>
+<h2 id="Day-2-上下文"><a href="#Day-2-上下文" class="headerlink" title="Day 2 上下文"></a>Day 2 上下文</h2><p><strong>设计Context必要性</strong></p>
+<ol>
+<li>对Web服务来说，无非是根据请求<code>*http.Request</code>，构造响应<code>http.ResponseWriter</code>。但是这两个对象提供的接口粒度太细，比如我们要构造一个完整的响应，需要考虑消息头(Header)和消息体(Body)，而 Header 包含了状态码(StatusCode)，消息类型(ContentType)等几乎每次请求都需要设置的信息。因此，如果不进行有效的封装，那么框架的用户将需要写大量重复，繁杂的代码，而且容易出错。针对常用场景，能够高效地构造出 HTTP 响应是一个好的框架必须考虑的点。</li>
+</ol>
+<p>用返回 JSON 数据作比较，感受下封装前后的差距。</p>
+<p>封装前</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go">obj = <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;&#123;<br>    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;geektutu&quot;</span>,<br>    <span class="hljs-string">&quot;password&quot;</span>: <span class="hljs-string">&quot;1234&quot;</span>,<br>&#125;<br>w.Header().Set(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>)<br>w.WriteHeader(http.StatusOK)<br>encoder := json.NewEncoder(w)<br><span class="hljs-keyword">if</span> err := encoder.Encode(obj); err != <span class="hljs-literal">nil</span> &#123;<br>    http.Error(w, err.Error(), <span class="hljs-number">500</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>VS 封装后：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go">c.JSON(http.StatusOK, gee.H&#123;<br>    <span class="hljs-string">&quot;username&quot;</span>: c.PostForm(<span class="hljs-string">&quot;username&quot;</span>),<br>    <span class="hljs-string">&quot;password&quot;</span>: c.PostForm(<span class="hljs-string">&quot;password&quot;</span>),<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p>流程图</p>
+<pre><code class=" mermaid">graph LR;
+		http请求 --&gt; engine;
+		engine --&gt; router-get\post;
+		router-get\post --&gt; PostForm;
+		router-get\post --&gt; Query;
+		router-get\post --&gt; Status;
+		router-get\post --&gt; SetHeader;
+		router-get\post --&gt; String;
+		router-get\post --&gt; JSON;
+		router-get\post --&gt; Data;
+		router-get\post --&gt; HTML;
+</code></pre>
+<p>最重要的还是通过实现了 ServeHTTP 接口，接管了所有的 HTTP 请求。</p>
+<p>后面集成了常用的方法，比如JSON，HTML等等，为的就是前文提到的，这样再处理JSON请求的时候不用重复的写一遍怎么将数据转成JSON，统一转换成JSON然后响应JSON请求。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Context <span class="hljs-keyword">struct</span> &#123;<br>	<span class="hljs-comment">// origin objects</span><br>	Writer http.ResponseWriter<br>	Req    *http.Request<br>	<span class="hljs-comment">// request info</span><br>	Path   <span class="hljs-type">string</span><br>	Method <span class="hljs-type">string</span><br>	<span class="hljs-comment">// response info</span><br>	StatusCode <span class="hljs-type">int</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>本质上没有变就是在 w 和 r 的上面又封装了一层 context，这个 context 包含了一些属性比如请求中的路径和方法，响应的状态码。</p>
+<p>把状态码的设置，响应头的内容的设置封装在 context 的方法中，Context 就像一次会话的百宝箱，可以找到任何东西。</p>
+<ul>
+<li>给<code>map[string]interface&#123;&#125;</code>起了一个别名<code>gee.H</code>，构建JSON数据时，显得更简洁。</li>
+<li><code>Context</code>目前只包含了<code>http.ResponseWriter</code>和<code>*http.Request</code>，另外提供了对 Method 和 Path 这两个常用属性的直接访问。</li>
+<li>提供了访问Query和PostForm参数的方法。</li>
+<li>提供了快速构造String/Data/JSON/HTML响应的方法。</li>
+</ul>
+<p>二、区别：</p>
+<p>1、json.NewDecoder是从一个<code>流</code>里面直接进行解码，代码精干；<br>2、json.Unmarshal是从已存在与内存中的json进行解码；<br>3、相对于解码，json.NewEncoder进行大JSON的编码比json.marshal性能高，因为内部使用pool。</p>
+<p>三、场景应用：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go">encoder := json.NewEncoder(c.Writer)<br>	<span class="hljs-keyword">if</span> err := encoder.Encode(obj); err != <span class="hljs-literal">nil</span> &#123;<br>		http.Error(c.Writer, err.Error(), <span class="hljs-number">500</span>)<br>	&#125;<br></code></pre></td></tr></table></figure>
+<p>1、json.NewDecoder用于http连接与socket连接的读取与写入，或者文件读取；<br>2、json.Unmarshal用于直接是byte的输入。</p>
+<h2 id="Day-3-前缀树路由"><a href="#Day-3-前缀树路由" class="headerlink" title="Day 3 前缀树路由"></a>Day 3 前缀树路由</h2><p>所有的路由地址其实是虚拟的地址，就是map存储，相当于一个标识。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">parts := strings.Split(url, <span class="hljs-string">&quot;/&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>这样之后 parts[0] = “”，是一个nil</p>
+<p>我们对于路由的修改变成了，添加路由和查找路由，查找路由比较复杂一点，因为要考虑到通配符的问题。</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a><strong>流程</strong></h3><p>addRouter -&gt; getRouter -&gt; handle 在看一遍代码 走一遍流程就明了多了, 说白了就是 用前缀树结构存 前缀树结构取, 用GET /a/asd/c || GET a/s/c 匹配到路由(GET-/a/:param/c)对应的HandlerFunc 并把asd || s 存在context的Params里。</p>
+<h3 id="BUG"><a href="#BUG" class="headerlink" title="BUG"></a><strong>BUG</strong></h3><p><strong>Q：</strong></p>
+<p><strong>第一个 bug</strong></p>
+<p>在 <code>trie.go</code> 里的</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(n *node)</span></span> insert(pattern <span class="hljs-type">string</span>, parts []<span class="hljs-type">string</span>, height <span class="hljs-type">int</span>) &#123;<br>	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(parts) == height &#123;<br>		n.pattern = pattern<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	part := parts[height]<br>	child := n.matchChild(part)<br>	<span class="hljs-keyword">if</span> child == <span class="hljs-literal">nil</span> &#123;<br>		child = &amp;node&#123;part: part, isWild: part[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;:&#x27;</span> || part[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;*&#x27;</span>&#125;<br>		n.children = <span class="hljs-built_in">append</span>(n.children, child)<br>	&#125;<br>	child.insert(pattern, parts, height+<span class="hljs-number">1</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果第一次插入的<code>pattern</code>为<code>/:age</code>，<code>method</code> 为 <code>GET</code>，<code>handlefunc</code> 为 <code>handleAge()</code></p>
+<p>那么会生成一个这样的 <code>node</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go">nodeAge = node&#123;<br>    pattern:  <span class="hljs-string">&quot;:age&quot;</span>,<br>    part:     <span class="hljs-string">&quot;:age&quot;</span>,<br>    children: <span class="hljs-literal">nil</span>,<br>    isWild:   <span class="hljs-literal">true</span>,<br>&#125;<br>handlers[<span class="hljs-string">&quot;GET-:age&quot;</span>] = handleAge<br></code></pre></td></tr></table></figure>
+<p>第二次插入的 <code>pattern</code> 为 <code>/18</code> ,<code>method</code> 与第一次相同，仍然为 <code>GET</code>，<code>handlefunc</code>为 <code>handle18()</code>，此时并不会修改之前的 <code>node</code>，而是修改了之前 <code>nodeAge</code> 的 <code>pattern</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go">nodeAge = node&#123;<br>    pattern:  <span class="hljs-string">&quot;18&quot;</span>,<br>    part:     <span class="hljs-string">&quot;:age&quot;</span>,<br>    children: <span class="hljs-literal">nil</span>,<br>    isWild:   <span class="hljs-literal">true</span>,<br>&#125;<br>handlers[<span class="hljs-string">&quot;GET-:age&quot;</span>] = handleAge<br>handlers[<span class="hljs-string">&quot;GET-18&quot;</span>] =  handle18<br></code></pre></td></tr></table></figure>
+<p>接下来看看<code>handle()</code>函数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *router)</span></span> handle(c *Context) &#123;<br>	n, params := r.getRoute(c.Method, c.Path)<br>	<span class="hljs-keyword">if</span> n != <span class="hljs-literal">nil</span> &#123;<br>		c.Params = params<br>		key := c.Method + <span class="hljs-string">&quot;-&quot;</span> + n.pattern<br>		r.handlers[key](c)<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		c.String(http.StatusNotFound, <span class="hljs-string">&quot;404 NOT FOUND: %s\n&quot;</span>, c.Path)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当有一个 <code>/19</code> 的请求到来时，将会匹配到 <code>nodeAge</code>，但是由于 <code>nodeAge</code> 的 <code>pattern</code>变成了 <code>18</code>，因此将会被 <code>handle18()</code> 处理，这不太合适。</p>
+<p><strong><code>GIN</code>的做法是将冲突的路由直接<code>panic</code>了。</strong></p>
+<p><strong>第二个bug</strong></p>
+<p><code>router</code>的 <code>handle</code> 方法貌似不是协程安全的</p>
+<p>假设此时只有一个<code>/:age</code>的<code>router</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go">nodeAge = node&#123;<br>    pattern:  <span class="hljs-string">&quot;:age&quot;</span>,<br>    part:     <span class="hljs-string">&quot;:age&quot;</span>,<br>    children: <span class="hljs-literal">nil</span>,<br>    isWild:   <span class="hljs-literal">true</span>,<br>&#125;<br>handlers[<span class="hljs-string">&quot;GET-:age&quot;</span>] = handleAge<br></code></pre></td></tr></table></figure>
+<p>此时有两个请求地址分别为 <code>/18</code> 和 <code>/19</code>的请求到达。</p>
+<p><code>handle()</code> 内的 <code>getRoute()</code> 函数得到的 <code>params</code> 分别为 <code>key:age value:18</code> 和 <code>key:age value:19</code>，它们会对<strong>同一个</strong> <code>context</code> 进行写入，因此不太安全。</p>
+<p>在 <code>http</code> 包内的 <code>server.go</code> 文件中的 <code>Serve</code> 函数内，有这样一段注释</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Serve accepts incoming connections on the Listener l, creating a</span><br><span class="hljs-comment">// new service goroutine for each. The service goroutines read requests and</span><br><span class="hljs-comment">// then call srv.Handler to reply to them.</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">// HTTP/2 support is only enabled if the Listener returns *tls.Conn</span><br><span class="hljs-comment">// connections and they were configured with &quot;h2&quot; in the TLS</span><br><span class="hljs-comment">// Config.NextProtos.</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">// Serve always returns a non-nil error and closes l.</span><br><span class="hljs-comment">// After Shutdown or Close, the returned error is ErrServerClosed.</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(srv *Server)</span></span> Serve(l net.Listener) <span class="hljs-type">error</span><br></code></pre></td></tr></table></figure>
+<p>可见，<code>http.ListenAndServe()</code> 是有可能开启多个协程的。</p>
+<p><strong>A：</strong></p>
+<p>第一个bug，存在覆盖的问题，gin 的做法才是对的，应该把问题暴露给用户。<br>第二个问题，http 请求是并发的，但每一个请求都会调用 <code>ServeHTTP</code> ，这个方法中，context 每次都创建新的，不会对同一个context进行写入。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(engine *Engine)</span></span> ServeHTTP(w http.ResponseWriter, req *http.Request) &#123;<br>	c := newContext(w, req)<br>	engine.router.handle(c)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>关键点：比较 parts 的长度有没有相匹配的深度就可以知道是否匹配上了，因为通配符也占位</p>
+<h2 id="Day-4-分组控制"><a href="#Day-4-分组控制" class="headerlink" title="Day 4 分组控制"></a>Day 4 分组控制</h2><h3 id="分组的意义"><a href="#分组的意义" class="headerlink" title="分组的意义"></a>分组的意义</h3><p>分组控制(Group Control)是 Web 框架应提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景中，往往某一组路由需要相似的处理。例如：</p>
+<ul>
+<li>以<code>/post</code>开头的路由匿名可访问。</li>
+<li>以<code>/admin</code>开头的路由需要鉴权。</li>
+<li>以<code>/api</code>开头的路由是 RESTful 接口，可以对接第三方平台，需要三方平台鉴权。</li>
+</ul>
+<p>ps：RESTful风格是 —— <strong>URL定位资源，用HTTP动词（GET,POST,DELETE,DETC）描述操作。</strong></p>
+<p>parent 之前设计是用来拼接 prefix 的，每个 group 只记录自己的部分，最后通过 parent 层层回溯拼接。不过后来改用 <code>group.prefix + prefix</code> 的方式 group 初始化时已经拼接了完整的 prefix，所以不需要 <code>parent</code> 了，可以删除。</p>
 
             </div>
             <hr>
