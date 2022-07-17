@@ -24,7 +24,7 @@
 <meta property="og:description" content="Web框架 - Gee0.1 基本的net包建立tcp连接的步骤(server端)  设置tcp地址 设立监听对象 建立连接  1234567tcpAddr, _ :&#x3D; net.ResolveTCPAddr(&quot;tcp&quot;, &quot;:8888&quot;)listener, _ :&#x3D; net.ListenTCP(&quot;tcp&quot;, tcpAddr)conn, e">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-29T04:14:31.000Z">
-<meta property="article:modified_time" content="2022-07-10T12:08:13.712Z">
+<meta property="article:modified_time" content="2022-07-17T08:20:28.283Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="TCP, UDP">
 <meta name="twitter:card" content="summary_large_image">
@@ -199,7 +199,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      14k 字
+      17k 字
     </span>
   
 
@@ -208,7 +208,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      115 分钟
+      140 分钟
     </span>
   
 
@@ -532,7 +532,65 @@
 </ul>
 <p>ps：RESTful风格是 —— <strong>URL定位资源，用HTTP动词（GET,POST,DELETE,DETC）描述操作。</strong></p>
 <p>parent 之前设计是用来拼接 prefix 的，每个 group 只记录自己的部分，最后通过 parent 层层回溯拼接。不过后来改用 <code>group.prefix + prefix</code> 的方式 group 初始化时已经拼接了完整的 prefix，所以不需要 <code>parent</code> 了，可以删除。</p>
-
+<h2 id="Day-5-中间件"><a href="#Day-5-中间件" class="headerlink" title="Day 5 中间件"></a>Day 5 中间件</h2><p>Gee 的中间件的定义与路由映射的 Handler 一致，处理的输入是<code>Context</code>对象。插入点是框架接收到请求初始化<code>Context</code>对象后，允许用户使用自己定义的中间件做一些额外的处理，例如记录日志等，以及对<code>Context</code>进行二次加工。c.Next()<code>表示等待执行其他的中间件或用户的</code>Handler</p>
+<p>假设我们应用了中间件 A 和 B，和路由映射的 Handler。<code>c.handlers</code>是这样的[A, B, Handler]，<code>c.index</code>初始化为-1。调用<code>c.Next()</code>，接下来的流程是这样的：</p>
+<ul>
+<li>c.index++，c.index 变为 0</li>
+<li>0 &lt; 3，调用 c.handlers[0]，即 A</li>
+<li>执行 part1，调用 c.Next()</li>
+<li>c.index++，c.index 变为 1</li>
+<li>1 &lt; 3，调用 c.handlers[1]，即 B</li>
+<li>执行 part3，调用 c.Next()</li>
+<li>c.index++，c.index 变为 2</li>
+<li>2 &lt; 3，调用 c.handlers[2]，即Handler</li>
+<li>Handler 调用完毕，返回到 B 中的 part4，执行 part4</li>
+<li>part4 执行完毕，返回到 A 中的 part2，执行 part2</li>
+<li>part2 执行完毕，结束。</li>
+</ul>
+<p>一句话说清楚重点，最终的顺序是<code>part1 -&gt; part3 -&gt; Handler -&gt; part 4 -&gt; part2</code>。恰恰满足了我们对中间件的要求，接下来看调用部分的代码，就能全部串起来了。</p>
+<p>目前的结构：</p>
+<pre><code class=" mermaid">graph LR;
+		http请求 --&gt; RouterGroup;
+		RouterGroup --&gt; Engine;
+		Engine --&gt; Context-get\post;
+		Context-get\post --&gt; Next;
+		Context-get\post --&gt; Param;
+		Context-get\post --&gt; PostForm;
+		Context-get\post --&gt; Query;
+		Context-get\post --&gt; Status;
+		Context-get\post --&gt; SetHeader;
+		Context-get\post --&gt; String;
+		Context-get\post --&gt; JSON;
+		Context-get\post --&gt; Data;
+		Context-get\post --&gt; HTML;
+</code></pre>
+<p>每一个use都会append一个中间件，并且存储在router group中，在实现serveHTTP的时候将这些中间件函数递给context</p>
+<p>最后在next()中启动第一个handler</p>
+<h2 id="Day-6-模版-Template"><a href="#Day-6-模版-Template" class="headerlink" title="Day 6 模版 Template"></a>Day 6 模版 Template</h2><p>那如果我么将所有的静态文件放在<code>/usr/web</code>目录下，那么<code>filepath</code>的值即是该目录下文件的相对地址。映射到真实的文件后，将文件返回，静态服务器就实现了。</p>
+<p>找到文件后，如何返回这一步，<code>net/http</code>库已经实现了。因此，gee 框架要做的，仅仅是解析请求的地址，映射到服务器上文件的真实地址，交给<code>http.FileServer</code>处理就好了</p>
+<p>Golang 內建提供 <a target="_blank" rel="noopener" href="https://golang.org/pkg/net/http/#FileServer">http.FileServer</a> ，可以方便地透過 HTTP 存取檔案系統(file system)，例如以下程式碼執行之後，就可以透過瀏覽器打開網址 <code>http://localhost:8080</code> 瀏覽 <code>/usr/share/doc</code> 資料夾內的檔案。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;net/http&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    http.ListenAndServe(<span class="hljs-string">&quot;:8080&quot;</span>, http.FileServer(http.Dir(<span class="hljs-string">&quot;/usr/share/doc&quot;</span>)))<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以挂载一个文件路径通过ip来访问规定的地址。</p>
+<p>如果是一个普通的结构体是需要加指针的</p>
+<p>如果是一个map类型他自己就是个对象不用加指针</p>
+<p>首先为 Engine 示例添加了 <code>*template.Template</code> 和 <code>template.FuncMap</code>对象，前者将所有的模板加载进内存，后者是所有的自定义模板渲染函数。</p>
+<p>另外，给用户分别提供了设置自定义渲染函数<code>funcMap</code>和加载模板的方法。</p>
+<p>接下来，对原来的 <code>(*Context).HTML()</code>方法做了些小修改，使之支持根据模板文件名选择模板进行渲染。</p>
+<p>这一块设计比较简单，RouterGroup 只做路由的事情，Engine 做全局的事情。<code>LoadHTMLGlob</code> 设计成全局的了，你可以尝试下，实现 RouterGroup 级别的模板。</p>
+<p><code>e.HtmlTemplates = template.Must(template.New(&quot;&quot;).Funcs(e.FuncMap).ParseGlob(pattern))</code></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/f-ck-need-u/p/10035768.html">https://www.cnblogs.com/f-ck-need-u/p/10035768.html</a></p>
+<p><strong>使用template.New()函数可以创建一个空的、无解析数据的模板，同时还会创建一个common，也就是模板组</strong>。</p>
+<p>也就是说，<strong>template.New()函数不仅创建了一个模板，还创建了一个空的common结构(模板组)。需要注意，新创建的common是空的，只有进行模板解析(Parse()，ParseFiles()等操作)之后，才会将模板添加到common的tmpl字段(map结构)中</strong>。</p>
+<p>Parse()只能解析字符串，要解析文件中的内容，需要使用ParseFiles()或ParseGlob()。</p>
+<p>template内置了一系列函数，但这些函数毕竟有限，可能无法满足特殊的需求。template允许我们定义自己的函数，添加到common中，然后就可以在待解析的内容中像使用内置函数一样使用自定义的函数。</p>
+<p>自定义函数的优先级高于内置的函数优先级，即先检索自定义函数，再检索内置函数。也就是说，如果自定义函数的函数名和内置函数名相同，则内置函数将失效。</p>
+<p>本文只对此稍作解释，本文的重点不是template的具体语法和用法。</p>
+<p><strong>Golang Template</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lengyuezuixue/article/details/79367825?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-79367825-blog-79899340.pc_relevant_aa&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-79367825-blog-79899340.pc_relevant_aa&amp;utm_relevant_index=1">https://blog.csdn.net/lengyuezuixue/article/details/79367825?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-79367825-blog-79899340.pc_relevant_aa&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-79367825-blog-79899340.pc_relevant_aa&amp;utm_relevant_index=1</a></p>
+<h2 id="Day-7-错误恢复"><a href="#Day-7-错误恢复" class="headerlink" title="Day 7 错误恢复"></a>Day 7 错误恢复</h2><p>Gee 的错误处理机制</p>
+<p>对一个 Web 框架而言，错误处理机制是非常必要的。可能是框架本身没有完备的测试，导致在某些情况下出现空指针异常等情况。也有可能用户不正确的参数，触发了某些异常，例如数组越界，空指针等。如果因为这些原因导致系统宕机，必然是不可接受的。</p>
+<p>我们在第六天实现的框架并没有加入异常处理机制，如果代码中存在会触发 panic 的 BUG，很容易宕掉。</p>
+<h1 id="分布式缓存-GeeCache"><a href="#分布式缓存-GeeCache" class="headerlink" title="分布式缓存 - GeeCache"></a>分布式缓存 - GeeCache</h1>
             </div>
             <hr>
             <div>
