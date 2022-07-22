@@ -24,8 +24,10 @@
 <meta property="og:description" content="Web框架 - Gee0.1 基本的net包建立tcp连接的步骤(server端)  设置tcp地址 设立监听对象 建立连接  1234567tcpAddr, _ :&#x3D; net.ResolveTCPAddr(&quot;tcp&quot;, &quot;:8888&quot;)listener, _ :&#x3D; net.ListenTCP(&quot;tcp&quot;, tcpAddr)conn, e">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://geektutu.com/post/geecache-day1/lru.jpg">
+<meta property="og:image" content="https://geektutu.com/post/geecache-day4/hash_select.jpg">
+<meta property="og:image" content="https://segmentfault.com/img/remote/1460000040178986">
 <meta property="article:published_time" content="2022-06-29T04:14:31.000Z">
-<meta property="article:modified_time" content="2022-07-18T02:52:37.648Z">
+<meta property="article:modified_time" content="2022-07-22T06:51:02.847Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="TCP, UDP">
 <meta name="twitter:card" content="summary_large_image">
@@ -201,7 +203,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      20k 字
+      28k 字
     </span>
   
 
@@ -210,7 +212,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      164 分钟
+      233 分钟
     </span>
   
 
@@ -642,6 +644,192 @@
 <li>实现 <code>Len() int</code> 方法，我们在 lru.Cache 的实现中，要求被缓存对象必须实现 Value 接口，即 <code>Len() int</code> 方法，返回其所占的内存大小。</li>
 <li><code>b</code> 是只读的，使用 <code>ByteSlice()</code> 方法返回一个拷贝，防止缓存值被外部程序修改。</li>
 </ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> cache <span class="hljs-keyword">struct</span> &#123;<br>	mu         sync.Mutex<br>	lru        *lru.Cache<br>	cacheBytes <span class="hljs-type">int64</span> <span class="hljs-comment">// cache的内容长度</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>主体结构Group</strong></p>
+<p>Group 是 GeeCache 最核心的数据结构，负责与用户的交互，并且控制缓存值存储和获取的流程。</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck">                            <span class="hljs-comment">是</span><br><span class="hljs-comment">接收 key</span> <span class="hljs-literal">--</span>&gt; <span class="hljs-comment">检查是否被缓存</span> <span class="hljs-literal">-----</span>&gt; <span class="hljs-comment">返回缓存值 ⑴</span><br>                <span class="hljs-comment">|  否                         是</span><br>                <span class="hljs-comment">|</span><span class="hljs-literal">-----</span>&gt; <span class="hljs-comment">是否应当从远程节点获取</span> <span class="hljs-literal">-----</span>&gt; <span class="hljs-comment">与远程节点交互</span> <span class="hljs-literal">--</span>&gt; <span class="hljs-comment">返回缓存值 ⑵</span><br>                            <span class="hljs-comment">|  否</span><br>                            <span class="hljs-comment">|</span><span class="hljs-literal">-----</span>&gt; <span class="hljs-comment">调用`回调函数`，获取值并添加到缓存</span> <span class="hljs-literal">--</span>&gt; <span class="hljs-comment">返回缓存值 ⑶</span><br></code></pre></td></tr></table></figure>
+<p>我们将在 <code>geecache.go</code> 中实现主体结构 Group，那么 GeeCache 的代码结构的雏形已经形成了。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">geecache/<br>    |<span class="hljs-params">--lru/</span><br>        |<span class="hljs-params">--lru</span>.go  <span class="hljs-string">//</span> lru 缓存淘汰策略<br>    |<span class="hljs-params">--byteview</span>.go <span class="hljs-string">//</span> 缓存值的抽象与封装<br>    |<span class="hljs-params">--cache</span>.go    <span class="hljs-string">//</span> 并发控制<br>    |<span class="hljs-params">--geecache</span>.go <span class="hljs-string">//</span> 负责与外部交互，控制缓存存储和获取的主流程<br></code></pre></td></tr></table></figure>
+<p>接下来我们将实现流程 ⑴ 和 ⑶，远程交互的部分后续再实现。</p>
+<p>我们思考一下，如果缓存不存在，应从数据源（文件，数据库等）获取数据并添加到缓存中。GeeCache 是否应该支持多种数据源的配置呢？不应该，一是数据源的种类太多，没办法一一实现；二是扩展性不好。如何从源头获取数据，应该是用户决定的事情，我们就把这件事交给用户好了。因此，我们设计了一个回调函数(callback)，在缓存不存在时，调用这个函数，得到源数据。</p>
+<p>GetGroup()</p>
+<ul>
+<li>一个 Group 可以认为是一个缓存的命名空间，每个 Group 拥有一个唯一的名称 <code>name</code>。比如可以创建三个 Group，缓存学生的成绩命名为 scores，缓存学生信息的命名为 info，缓存学生课程的命名为 courses。</li>
+<li>第二个属性是 <code>getter Getter</code>，即缓存未命中时获取源数据的回调(callback)。</li>
+<li>第三个属性是 <code>mainCache cache</code>，即一开始实现的并发缓存。</li>
+<li>构建函数 <code>NewGroup</code> 用来实例化 Group，并且将 group 存储在全局变量 <code>groups</code> 中。</li>
+<li><code>GetGroup</code> 用来特定名称的 Group，这里使用了只读锁 <code>RLock()</code>，因为不涉及任何冲突变量的写操作。</li>
+</ul>
+<h2 id="Day-3-HTTP-服务端"><a href="#Day-3-HTTP-服务端" class="headerlink" title="Day 3 HTTP 服务端"></a>Day 3 HTTP 服务端</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go">url := <span class="hljs-string">&quot;/_geecache/scores/Tom&quot;</span><br>basePath := <span class="hljs-string">&quot;/_geecache/&quot;</span><br>fmt.Println(url[<span class="hljs-built_in">len</span>(basePath):])<br>parts := strings.SplitN(url[<span class="hljs-built_in">len</span>(basePath):],<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-number">2</span>)<br>fmt.Println(strings.SplitN(url[<span class="hljs-built_in">len</span>(basePath):],<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-number">2</span>))<br>fmt.Printf(<span class="hljs-string">&quot;parts[0]: %s\n&quot;</span>, parts[<span class="hljs-number">0</span>])<br>fmt.Printf(<span class="hljs-string">&quot;parts[1]: %s\n&quot;</span>, parts[<span class="hljs-number">1</span>])<br></code></pre></td></tr></table></figure>
+<p>注意这里的切片basePath是有两个/，所以后面不用+1</p>
+<h2 id="Day-4-一致性Hash"><a href="#Day-4-一致性Hash" class="headerlink" title="Day 4 一致性Hash"></a>Day 4 一致性Hash</h2><h3 id="1-为什么使用一致性Hash"><a href="#1-为什么使用一致性Hash" class="headerlink" title="1.为什么使用一致性Hash"></a>1.为什么使用一致性Hash</h3><h4 id="1-1-我该访问谁？"><a href="#1-1-我该访问谁？" class="headerlink" title="1.1 我该访问谁？"></a>1.1 我该访问谁？</h4><p>对于分布式缓存来说，当一个节点接收到请求，如果该节点并没有存储缓存值，那么它面临的难题是，从谁那获取数据？自己，还是节点1, 2, 3, 4… 。假设包括自己在内一共有 10 个节点，当一个节点接收到请求时，随机选择一个节点，由该节点从数据源获取数据。</p>
+<p>假设第一次随机选取了节点 1 ，节点 1 从数据源获取到数据的同时缓存该数据；那第二次，只有 1/10 的可能性再次选择节点 1, 有 9/10 的概率选择了其他节点，如果选择了其他节点，就意味着需要再一次从数据源获取数据，一般来说，这个操作是很耗时的。这样做，一是缓存效率低，二是各个节点上存储着相同的数据，浪费了大量的存储空间。</p>
+<p>那有什么办法，对于给定的 key，每一次都选择同一个节点呢？使用 hash 算法也能够做到这一点。那把 key 的每一个字符的 ASCII 码加起来，再除以 10 取余数可以吗？当然可以，这可以认为是自定义的 hash 算法。</p>
+<p><img src="https://geektutu.com/post/geecache-day4/hash_select.jpg" srcset="/img/loading.gif" lazyload alt="hash select peer"></p>
+<p>从上面的图可以看到，任意一个节点任意时刻请求查找键 <code>Tom</code> 对应的值，都会分配给节点 2，有效地解决了上述的问题。</p>
+<h5 id="1-2-节点数量变化了怎么办？"><a href="#1-2-节点数量变化了怎么办？" class="headerlink" title="1.2 节点数量变化了怎么办？"></a>1.2 节点数量变化了怎么办？</h5><p>简单求取 Hash 值解决了缓存性能的问题，但是没有考虑节点数量变化的场景。假设，移除了其中一台节点，只剩下 9 个，那么之前 <code>hash(key) % 10</code> 变成了 <code>hash(key) % 9</code>，也就意味着几乎缓存值对应的节点都发生了改变。即几乎所有的缓存值都失效了。节点在接收到对应的请求时，均需要重新去数据源获取数据，容易引起 <code>缓存雪崩</code>。</p>
+<blockquote>
+<p>缓存雪崩：缓存在同一时刻全部失效，造成瞬时DB请求量大、压力骤增，引起雪崩。常因为缓存服务器宕机，或缓存设置了相同的过期时间引起。</p>
+</blockquote>
+<p>那如何解决这个问题呢？一致性哈希算法可以。</p>
+<p>一致性哈希算法将 key 映射到 2^32 的空间中，将这个数字首尾相连，形成一个环。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ChecksumIEEE</span><span class="hljs-params">(data []<span class="hljs-type">byte</span>)</span></span> <span class="hljs-type">uint32</span><br></code></pre></td></tr></table></figure>
+<p> ChecksumIEEE 使用 IEEE 多项式返回数据的 CRC-32 校验和。 </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> <span class="hljs-type">uint32</span> <span class="hljs-type">uint32</span><br></code></pre></td></tr></table></figure>
+<p>uint32 is the set of all unsigned 32-bit integers. Range: 0 through 4294967295</p>
+<h3 id="Go标准库是如何实现二分查找的？"><a href="#Go标准库是如何实现二分查找的？" class="headerlink" title="Go标准库是如何实现二分查找的？"></a>Go标准库是如何实现二分查找的？</h3><p>我们先看一下标准库中的代码实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Search</span><span class="hljs-params">(n <span class="hljs-type">int</span>, f <span class="hljs-keyword">func</span>(<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">bool</span>) <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-comment">// Define f(-1) == false and f(n) == true.</span><br>    <span class="hljs-comment">// Invariant: f(i-1) == false, f(j) == true.</span><br>    i, j := <span class="hljs-number">0</span>, n<br>    <span class="hljs-keyword">for</span> i &lt; j &#123;<br>        h := <span class="hljs-type">int</span>(<span class="hljs-type">uint</span>(i+j) &gt;&gt; <span class="hljs-number">1</span>) <span class="hljs-comment">// avoid overflow when computing h</span><br>        <span class="hljs-comment">// i ≤ h &lt; j</span><br>        <span class="hljs-keyword">if</span> !f(h) &#123;<br>            i = h + <span class="hljs-number">1</span> <span class="hljs-comment">// preserves f(i-1) == false</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            j = h <span class="hljs-comment">// preserves f(j) == true 因为是开区间所以，j = h</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">// i == j, f(i-1) == false, and f(j) (= f(i)) == true  =&gt;  answer is i.</span><br>    <span class="hljs-keyword">return</span> i<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>🌟这个函数返回的是我们要找的index距离他最小的坐标（0开始）</p>
+<p>初一看，与我们上面的实现一点也不同呢，我们来分析一下。</p>
+<p>入参<code>n</code>就是代表要查找序列的长度，入参<code>f</code>就是我们自定义的条件。这段代码很短，大概思路就是：</p>
+<ul>
+<li>定义好这段序列的开始、结尾的位置</li>
+<li>使用位移操作获取中位数，这样能更好的避免溢出</li>
+<li>然后根据我们传入的条件判断是否符合条件，逐渐缩小范围</li>
+</ul>
+<p>这段代码与我实现的不同在于，它并不是在用户传入的比较函数<code>f</code>返回<code>true</code>就结束查找，而是继续在当前<code>[i, j)</code>区间的前半段查找，并且，当<code>f</code>为<code>false</code>时，也不比较当前元素与要查找的元素的大小关系，而是直接在后半段查找。所以<code>for</code>循环退出的唯一条件就是<code>i&gt;=j</code>，如果我们这样使用，就会出现问题：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    nums := []<span class="hljs-type">int64</span>&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>&#125;<br>    fmt.Println(sort.Search(<span class="hljs-built_in">len</span>(nums), <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(i <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">bool</span>&#123;<br>        <span class="hljs-keyword">return</span> nums[i] == <span class="hljs-number">1</span><br>    &#125;))<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>运行结果竟然是<code>7</code>，而不是<code>1</code>，如果我们把条件改成<code>return nums[i] &gt;=1</code>，运行结果就对了。这是因为我们传入的条件并不是让用户确认目标条件，这里的思想是让我们逐步缩小范围，通过这个条件，我们每次都可以缩小范围，说的有点饶，就上面的代码举个例子。现在是一个升序数组，我们要找的数值是<code>1</code>，我们传入的条件是<code>return nums[i]&gt;=1</code>，第一进入函数<code>Search</code>，我们获取中的中位数<code>h</code>是<code>3</code>，当前元素是大于目标数值的，所以我们只能在前半段查找，就是这样不断缩小范围，找到我们最终的那个数值，如果当前序列中没有我们要找的目标数值，那么就会返回我们可以插入的位置，也就是最后一位元素的坐标+1的位置。</p>
+<p>这个逻辑说实话，我也是第一次接触，仔细思考了一下，这种实现还是有一些优点的：</p>
+<ul>
+<li>使用<strong>移位操作</strong>，避免因为<code>i+j</code>太大而造成的溢出</li>
+<li>如果我们查找序列中有多个元素相等时，且我们要找的元素就是这个时，我们总会找到下标最小的那个元素</li>
+<li>如果我们没找到要找的目标元素时，返回的下标是我们可插入的位置，我们在进行数据插入时，依然可以保证数据的有序</li>
+</ul>
+<p>🌟<strong>注意：使用<code>sort.Search</code>时，入参条件是根据要查找的序列是升序序列还是降序序列来决定的，如果是升序序列，则传入的条件应该是<code>&gt;=目标元素值</code>，如果是降序序列，则传入的条件应该是<code>&lt;=目标元素值</code></strong></p>
+<p>解析<code>int(uint(i+j) &gt;&gt; 1)</code>这段代码</p>
+<p>这里我想单独解析一下这段代码，因为很少见，所以可以当作一个知识点记一下。这里使用到的是移位操作，通过向右移动一位，正好可以得到<code>/2</code>的结果。具体什么原因呢，我画了一个图，手工画的，看完你就懂了：</p>
+<p><img src="https://segmentfault.com/img/remote/1460000040178986" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>懂了吧，兄弟们！移位实现要比乘除发的效率高很多，我们在平常开发中可以使用这种方式来提升效率。</p>
+<p>这里还有一个点就是使用<code>uint</code>数据类型，因为<code>uint</code>的数据范围是<code>2^32</code>即<code>0</code>到<code>4294967295</code>。使用<code>uint</code>可以避免因为<code>i+j</code>太大而造成的溢出。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+<th>范例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&amp;</td>
+<td>按位与</td>
+<td>A &amp; B</td>
+</tr>
+<tr>
+<td>\</td>
+<td></td>
+<td>按位或</td>
+<td>A \</td>
+<td>B</td>
+</tr>
+<tr>
+<td>^</td>
+<td>按位异或</td>
+<td>A ^ B</td>
+</tr>
+<tr>
+<td>&lt;&lt;</td>
+<td>左移运算符</td>
+<td>A &lt;&lt; 2</td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td>右移运算符</td>
+<td>A &gt;&gt; 2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>说明</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+<th>功能</th>
+<th>运算规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>按位与</td>
+<td>双目运算符</td>
+<td>参与运算的两数各对应的二进制位相与</td>
+<td>如果两数对应的二进制位都为 1，那么结果为 1， 否则结果为 0。</td>
+</tr>
+<tr>
+<td>按位或</td>
+<td>双目运算符</td>
+<td>参与运算的两数各对应的二进制位相或</td>
+<td>如果两数对应的二进制位有一个为 1，那么结果为 1， 否则结果为 0。</td>
+</tr>
+<tr>
+<td>按位异或</td>
+<td>双目运算符</td>
+<td>参与运算的两数各对应的二进制位相异或</td>
+<td>如果两数对应的二进制位不同，那么结果为 1， 否则结果为 0。</td>
+</tr>
+<tr>
+<td>左移</td>
+<td>双目运算符</td>
+<td>把运算符 <code>&lt;&lt;</code> 左边的运算数的各二进制位全部左移若干位，高位丢弃，低位补 0。</td>
+<td>左移 N 位，就是乘以 2 的 N 次方。</td>
+</tr>
+<tr>
+<td>右移</td>
+<td>双目运算符</td>
+<td>把运算符 <code>&lt;&lt;</code> 左边的运算数的各二进制位全部右移若干位。</td>
+<td>右移 N 位，就是除以 2 的 N 次方。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Get gets the closest item in the hash to the provided key.</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span></span> Get(key <span class="hljs-type">string</span>) <span class="hljs-type">string</span> &#123;<br>	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(m.keys) == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span><br>	&#125;<br><br>	hash := <span class="hljs-type">int</span>(m.hash([]<span class="hljs-type">byte</span>(key)))<br>	<span class="hljs-comment">// Binary search for appropriate replica.</span><br>	idx := sort.Search(<span class="hljs-built_in">len</span>(m.keys), <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(i <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">bool</span> &#123;<br>		<span class="hljs-keyword">return</span> m.keys[i] &gt;= hash<br>	&#125;)<br><br>	<span class="hljs-keyword">return</span> m.hashMap[m.keys[idx%<span class="hljs-built_in">len</span>(m.keys)]]<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>选择节点就非常简单了，第一步，计算 key 的哈希值。</li>
+<li>第二步，顺时针找到第一个匹配的虚拟节点的下标 <code>idx</code>，从 m.keys 中获取到对应的哈希值。如果 <code>idx == len(m.keys)</code>，说明应选择 <code>m.keys[0]</code>，因为 <code>m.keys</code> 是一个环状结构，所以用取余数的方式来处理这种情况。</li>
+<li>第三步，通过 <code>hashMap</code> 映射得到真实的节点。</li>
+</ul>
+<p>至此，整个一致性哈希算法就实现完成了。</p>
+<p>🌟流程是先有hash的key，通过key我们再进行查找对应的节点的hash，通过hash作为hashMap的key找到hashMap里面的存值（真实节点）这就是<code>return m.hashMap[m.keys[idx%len(m.keys)]]</code>的意义。</p>
+<p>idx%len(m.keys)是成环形的关键，保证如果超过目前设立的所有节点（虚 + 实）就默认找一圈找到下标0的位置。</p>
+<p>keys数组存的是下标连续的hash值，所以必定通过go的二分查找能找到一个已存在的节点，如果比已存在的A节点小的话就插在A的位置（下标相同）</p>
+<h2 id="Day-5-分布式节点"><a href="#Day-5-分布式节点" class="headerlink" title="Day 5 分布式节点"></a>Day 5 分布式节点</h2><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">使用一致性哈希选择节点        是                                    是</span><br>    <span class="hljs-comment">|</span><span class="hljs-literal">-----</span>&gt; <span class="hljs-comment">是否是远程节点</span> <span class="hljs-literal">-----</span>&gt; <span class="hljs-comment">HTTP 客户端访问远程节点</span> <span class="hljs-literal">--</span>&gt; <span class="hljs-comment">成功？</span><span class="hljs-literal">-----</span>&gt; <span class="hljs-comment">服务端返回返回值</span><br>                    <span class="hljs-comment">|  否                                    ↓  否</span><br>                    <span class="hljs-comment">|</span><span class="hljs-literal">----------------------------</span>&gt; <span class="hljs-comment">回退到本地节点处理。</span><br></code></pre></td></tr></table></figure>
+<p>默认格式<code>%v</code>下，对于不同的数据类型，底层会去调用默认的格式化方式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-type">bool</span>:                    %t <br><span class="hljs-type">int</span>, <span class="hljs-type">int8</span> etc.:          %d <br><span class="hljs-type">uint</span>, <span class="hljs-type">uint8</span> etc.:        %d, %x <span class="hljs-keyword">if</span> printed with %#v<br><span class="hljs-type">float32</span>, <span class="hljs-type">complex64</span>, etc: %g<br><span class="hljs-type">string</span>:                  %s<br><span class="hljs-keyword">chan</span>:                    %p <br>pointer:                 %p<br></code></pre></td></tr></table></figure>
+<h3 id="func-QueryEscape"><a href="#func-QueryEscape" class="headerlink" title="func QueryEscape"></a>func QueryEscape</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">QueryEscape</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">string</span><br></code></pre></td></tr></table></figure>
+<p>QueryEscape函数对s进行转码使之可以安全的用在URL查询里。</p>
+<h3 id="func-QueryUnescape"><a href="#func-QueryUnescape" class="headerlink" title="func QueryUnescape"></a>func QueryUnescape</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">QueryUnescape</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> (<span class="hljs-type">string</span>, <span class="hljs-type">error</span>)<br></code></pre></td></tr></table></figure>
+<p>QueryUnescape函数用于将QueryEscape转码的字符串还原。它会把%AB改为字节0xAB，将’+’改为’ ‘。如果有某个%后面未跟两个十六进制数字，本函数会返回错误。</p>
+<p>http.Get()就是发送一个get请求</p>
+<p>当Point.Distance被第一个包装方法调用时，它的接收器值是p.Point，而不是p，当然了，在Point类的方法里，你是访问不到ColoredPoint的任何字段的。</p>
+<p>在类型中内嵌的匿名字段也可能是一个命名类型的指针，这种情况下字段和方法会被间接地引入到当前的类型中(译注：访问需要通过该指针指向的对象去取)。添加这一层间接关系让我们可以共享通用的结构并动态地改变对象之间的关系。下面这个ColoredPoint的声明内嵌了一个*Point的指针。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> car <span class="hljs-keyword">struct</span> &#123;<br>	e     engine<br>	price <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> engine <span class="hljs-keyword">struct</span> &#123;<br>	name <span class="hljs-type">string</span><br>	size <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e engine)</span></span> start() &#123;<br>	fmt.Println(<span class="hljs-string">&quot;engine start...&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ChangeName</span><span class="hljs-params">(e engine, newName <span class="hljs-type">string</span>)</span></span> &#123;<br>	e.name = newName<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	car := &amp;car&#123;<br>		e: engine&#123;<br>			name: <span class="hljs-string">&quot;HONDA&quot;</span>,<br>			size: <span class="hljs-number">200</span>,<br>		&#125;,<br>		price: <span class="hljs-number">9999</span>,<br>	&#125;<br>	car.e.start()<br>	ChangeName(car.e, <span class="hljs-string">&quot;KTM&quot;</span>)<br>	fmt.Println(car.e.name)<br>&#125;<br><br>engine start...<br>HONDA<br></code></pre></td></tr></table></figure>
+<p>这时如果结构体作为形参传入函数中，当时不是按照地址传递而是值传递是无法修改的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-keyword">type</span> car <span class="hljs-keyword">struct</span> &#123;<br>	e     *engine<br>	price <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> engine <span class="hljs-keyword">struct</span> &#123;<br>	name <span class="hljs-type">string</span><br>	size <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e engine)</span></span> start() &#123;<br>	fmt.Println(<span class="hljs-string">&quot;engine start...&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ChangeName</span><span class="hljs-params">(e *engine, newName <span class="hljs-type">string</span>)</span></span> &#123;<br>	e.name = newName<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	car := &amp;car&#123;<br>		e: &amp;engine&#123;<br>			name: <span class="hljs-string">&quot;HONDA&quot;</span>,<br>			size: <span class="hljs-number">200</span>,<br>		&#125;,<br>		price: <span class="hljs-number">9999</span>,<br>	&#125;<br>	car.e.start()<br>	ChangeName(car.e, <span class="hljs-string">&quot;KTM&quot;</span>)<br>	fmt.Println(car.e.name)<br>&#125;<br><br>engine start...<br>KTM<br></code></pre></td></tr></table></figure>
+<p>这时是地址传递才能改变内部的值</p>
+<ul>
+<li><code>Set()</code> 方法实例化了一致性哈希算法，并且添加了传入的节点。</li>
+<li>并为每一个节点创建了一个 HTTP 客户端 <code>httpGetter</code>。</li>
+<li><code>PickerPeer()</code> 包装了一致性哈希算法的 <code>Get()</code> 方法，根据具体的 key，选择节点，返回节点对应的 HTTP 客户端。</li>
+</ul>
+<p>至此，HTTPPool 既具备了提供 HTTP 服务的能力，也具备了根据具体的 key，创建 HTTP 客户端从远程节点获取缓存值的能力。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123; <br>    <span class="hljs-comment">// 第一个参数是命令行key，第二个参数是默认是，第三个参数是 .exe -h 提示 </span><br>    <span class="hljs-keyword">var</span> user = flag.String(<span class="hljs-string">&quot;user&quot;</span>， <span class="hljs-string">&quot;root&quot;</span>， <span class="hljs-string">&quot;用户名&quot;</span>) <br>    <span class="hljs-keyword">var</span> port = flag.Int(<span class="hljs-string">&quot;port&quot;</span>， <span class="hljs-number">3306</span>， <span class="hljs-string">&quot;端口&quot;</span>) <br>    <span class="hljs-keyword">var</span> ip = flag.String(<span class="hljs-string">&quot;ip&quot;</span>， <span class="hljs-string">&quot;localhost&quot;</span>， <span class="hljs-string">&quot;mysql ip&quot;</span>) <br> <br>    <span class="hljs-comment">//必须使用flag.Parse()解析一下命令行参数 </span><br>    flag.Parse() <br>    <span class="hljs-comment">//flag.Type返回的是一个指针，必须通过 *变量取值 </span><br>    fmt.Println(*user，*port，*ip) <br>&#125; <br></code></pre></td></tr></table></figure>
+<p><strong>使用情境</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">trap</span> <span class="hljs-string">&#x27;rm -f &quot;/var/tmp/CJK.text&quot;&#x27;</span> EXIT<br><span class="hljs-comment">#當腳本遇上 EXIT 就會執行 rm -f &quot;/var/tmp/CJK.txt&quot;。</span><br></code></pre></td></tr></table></figure>
+<p>常用於退出腳本時清理檔案，或是執行錯誤時退出腳本。</p>
+<p>如果當退出要執行多行指令可以使用呼叫函式的方式，使用舉例如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-function"><span class="hljs-title">Exit_safely</span></span> ()&#123;<br>  command1<br>  command2<br>  command3<br>&#125;<br><span class="hljs-built_in">trap</span> Exit_safely EXIT<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">trap</span> <span class="hljs-string">&quot;rm server;kill 0&quot;</span> EXIT<br><br>go build -o server<br>./server -port=8001 &amp;<br>./server -port=8002 &amp;<br>./server -port=8003 -api=1 &amp;<br><br><span class="hljs-built_in">sleep</span> 2<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&gt;&gt;&gt; start test&quot;</span><br>curl <span class="hljs-string">&quot;http://localhost:9999/api?key=Tom&quot;</span><br>curl <span class="hljs-string">&quot;http://localhost:9999/api?key=Tom&quot;</span><br>curl <span class="hljs-string">&quot;http://localhost:9999/api?key=Tom&quot;</span><br><br><span class="hljs-built_in">wait</span><br></code></pre></td></tr></table></figure>
+<p>wait(参数)  使用 wait 是在等待上一批或上一个脚本执行完（即上一个的进程终止），再执行wait之后的命令。</p>
+<h2 id="Day-6-防止缓存击穿"><a href="#Day-6-防止缓存击穿" class="headerlink" title="Day 6 防止缓存击穿"></a>Day 6 防止缓存击穿</h2><blockquote>
+<p><strong>缓存雪崩</strong>：缓存在同一时刻全部失效，造成瞬时DB请求量大、压力骤增，引起雪崩。缓存雪崩通常因为缓存服务器宕机、缓存的 key 设置了相同的过期时间等引起。</p>
+<p><strong>缓存击穿</strong>：一个存在的key，在缓存过期的一刻，同时有大量的请求，这些请求都会击穿到 DB ，造成瞬时DB请求量大、压力骤增。</p>
+<p><strong>缓存穿透</strong>：查询一个不存在的数据，因为不存在则不会写到缓存中，所以每次都会去请求 DB，如果瞬间流量过大，穿透到 DB，导致宕机。</p>
+</blockquote>
 
             </div>
             <hr>

@@ -44,8 +44,16 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20201201232445286.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20201213162821958.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20210107093253987.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210110103003361.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2021011010304192.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210110103109140.png">
+<meta property="og:image" content="https://code-thinking.cdn.bcebos.com/pics/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%9810.jpg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2021011010314055.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/202101101032124.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210110103244701.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210118163425129.jpg">
 <meta property="article:published_time" content="2022-04-21T01:38:37.000Z">
-<meta property="article:modified_time" content="2022-07-18T02:11:38.279Z">
+<meta property="article:modified_time" content="2022-07-21T23:55:56.163Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary_large_image">
@@ -221,7 +229,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      83k 字
+      88k 字
     </span>
   
 
@@ -230,7 +238,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      692 分钟
+      736 分钟
     </span>
   
 
@@ -1232,6 +1240,132 @@
 </ol>
 <p>n为5时候的dp数组状态如图：</p>
 <p><img src="https://img-blog.csdnimg.cn/20210107093253987.png" srcset="/img/loading.gif" lazyload alt="96.不同的二叉搜索树3"></p>
+<h2 id="11-8-0-1背包理论基础"><a href="#11-8-0-1背包理论基础" class="headerlink" title="11.8 0 - 1背包理论基础"></a>11.8 0 - 1背包理论基础</h2><p>依然动规五部曲分析一波。</p>
+<ol>
+<li>确定dp数组以及下标的含义</li>
+</ol>
+<p>对于背包问题，有一种写法， 是使用二维数组，即<strong>dp[i][j] 表示从下标为[0-i]的物品里任意取，放进容量为j的背包，价值总和最大是多少</strong>。</p>
+<p>只看这个二维数组的定义，大家一定会有点懵，看下面这个图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110103003361.png" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题1"></p>
+<p><strong>要时刻记着这个dp数组的含义，下面的一些步骤都围绕这dp数组的含义进行的</strong>，如果哪里看懵了，就来回顾一下i代表什么，j又代表什么。</p>
+<ol>
+<li>确定递推公式</li>
+</ol>
+<p>再回顾一下dp[i] [j]的含义：从下标为[0-i]的物品里任意取，放进容量为j的背包，价值总和最大是多少。</p>
+<p>那么可以有两个方向推出来dp[i] [j]，</p>
+<ul>
+<li><strong>不放物品i</strong>：由dp[i - 1] [j]推出，即背包容量为j，里面不放物品i的最大价值，此时dp[i] [j]就是dp[i - 1] [j]。(其实就是当物品i的重量大于背包j的重量时，物品i无法放进背包中，所以被背包内的价值依然和前面相同。)</li>
+<li><strong>放物品i</strong>：由dp[i - 1] [j - weight[i]]推出，dp[i - 1] [j - weight[i]] 为背包容量为j - weight[i]的时候不放物品i的最大价值，那么dp[i - 1] [j - weight[i]] + value[i] （物品i的价值），就是背包放物品i得到的最大价值</li>
+</ul>
+<p>所以递归公式： dp[i] [j] = max(dp[i - 1] [j], dp[i - 1] [j - weight[i]] + value[i]);</p>
+<ol>
+<li>dp数组如何初始化</li>
+</ol>
+<p><strong>关于初始化，一定要和dp数组的定义吻合，否则到递推公式的时候就会越来越乱</strong>。</p>
+<p>首先从dp[i][j]的定义出发，如果背包容量j为0的话，即dp[i][0]，无论是选取哪些物品，背包价值总和一定为0。如图：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011010304192.png" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题2"></p>
+<p>在看其他情况。</p>
+<p>状态转移方程 dp[i][j] = max(dp[i - 1] [j], dp[i - 1] [j - weight[i]] + value[i]); 可以看出i 是由 i-1 推导出来，那么i为0的时候就一定要初始化。</p>
+<p>dp[0] [j]，即：i为0，存放编号0的物品的时候，各个容量的背包所能存放的最大价值。</p>
+<p>那么很明显当 j &lt; weight[0]的时候，dp[0] [j] 应该是 0，因为背包容量比编号0的物品重量还小。</p>
+<p>当j &gt;= weight[0]时，dp[0] [j] 应该是value[0]，因为背包容量放足够放编号0物品。</p>
+<p>代码初始化如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span> ; j &lt; weight[<span class="hljs-number">0</span>]; j++) &#123;  <span class="hljs-comment">// 当然这一步，如果把dp数组预先初始化为0了，这一步就可以省略，但很多同学应该没有想清楚这一点。</span><br>    dp[<span class="hljs-number">0</span>][j] = <span class="hljs-number">0</span>;<br>&#125;<br><span class="hljs-comment">// 正序遍历</span><br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = weight[<span class="hljs-number">0</span>]; j &lt;= bagweight; j++) &#123;<br>    dp[<span class="hljs-number">0</span>][j] = value[<span class="hljs-number">0</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>此时dp数组初始化情况如图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110103109140.png" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题7"></p>
+<p>dp[0] [j] 和 dp[i] [0] 都已经初始化了，那么其他下标应该初始化多少呢？</p>
+<p>其实从递归公式： dp[i] [j] = max(dp[i - 1] [j], dp[i - 1] [j - weight[i]] + value[i]); 可以看出dp[i][j] 是由左上方数值推导出来了，那么 其他下标初始为什么数值都可以，因为都会被覆盖。</p>
+<p><strong>初始-1，初始-2，初始100，都可以！</strong></p>
+<p>但只不过一开始就统一把dp数组统一初始为0，更方便一些。</p>
+<p>如图：</p>
+<p><img src="https://code-thinking.cdn.bcebos.com/pics/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%9810.jpg" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题10"></p>
+<p>最后初始化代码如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">// 初始化 dp<br>vector&lt;vector&lt;int&gt;&gt; dp(weight.size(), vector&lt;int&gt;(bagweight + 1, 0));<br>for (int j = weight[0]; j &lt;= bagweight; j++) &#123;<br>    dp[0][j] = value[0];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>费了这么大的功夫，才把如何初始化讲清楚，相信不少同学平时初始化dp数组是凭感觉来的，但有时候感觉是不靠谱的</strong>。</p>
+<ol>
+<li>确定遍历顺序</li>
+</ol>
+<p>在如下图中，可以看出，有两个遍历的维度：物品与背包重量</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011010314055.png" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题3"></p>
+<p>那么问题来了，<strong>先遍历 物品还是先遍历背包重量呢？</strong></p>
+<p><strong>其实都可以！！ 但是先遍历物品更好理解</strong>。</p>
+<p>那么我先给出先遍历物品，然后遍历背包重量的代码。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// weight数组的大小 就是物品个数</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; weight.size(); i++) &#123; <span class="hljs-comment">// 遍历物品</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= bagweight; j++) &#123; <span class="hljs-comment">// 遍历背包容量</span><br>        <span class="hljs-keyword">if</span> (j &lt; weight[i]) dp[i][j] = dp[i - <span class="hljs-number">1</span>][j]; <br>        <span class="hljs-keyword">else</span> dp[i][j] = max(dp[i - <span class="hljs-number">1</span>][j], dp[i - <span class="hljs-number">1</span>][j - weight[i]] + value[i]);<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>先遍历背包，再遍历物品，也是可以的！（注意我这里使用的二维dp数组）</strong></p>
+<p>例如这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// weight数组的大小 就是物品个数</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= bagweight; j++) &#123; <span class="hljs-comment">// 遍历背包容量</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; weight.size(); i++) &#123; <span class="hljs-comment">// 遍历物品</span><br>        <span class="hljs-keyword">if</span> (j &lt; weight[i]) dp[i][j] = dp[i - <span class="hljs-number">1</span>][j];<br>        <span class="hljs-keyword">else</span> dp[i][j] = max(dp[i - <span class="hljs-number">1</span>][j], dp[i - <span class="hljs-number">1</span>][j - weight[i]] + value[i]);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>为什么也是可以的呢？</p>
+<p><strong>要理解递归的本质和递推的方向</strong>。</p>
+<p>dp[i] [j] = max(dp[i - 1] [j], dp[i - 1] [j - weight[i]] + value[i]); 递归公式中可以看出dp[i] [j]是靠dp[i-1] [j]和dp[i - 1] [j - weight[i]]推导出来的。</p>
+<p>dp[i-1] [j]和dp[i - 1] [j - weight[i]] 都在dp[i] [j]的左上角方向（包括正上方向），那么先遍历物品，再遍历背包的过程如图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/202101101032124.png" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题5"></p>
+<p>再来看看先遍历背包，再遍历物品呢，如图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110103244701.png" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题6"></p>
+<p><strong>大家可以看出，虽然两个for循环遍历的次序不同，但是dp[i][j]所需要的数据就是左上角，根本不影响dp[i][j]公式的推导！</strong></p>
+<p>但先遍历物品再遍历背包这个顺序更好理解。</p>
+<p><strong>其实背包问题里，两个for循环的先后循序是非常有讲究的，理解遍历顺序其实比理解推导公式难多了</strong>。</p>
+<ol>
+<li>举例推导dp数组</li>
+</ol>
+<p>来看一下对应的dp数组的数值，如图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118163425129.jpg" srcset="/img/loading.gif" lazyload alt="动态规划-背包问题4"></p>
+<p>最终结果就是dp[2] [4]。</p>
+<p>建议大家此时自己在纸上推导一遍，看看dp数组里每一个数值是不是这样的。</p>
+<p><strong>做动态规划的题目，最好的过程就是自己在纸上举一个例子把对应的dp数组的数值推导一下，然后在动手写代码！</strong></p>
+<p>二维变成一维后的主要变化在遍历顺序上。</p>
+<p><strong>倒序遍历是为了保证物品i只被放入一次！</strong>。但如果一旦正序遍历了，那么物品0就会被重复加入多次！</p>
+<p>举一个例子：物品0的重量weight[0] = 1，价值value[0] = 15</p>
+<p>如果正序遍历</p>
+<p>dp[1] = dp[1 - weight[0]] + value[0] = 15</p>
+<p>dp[2] = dp[2 - weight[0]] + value[0] = 30</p>
+<p>此时dp[2]就已经是30了，意味着物品0，被放入了两次，所以不能正序遍历。</p>
+<p>为什么倒序遍历，就可以保证物品只放入一次呢？</p>
+<p>倒序就是先算dp[2]</p>
+<p>dp[2] = dp[2 - weight[0]] + value[0] = 15 （dp数组已经都初始化为0）</p>
+<p>dp[1] = dp[1 - weight[0]] + value[0] = 15</p>
+<p>正序就是迭代的过程，不会考虑上层有什么会随机添加，他会添加同样的东西；而倒序是递归，他会根据当前状态去往下找状态，他需要底层的内容支持，是有规则规定的。</p>
+<p>二维数组数据是隔离的，而一维的都在同一行，所以不能够正序遍历。</p>
+<h2 id="11-9-分割等和子集"><a href="#11-9-分割等和子集" class="headerlink" title="11.9 分割等和子集"></a>11.9 分割等和子集</h2><p><strong>416. Partition Equal Subset Sum</strong></p>
+<p><strong>Q：</strong>Given a <strong>non-empty</strong> array <code>nums</code> containing <strong>only positive integers</strong>, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.</p>
+<p><strong>A：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 分割等和子集 动态规划</span><br><span class="hljs-comment">// 时间复杂度O(n^2) 空间复杂度O(n)</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">canPartition</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">bool</span> &#123;<br>    sum := <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> nums &#123;<br>        sum += num<br>    &#125;<br>    <span class="hljs-comment">// 如果 nums 的总和为奇数则不可能平分成两个子集</span><br>    <span class="hljs-keyword">if</span> sum % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br>    <br>    target := sum / <span class="hljs-number">2</span><br>    dp := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, target + <span class="hljs-number">1</span>)<br><br>    <span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> nums &#123;<br>        <span class="hljs-keyword">for</span> j := target; j &gt;= num; j-- &#123;<br>            <span class="hljs-keyword">if</span> dp[j] &lt; dp[j - num] + num &#123; <span class="hljs-comment">// 如果能能放下num（重量j - num）并且价值增加为num后大于当前的价值，那么就更新</span><br>                dp[j] = dp[j - num] + num<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> dp[target] == target<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">canPartition</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">bool</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">    动态五部曲：</span><br><span class="hljs-comment">        1.确定dp数组和下标含义</span><br><span class="hljs-comment">        2.确定递推公式</span><br><span class="hljs-comment">        3.dp数组初始化</span><br><span class="hljs-comment">        4.dp遍历顺序</span><br><span class="hljs-comment">        5.打印</span><br><span class="hljs-comment">    **/</span><br>    <span class="hljs-comment">//确定和</span><br>    <span class="hljs-keyword">var</span> sum <span class="hljs-type">int</span><br>    <span class="hljs-keyword">for</span> _,v:=<span class="hljs-keyword">range</span> nums&#123;<br>        sum+=v<br>    &#125;<br>    <span class="hljs-keyword">if</span> sum%<span class="hljs-number">2</span>!=<span class="hljs-number">0</span>&#123;   <span class="hljs-comment">//如果和为奇数，则不可能分成两个相等的数组</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br>    sum/=<span class="hljs-number">2</span><br>    <span class="hljs-comment">//确定dp数组和下标含义</span><br>    <span class="hljs-keyword">var</span> dp [][]<span class="hljs-type">bool</span> <span class="hljs-comment">//dp[i][j] 表示： 前i个石头是否总和不大于j</span><br>    <span class="hljs-comment">//初始化数组</span><br>    dp=<span class="hljs-built_in">make</span>([][]<span class="hljs-type">bool</span>,<span class="hljs-built_in">len</span>(nums)+<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">for</span> i,_:=<span class="hljs-keyword">range</span> dp&#123;<br>        dp[i]=<span class="hljs-built_in">make</span>([]<span class="hljs-type">bool</span>,sum+<span class="hljs-number">1</span>)<br>        dp[i][<span class="hljs-number">0</span>]=<span class="hljs-literal">true</span><br>    &#125;<br>    <span class="hljs-keyword">for</span> i:=<span class="hljs-number">1</span>;i&lt;=<span class="hljs-built_in">len</span>(nums);i++&#123;<br>        <span class="hljs-keyword">for</span> j:=<span class="hljs-number">1</span>;j&lt;=sum;j++&#123;<span class="hljs-comment">//j是固定总量</span><br>            <span class="hljs-keyword">if</span> j&gt;=nums[i<span class="hljs-number">-1</span>]&#123;<span class="hljs-comment">//如果容量够用则可放入背包</span><br>                dp[i][j]=dp[i<span class="hljs-number">-1</span>][j]||dp[i<span class="hljs-number">-1</span>][j-nums[i<span class="hljs-number">-1</span>]]<br>            &#125;<span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//如果容量不够用则不拿，维持前一个状态</span><br>                dp[i][j]=dp[i<span class="hljs-number">-1</span>][j]<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> dp[<span class="hljs-built_in">len</span>(nums)][sum]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>那么只要找到集合里能够出现 sum / 2 的子集总和，就算是可以分割成两个相同元素和子集了。</p>
+<p>关键点判断能不能重复放入（我们需要不可重复放入）</p>
+<p><strong>只有确定了如下四点，才能把01背包问题套到本题上来。</strong></p>
+<ul>
+<li>背包的体积为sum / 2</li>
+<li>背包要放入的商品（集合里的元素）重量为 元素的数值，价值也为元素的数值</li>
+<li>背包如果正好装满，说明找到了总和为 sum / 2 的子集。</li>
+<li>背包中每一个元素是不可重复放入。</li>
+</ul>
+<ol>
+<li>确定dp数组以及下标的含义</li>
+</ol>
+<p>​       <strong>dp[j]表示 背包总容量是j，最大可以凑成j的子集总和为dp[j]</strong>。但是dp[j]是肯定小于等于sum/2的。j代表能存放的所有可能性</p>
+<ol>
+<li><p>确定递推公式</p>
+<p>dp[j] = max(dp[j], dp[j - 1] + nums[i])</p>
+</li>
+<li><p>dp数组如何初始化</p>
+<p>dp[0] = 0</p>
+<p>dp[1] = nums[0]</p>
+</li>
+<li><p>确定遍历顺序</p>
+<p>选数字是从前往后，选数值是从后往前</p>
+</li>
+<li><p>举例推导dp数组</p>
+</li>
+</ol>
+<p>01背包相对于本题，主要要理解，题目中物品是nums[i]，重量是nums[i]，价值也是nums[i]，背包体积是sum/2。</p>
+<h2 id="10-10-目标和"><a href="#10-10-目标和" class="headerlink" title="10.10 目标和"></a>10.10 目标和</h2><p><strong>494. Target Sum</strong></p>
+<p><strong>Q：</strong>You are given an integer array <code>nums</code> and an integer <code>target</code>.</p>
+<p>You want to build an <strong>expression</strong> out of nums by adding one of the symbols <code>&#39;+&#39;</code> and <code>&#39;-&#39;</code> before each integer in nums and then concatenate all the integers.</p>
+<ul>
+<li>For example, if <code>nums = [2, 1]</code>, you can add a <code>&#39;+&#39;</code> before <code>2</code> and a <code>&#39;-&#39;</code> before <code>1</code> and concatenate them to build the expression <code>&quot;+2-1&quot;</code>.</li>
+</ul>
+<p>Return the number of different <strong>expressions</strong> that you can build, which evaluates to <code>target</code>.</p>
+<p><strong>A：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
