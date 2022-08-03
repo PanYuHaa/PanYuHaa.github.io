@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://geektutu.com/post/geecache-day4/hash_select.jpg">
 <meta property="og:image" content="https://segmentfault.com/img/remote/1460000040178986">
 <meta property="article:published_time" content="2022-06-29T04:14:31.000Z">
-<meta property="article:modified_time" content="2022-07-22T06:51:02.847Z">
+<meta property="article:modified_time" content="2022-07-28T09:19:36.047Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="TCP, UDP">
 <meta name="twitter:card" content="summary_large_image">
@@ -212,7 +212,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      233 分钟
+      235 分钟
     </span>
   
 
@@ -830,6 +830,19 @@
 <p><strong>缓存击穿</strong>：一个存在的key，在缓存过期的一刻，同时有大量的请求，这些请求都会击穿到 DB ，造成瞬时DB请求量大、压力骤增。</p>
 <p><strong>缓存穿透</strong>：查询一个不存在的数据，因为不存在则不会写到缓存中，所以每次都会去请求 DB，如果瞬间流量过大，穿透到 DB，导致宕机。</p>
 </blockquote>
+<h1 id="ORM框架-GeeORM"><a href="#ORM框架-GeeORM" class="headerlink" title="ORM框架 - GeeORM"></a>ORM框架 - GeeORM</h1><h2 id="Day-0-序言"><a href="#Day-0-序言" class="headerlink" title="Day 0 序言"></a>Day 0 序言</h2><p>go的反射</p>
+<ul>
+<li><code>reflect.ValueOf()</code> 获取指针对应的反射值。</li>
+<li><code>reflect.Indirect()</code> 获取指针指向的对象的反射值。</li>
+<li><code>(reflect.Type).Name()</code> 返回类名(字符串)。</li>
+<li><code>(reflect.Type).Field(i)</code> 获取第 i 个成员变量。</li>
+</ul>
+<p>并发协程之间不需要消息传递，非常适合 <code>sync.WaitGroup</code>。</p>
+<ul>
+<li>wg.Add(1) 锁加1。</li>
+<li>wg.Wait() 阻塞，直到锁被释放。</li>
+<li>wg.Done() 锁减1。</li>
+</ul>
 
             </div>
             <hr>
