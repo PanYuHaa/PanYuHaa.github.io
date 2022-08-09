@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://geektutu.com/post/geecache-day4/hash_select.jpg">
 <meta property="og:image" content="https://segmentfault.com/img/remote/1460000040178986">
 <meta property="article:published_time" content="2022-06-29T04:14:31.000Z">
-<meta property="article:modified_time" content="2022-07-28T09:19:36.047Z">
+<meta property="article:modified_time" content="2022-08-06T09:24:52.032Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="TCP, UDP">
 <meta name="twitter:card" content="summary_large_image">
@@ -212,7 +212,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      235 分钟
+      237 分钟
     </span>
   
 
@@ -830,6 +830,13 @@
 <p><strong>缓存击穿</strong>：一个存在的key，在缓存过期的一刻，同时有大量的请求，这些请求都会击穿到 DB ，造成瞬时DB请求量大、压力骤增。</p>
 <p><strong>缓存穿透</strong>：查询一个不存在的数据，因为不存在则不会写到缓存中，所以每次都会去请求 DB，如果瞬间流量过大，穿透到 DB，导致宕机。</p>
 </blockquote>
+<h2 id="Day-7-使用-Protobuf-通信"><a href="#Day-7-使用-Protobuf-通信" class="headerlink" title="Day 7 使用 Protobuf 通信"></a>Day 7 使用 Protobuf 通信</h2><p>protobuf 广泛地应用于远程过程调用(RPC) 的二进制传输，使用 protobuf 的目的非常简单，为了获得更高的性能。传输前使用 protobuf 编码，接收方再进行解码，可以显著地降低二进制传输的大小。另外一方面，protobuf 可非常适合传输结构化数据，便于通信字段的扩展。</p>
+<p>使用 protobuf 一般分为以下 2 步：</p>
+<ul>
+<li>按照 protobuf 的语法，在 <code>.proto</code> 文件中定义数据结构，并使用 <code>protoc</code> 生成 Go 代码（<code>.proto</code>文件是跨平台的，还可以生成 C、Java 等其他源码文件）。</li>
+<li>在项目代码中引用生成的 Go 代码。</li>
+</ul>
+<p><code>option go_package = &quot;./&quot;; // 指定生成的go文件所在path</code></p>
 <h1 id="ORM框架-GeeORM"><a href="#ORM框架-GeeORM" class="headerlink" title="ORM框架 - GeeORM"></a>ORM框架 - GeeORM</h1><h2 id="Day-0-序言"><a href="#Day-0-序言" class="headerlink" title="Day 0 序言"></a>Day 0 序言</h2><p>go的反射</p>
 <ul>
 <li><code>reflect.ValueOf()</code> 获取指针对应的反射值。</li>

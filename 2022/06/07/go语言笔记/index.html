@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://img2020.cnblogs.com/blog/824470/202010/824470-20201030135431451-1886001617.png">
 <meta property="og:image" content="https://cdn.jsdeliver.net/gh/PanyuHaa/PicGo/img/Screen%20Shot%202022-06-09%20at%2016.13.15.png">
 <meta property="article:published_time" content="2022-06-07T14:36:27.000Z">
-<meta property="article:modified_time" content="2022-08-03T00:10:52.335Z">
+<meta property="article:modified_time" content="2022-08-03T12:36:05.566Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Backend development">
 <meta name="twitter:card" content="summary_large_image">
@@ -203,7 +203,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.3k 字
+      11k 字
     </span>
   
 
@@ -212,7 +212,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      70 分钟
+      96 分钟
     </span>
   
 
@@ -375,14 +375,81 @@
 <li>互斥性的共识，用于决定谁正拥有<strong>访问的资源</strong></li>
 <li>协调者的共识，谁是当下的<strong>leader</strong></li>
 </ol>
-<h2 id="Raft"><a href="#Raft" class="headerlink" title="Raft"></a>Raft</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32052223">https://zhuanlan.zhihu.com/p/32052223</a></p>
-<p>每个节点都会有三个状态：<strong>追随者Follower</strong>、<strong>竞选者</strong> 、<strong>领导者Leader</strong>（默认都是竞选者，需要分配）</p>
+<h2 id="Raft"><a href="#Raft" class="headerlink" title="Raft"></a>Raft</h2><p>raft动画演示<a target="_blank" rel="noopener" href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32052223">https://zhuanlan.zhihu.com/p/32052223</a></p>
+<p>每个节点都会有三个状态：<strong>追随者Follower</strong>、<strong>竞选者candidate</strong> 、<strong>领导者Leader</strong>（默认都是竞选者，需要分配）</p>
 <p>竞选者拿到超过半数的票时才能称为领导者（超过半数保证了领导者的唯一性）</p>
 <p>每一个请求都会成为log entry，然后都默认是uncommitted的状态，不会进行更新。要先进行广播（复制该请求），获得高投票的话，就commit。然后通知所有的follower然后各自根据日志commit了。（通过log来保证所有的节点都准备好更新了达成共识后再更新）</p>
 <p>上述过程也叫<strong>日志复制</strong></p>
 <h3 id="1-Leader选举"><a href="#1-Leader选举" class="headerlink" title="1. Leader选举"></a>1. Leader选举</h3><p>选举过期的时间一般在150ms-300ms</p>
 <p>term来表示逻辑时间越大的term表示最新的任期，成为竞选者以后开始发票，每个term之内别人只能投票一次给他，这样避免了重复。</p>
 <p>term代表任期的轮次，如果A是term=1，B和C都是0的时候，A优先发起投票，并且给到BC，查看自己的term在当前A给的term下有无投票，如果没有则投票，更新term和A相等（保证不会再投票）；如果本身和A的term相同则不投票。</p>
+<p>投票给别人以后自己的Timer就会重置（timer为0的时候变成竞选者）</p>
+<p>竞选者 ——&gt; 领导者 之后，会周期性发送 Append Entries 也就是那个 log entry，这样会一直重置其他节点的timer，防止无故变成竞选者</p>
+<p>timeout有两个：1、election timeout 2、heartbeat timeout（远小于前者）</p>
+<p>heartbeat timeout就是前面提到的<code>周期性发送 Append Entries</code> （raft中？leader发心跳吗）</p>
+<p>平票的情况—-都会time out，重新评选，而且time out的时间都是随机数很小的概率会重复。</p>
+<p>follower变成candidate的时候term要<strong>+1</strong></p>
+<h3 id="2-Log-Replication"><a href="#2-Log-Replication" class="headerlink" title="2. Log Replication"></a>2. Log Replication</h3><p>客户先发送数据请求，leader先接收到请求。然后同步广播到其他节点上，当其他节点返回确认的消息，保证了一致性以后，leader再讲数据写进状态机。</p>
+<p>为节点加入partition后（用来排除区域的网络故障），会在分开的区域各自选出leader，其余不变。但是这里会遇到一个问题，由于分开不代表挂掉所以导致有的leader无法再获得超过半数的投票（算上自己），所有的log entry不能够commit。</p>
+<p>这里就遇到了一个换届的问题：换届的规则就是谁的term高听谁的。如果故障时，有一个term为2的leaderA和一个term为1的leaderB，那么我们就要在拆partition后，恢复的区域内的leader进行term比较（leader再融合前仍然向其他节点发送消息）。</p>
+<h2 id="Raft论文节选"><a href="#Raft论文节选" class="headerlink" title="Raft论文节选"></a>Raft论文节选</h2><h3 id="参量定义"><a href="#参量定义" class="headerlink" title="参量定义"></a>参量定义</h3><p><strong>State</strong></p>
+<p>Volatile state on leaders：</p>
+<p>nextIndex[]和matchIndex[]是长度等于<strong>所有机器数量</strong>的两个数组，Leader对每个follower都记录它的nextIndex和matchIndex。用来管理follower</p>
+<p>nextIndex[]：指的是下一次appendEntries从哪里开始尝试</p>
+<p>matchIndex[]：已知的某follower的log与Leader的log最大匹配到第几个index </p>
+<p>以上两个元素都是在follower内部</p>
+<p><strong>AppendEntries RPC</strong>（Log Replication的过程）</p>
+<p>prevLogIndex和prevLogTerm用来决定你append的位置，确认状态用的，保证你数据记录的一致性和连续性。他会一点一点按照nextIndex[]进行比对，如果不匹配就将nextIndex—，直到找到对应的位置再开始插入数据，如果此时遍历了全部都没有发现合适的话，那么我们就要将log entry从序号下标记0开始插入。</p>
+<p>什么是 Commit Index</p>
+<p>Leader的commit index指的是最后一个被大多数机器都复制的日志的index。</p>
+<p>如果Follower收到从Leader发过来的commitIndex大于自己记录的commitIndex，就可以把自己的commitIndex更新，并开始把这些日志应用到状态机里。</p>
+<p><strong>RequestVote RPC</strong></p>
+<p>如果他的log和发起投票的candidate不匹配的话，是不可以投票的。</p>
+<h2 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h2><p><a target="_blank" rel="noopener" href="https://etcd.io/">etcd</a>（读作 et-see-dee）是一种开源的分布式统一键值存储，用于分布式系统或计算机集群的共享配置、服务发现和的调度协调。etcd 有助于促进更加安全的自动更新，协调向主机调度的工作，并帮助设置容器的覆盖网络。</p>
+<p>etcd 是许多其他项目的核心组件。最值得注意的是，它是Kubernetes的首要数据存储，也是容器编排的实际标准系统。使用 etcd， 云原生应用可以保持更为一致的运行时间，而且在个别服务器发生故障时也能正常工作。应用从 etcd 读取数据并写入到其中；通过分散配置数据，为节点配置提供冗余和弹性。</p>
+<h1 id="七、dokcer容器化"><a href="#七、dokcer容器化" class="headerlink" title="七、dokcer容器化"></a>七、dokcer容器化</h1><p>docker容器轻量的原因是不需要装入操作系统</p>
+<p>dockefile —&gt; Image —-&gt; Container</p>
+<p>dockerfile构建image</p>
+<p>image启动container</p>
+<p><strong>镜像（image）</strong>是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（入匿名卷、环境变量、用户等）</p>
+<p>镜像不包含任何动态数据，其内容在构建之后也不会被改变</p>
+<p><strong>容器（container）</strong>docker容器是在运行的一个Docker镜像的instance。包括服务或应用的状态和其他动态数据。</p>
+<p><strong>Docker Compose</strong>用于定义和运行多容器Docker应用程序的工具。通过Compose，您可以使用YML文件来配置应用程序需要的所有服务。</p>
+<h3 id="Dockerfile关键字说明"><a href="#Dockerfile关键字说明" class="headerlink" title="Dockerfile关键字说明"></a>Dockerfile关键字说明</h3><p>1.本人在使用Dockerfile文件制作镜像过程中踩了不少坑，这里将我总结的一些注意点贴出来，供大家参考。</p>
+<p>2.Dockerfile大致格式：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> centos:<span class="hljs-number">7</span><br><span class="hljs-keyword">MAINTAINER</span> chuan<br><span class="hljs-keyword">RUN</span><span class="language-bash"> yum install -y vim</span><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /usr</span><br><span class="hljs-keyword">CMD</span><span class="language-bash"> /bin/bash</span><br></code></pre></td></tr></table></figure>
+<p>3.关键字说明：</p>
+<ul>
+<li>FROM：基于哪个基础镜像</li>
+<li>WORKDIR：指定shell命令运行在哪个目录下。为后续的 RUN、CMD、COPY、ADD 等命令配置工作目录。接下来的 COPY 和 ADD 命令中的相对路径就是相对于 WORKDIR 指定的路径</li>
+<li>COPY：将当前宿主机的文件拷贝到镜像中去（<strong>copy的文件必须在build命令最后指定的路径内</strong>）</li>
+<li>ADD：和COPY一样，并且还可以解压缩，或者从 url 拷贝文件到镜像中。<strong>COPY 和 ADD 命令具有相同的特点：只复制目录中的内容而不包含目录自身</strong>。</li>
+<li>RUN：构建镜像时运行的shell命令</li>
+<li>CMD：容器运行时执行的shell命令（<strong>多个CMD只有最后一个生效，要想都执行可以使用&amp;&amp;连接多个命令</strong>）（<strong>如果容器run时，后面指定了shell版本，Dockerfile中的CMD也会被覆盖</strong>）</li>
+<li>ENTRYPOINT：和CMD一样，但是可以追加（必须使用exec格式，即：ENTRYPOINT [./entrypoint.sh，参数1，参数2……]）</li>
+</ul>
+<hr>
+<ul>
+<li>EXPOSE：指定镜像暴露出来的端口</li>
+<li>VOLUMU：数据容器卷，指定映射文件，用于数据持久化</li>
+<li>ENV：指定环境变量</li>
+<li>LABEL：指定容器运行时标示</li>
+<li>SHELL：指定shell</li>
+<li>MAINTAINER：镜像维护者的姓名和邮箱地址</li>
+<li>ONBUILD：当构建一个父镜像时，父镜像被子镜像继承时，ONBUILD被触发</li>
+</ul>
+<p>4.最后生成镜像时：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker build -t 新镜像名 -f centos\_dockerfile .<br></code></pre></td></tr></table></figure>
+<p>最后有个点表示当前目录的centos_dockerfile文件。（如果文件名就是Dockerfile，则直接：docker build -t 新镜像名 .）</p>
+<ol>
+<li><code>docker image ls</code>查看image有啥 </li>
+<li><code>docker run -d [image_name]</code>运行起来image ；<code>docker run -d -p 8080:8080 [image_name]</code>指定端口的跑起来</li>
+<li><code>docker container ls</code>查看跑起来的container</li>
+<li><code>docker stop [contain_id]</code>停止某个container</li>
+<li><code>docker container ls -a</code>查看所有container（跑起来or停掉的）</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/builder/">https://docs.docker.com/engine/reference/builder/</a> dockerfile写法</p>
 
             </div>
             <hr>
