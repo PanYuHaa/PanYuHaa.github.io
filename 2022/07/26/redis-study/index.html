@@ -24,7 +24,7 @@
 <meta property="og:description" content="安装使用Homebrew安装Redis brew install redis 启动redis Brew services start redis 查看redis是否运行 ps axu|grep redis 查看列表 brew services list 关闭redis brew services stop redis docker中运行redis docker exec -it &quot;con">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-26T13:11:34.000Z">
-<meta property="article:modified_time" content="2022-08-02T00:20:28.994Z">
+<meta property="article:modified_time" content="2022-08-22T04:41:41.640Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
@@ -199,7 +199,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.8k 字
+      5.1k 字
     </span>
   
 
@@ -208,7 +208,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23 分钟
+      43 分钟
     </span>
   
 
@@ -345,6 +345,46 @@
 <p>​    3.2（no）判断数据所在槽是否迁移</p>
 <p>​       4.1（yes）发送ASK错误，告诉客户端新节点位置</p>
 <p>​       4.2（no）key不存在</p>
+<h1 id="青训营项目的应用"><a href="#青训营项目的应用" class="headerlink" title="青训营项目的应用"></a>青训营项目的应用</h1><p>那么在用户注册需求之下，redis中的哈希类型来存储用户的基本信息是非常适合的，从存储优势上面来讲，使用哈希类型的存储能够让每个用户的非必填字段不占用多余的内存。那么每次创建用户的时候，只需要在业务层保证用户必填的字段都存在，然后插入新用户的信息即可。</p>
+<p><strong>Redis 存储一条用户信息</strong></p>
+<p><strong>一、方式1</strong></p>
+<p>如果用普通的key/value结构来存储，主要有以下2种存储方式： </p>
+<p>第一种方式将用户ID作为查找key,把其他信息封装成一个对象以<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=序列化&amp;spm=1001.2101.3001.7020">序列化</a>的方式存储， </p>
+<p> 如：set u001 “李三,18,20010101” </p>
+<p> 这种方式的缺点是，增加了序列化/<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=反序列化&amp;spm=1001.2101.3001.7020">反序列化</a>的开销，并且在需要修改其中一项信息时，需要把整个对象取回，并且修改操作需要对并发进行保护，引入CAS等复杂问题。 </p>
+<p><strong>二、方式2</strong></p>
+<p>第二种方法是这个用户信息对象有多少成员就存成多少个key-value对儿，用用户ID+对应属性的名称作为唯一标识来取得对应属性的值， </p>
+<p> 如：mset user:001:name “李三 “user:001:age18 user:001:birthday “20010101” </p>
+<p> 虽然省去了序列化开销和并发问题，但是用户ID为重复存储，如果存在大量这样的数据，内存浪费还是非常可观的。 </p>
+<p><strong>三、最好的办法</strong></p>
+<p>那么Redis提供的Hash很好的解决了这个问题，Redis的Hash实际是内部存储的Value为一个HashMap， </p>
+<p> 并提供了直接存取这个Map成员的接口， </p>
+<p> 如：hmset user:001 name “李三” age 18 birthday “20010101” </p>
+<p> 也就是说，Key仍然是用户ID,value是一个Map，这个Map的key是成员的属性名，value是属性值， 这样对数据的修改和存取都可以直接通过其内部Map的Key(Redis里称内部Map的key为field), 也就是通过 </p>
+<p> key(用户ID) + field(属性标签) 操作对应属性数据了，既不需要重复存储数据，也不会带来序列化和并发修改控制的问题。很好的解决了问题。</p>
+<p>我们现在的情况是，用户密码的作用是在验证登录上面，账号的信息是用来做业务的。暂时想分库存储。</p>
+<p>【摘要】 Gorm 读写分离 写在前面在gorm v2版本中，我们可以看到已经支持读写分离，那读写分离是基于主从复制的，所以我们要先配置mysql的主从复制 1. 为什么需要主从复制？在业务复杂的系统中，有这么一个情景：如果有一句sql语句需要锁表，导致暂时不能使用读的服务，那么就很影响运行中的业务。使用主从复制，让主库负责写，从库负责读，这样，即使主库出现了锁表的情景，通过读从库也可以保证业务的正…<a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/314327">https://bbs.huaweicloud.com/blogs/314327</a></p>
+<p>公司专门管db的人会帮你把数据表建立好，所以不用在意是否有这个表，肯定有所以直接迁移就可以了。    </p>
+<h3 id="什么是跨域？"><a href="#什么是跨域？" class="headerlink" title="什么是跨域？"></a><strong>什么是跨域？</strong></h3><p>这篇博文解释的挺清楚，我直接引用 <a target="_blank" rel="noopener" href="https://blog.csdn.net/lambert310/article/details/51683775">https://blog.csdn.net/lambert310/article/details/51683775</a></p>
+<p><strong>跨域</strong>，指的是浏览器不能执行其他网站的脚本。它是由浏览器的同源策略造成的，是浏览器施加的安全限制。</p>
+<p>所谓同源是指，<strong>域名，协议，端口</strong>均相同，只要有一个不同，就是跨域。不明白没关系，举个栗子：</p>
+<p><a target="_blank" rel="noopener" href="http://www.123.com/index.html">http://www.123.com/index.html</a> 调用 <a target="_blank" rel="noopener" href="http://www.123.com/server.php">http://www.123.com/server.php</a> （非跨域）</p>
+<p><a target="_blank" rel="noopener" href="http://www.123.com/index.html">http://www.123.com/index.html</a> 调用 <a target="_blank" rel="noopener" href="http://www.456.com/server.php">http://www.456.com/server.php</a> （主域名不同:123/456，跨域）</p>
+<p><a target="_blank" rel="noopener" href="http://abc.123.com/index.html">http://abc.123.com/index.html</a> 调用 <a target="_blank" rel="noopener" href="http://def.123.com/server.php">http://def.123.com/server.php</a> （子域名不同:abc/def，跨域）</p>
+<p><a target="_blank" rel="noopener" href="http://www.123.com:8080/index.html">http://www.123.com:8080/index.html</a> 调用 <a target="_blank" rel="noopener" href="http://www.123.com:8081/server.php">http://www.123.com:8081/server.php</a> （端口不同:8080/8081，跨域）</p>
+<p><a target="_blank" rel="noopener" href="http://www.123.com/index.html">http://www.123.com/index.html</a> 调用 <a target="_blank" rel="noopener" href="https://www.123.com/server.php">https://www.123.com/server.php</a> （协议不同:http/https，跨域）</p>
+<p>请注意：localhost和127.0.0.1虽然都指向本机，但也属于跨域。</p>
+<p>浏览器执行javascript脚本时，会检查这个脚本属于哪个页面，如果不是同源页面，就不会被执行。</p>
+<h3 id="跨域会阻止什么操作？"><a href="#跨域会阻止什么操作？" class="headerlink" title="跨域会阻止什么操作？"></a><strong>跨域会阻止什么操作？</strong></h3><p>浏览器是从两个方面去做这个同源策略的，一是针对接口的请求，二是针对Dom的查询</p>
+<p>跨域问题的解决<a target="_blank" rel="noopener" href="https://juejin.cn/post/7114216333700677640">https://juejin.cn/post/7114216333700677640</a></p>
+<p>shouldbind讲解<a target="_blank" rel="noopener" href="https://blog.51cto.com/dongweizhen/3606784">https://blog.51cto.com/dongweizhen/3606784</a></p>
+<p>项目结构命名<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/346573562">https://zhuanlan.zhihu.com/p/346573562</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs go">err := dao.DB.Model(&amp;model.User&#123;&#125;).Where(<span class="hljs-string">&quot;user_name = ?&quot;</span>, username).Find(&amp;user).Error<br></code></pre></td></tr></table></figure>
+<p>以谁为模型成为表然后去找对应的名字，用find将输出的数据对象装入user结构</p>
+<p>作用域<a target="_blank" rel="noopener" href="https://studygolang.com/articles/13239">https://studygolang.com/articles/13239</a></p>
+<p>Abort终止请求<a target="_blank" rel="noopener" href="https://blog.csdn.net/cyberspecter/article/details/100602552">https://blog.csdn.net/cyberspecter/article/details/100602552</a></p>
+<p>日志框架 “github.com/sirupsen/logrus”</p>
+<p>redis + token的用处<a target="_blank" rel="noopener" href="https://juejin.cn/post/7022579299349692452">https://juejin.cn/post/7022579299349692452</a></p>
 
             </div>
             <hr>
