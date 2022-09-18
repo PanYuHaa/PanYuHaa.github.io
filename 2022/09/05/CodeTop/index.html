@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon1.png">
+  <link rel="icon" href="/img/favicon1.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Peter Pan">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="EASY206. 反转链表Given the head of a singly linked list, reverse the list, and return the reversed list. 123456789101112func reverseList(head *ListNode) *ListNode &amp;#123;    return help(nil, head)&amp;#125;fun">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CodeTop">
+<meta property="og:url" content="http://example.com/2022/09/05/CodeTop/index.html">
+<meta property="og:site_name" content="PPStudy">
+<meta property="og:description" content="EASY206. 反转链表Given the head of a singly linked list, reverse the list, and return the reversed list. 123456789101112func reverseList(head *ListNode) *ListNode &amp;#123;    return help(nil, head)&amp;#125;fun">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-09-05T01:27:12.000Z">
+<meta property="article:modified_time" content="2022-09-15T07:07:03.204Z">
+<meta property="article:author" content="Peter Pan">
+<meta property="article:tag" content="LeetCode">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>CodeTop - PPStudy</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/banner2.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="CodeTop">
+              
+                CodeTop
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-09-05 09:27" pubdate>
+        September 5, 2022 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      13k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      106 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CodeTop</h1>
+            
+            <div class="markdown-body">
+              <h1 id="EASY"><a href="#EASY" class="headerlink" title="EASY"></a>EASY</h1><h2 id="206-反转链表"><a href="#206-反转链表" class="headerlink" title="206. 反转链表"></a>206. 反转链表</h2><p>Given the <code>head</code> of a singly linked list, reverse the list, and return <em>the reversed list</em>.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">reverseList</span><span class="hljs-params">(head *ListNode)</span></span> *ListNode &#123;<br>    <span class="hljs-keyword">return</span> help(<span class="hljs-literal">nil</span>, head)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">help</span><span class="hljs-params">(pre, cur *ListNode)</span></span> *ListNode &#123;<br>    <span class="hljs-keyword">if</span> cur == <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span> pre<br>    &#125;<br>    next := cur.Next<br>    cur.Next = pre<br>    <span class="hljs-keyword">return</span> help(cur, next)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="207-最大子序和"><a href="#207-最大子序和" class="headerlink" title="207. 最大子序和"></a>207. 最大子序和</h2><p>Given an integer array <code>nums</code>, find the contiguous subarray (containing at least one number) which has the largest sum and return <em>its sum</em>.</p>
+<p>A <strong>subarray</strong> is a <strong>contiguous</strong> part of an array.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>    n := <span class="hljs-built_in">len</span>(nums)<br>    dp := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, n)<br>    dp[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]<br>    mx := nums[<span class="hljs-number">0</span>]<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt; n; i++ &#123;<br>        dp[i] = max(dp[i<span class="hljs-number">-1</span>]+nums[i], nums[i])<br>        <span class="hljs-keyword">if</span> dp[i] &gt; mx &#123;<br>            mx = dp[i]<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> mx<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">max</span><span class="hljs-params">(a, b <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">if</span> a &gt; b &#123;<span class="hljs-keyword">return</span> a&#125;<br>    <span class="hljs-keyword">return</span> b<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>dp[i]只有两个方向可以推出来：</p>
+<ul>
+<li>dp[i - 1] + nums[i]，即：nums[i]加入当前连续子序列和</li>
+<li>nums[i]，即：从头开始计算当前连续子序列和</li>
+</ul>
+<h2 id="1-两数之和"><a href="#1-两数之和" class="headerlink" title="1. 两数之和"></a>1. 两数之和</h2><p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to <code>target</code></em>.</p>
+<p>You may assume that each input would have <strong><em>exactly\</em> one solution</strong>, and you may not use the <em>same</em> element twice.</p>
+<p>You can return the answer in any order.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 使用map方式解题，降低时间复杂度</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">twoSum</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>, target <span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> &#123;<br>    m := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">for</span> index, val := <span class="hljs-keyword">range</span> nums &#123;<br>        <span class="hljs-keyword">if</span> preIndex, exist := m[target-val]; exist &#123;<br>            <span class="hljs-keyword">return</span> []<span class="hljs-type">int</span>&#123;preIndex, index&#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            m[val] = index<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="415-字符串相加"><a href="#415-字符串相加" class="headerlink" title="415. 字符串相加"></a>415. 字符串相加</h2><p>Given two non-negative integers, <code>num1</code> and <code>num2</code> represented as string, return <em>the sum of</em> <code>num1</code> <em>and</em> <code>num2</code> <em>as a string</em>.</p>
+<p>You must solve the problem without using any built-in library for handling large integers (such as <code>BigInteger</code>). You must also not convert the inputs to integers directly.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">addStrings</span><span class="hljs-params">(String num1, String num2)</span> &#123;<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(); <span class="hljs-comment">// 返回结果</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> num1.length() - <span class="hljs-number">1</span>; <span class="hljs-comment">// 标记遍历到 num1 的位置</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> num2.length() - <span class="hljs-number">1</span>; <span class="hljs-comment">// 标记遍历到 num2 的位置</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">carry</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// 进位</span><br>        <span class="hljs-keyword">while</span> (p1 &gt;= <span class="hljs-number">0</span> || p2 &gt;= <span class="hljs-number">0</span> || carry != <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">// num1 没遍历完，或 num2 没遍历完，或进位不为 0</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">digit1</span> <span class="hljs-operator">=</span> p1 &gt;= <span class="hljs-number">0</span> ? num1.charAt(p1) - <span class="hljs-string">&#x27;0&#x27;</span> : <span class="hljs-number">0</span>; <span class="hljs-comment">// 当前 num1 的取值</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">digit2</span> <span class="hljs-operator">=</span> p2 &gt;= <span class="hljs-number">0</span> ? num2.charAt(p2) - <span class="hljs-string">&#x27;0&#x27;</span> : <span class="hljs-number">0</span>; <span class="hljs-comment">// 当前 num2 的取值</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">add</span> <span class="hljs-operator">=</span> digit1 + digit2 + carry; <span class="hljs-comment">// 当前位置相加的结果</span><br>            carry = add &gt;= <span class="hljs-number">10</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>; <span class="hljs-comment">// 是否有进位</span><br>            add = add &gt;= <span class="hljs-number">10</span> ? add - <span class="hljs-number">10</span> : add; <span class="hljs-comment">// 去除进位后留下的数字</span><br>            res.append(add); <span class="hljs-comment">// 把去除进位后留下的数字拼接到结果中</span><br>            p1 --; <span class="hljs-comment">// 遍历到 num1 的位置向左移动</span><br>            p2 --; <span class="hljs-comment">// 遍历到 num2 的位置向左移动</span><br>        &#125;<br>        <span class="hljs-keyword">return</span> res.reverse().toString(); <span class="hljs-comment">// 把结果反转并返回</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ol>
+<li>「<strong>求加法</strong>」系列题目都不难，其实就是 <strong>「列竖式」</strong> 计算。</li>
+<li>需要注意的是：<ol>
+<li>while循环结束条件；</li>
+<li>遍历两个「加数」不要越界；</li>
+<li>进位。</li>
+<li>最后的结果需要翻转</li>
+</ol>
+</li>
+</ol>
+<h1 id="MIDDLE"><a href="#MIDDLE" class="headerlink" title="MIDDLE"></a>MIDDLE</h1><h2 id="3-无重复字符的最长子串"><a href="#3-无重复字符的最长子串" class="headerlink" title="3. 无重复字符的最长子串"></a>3. 无重复字符的最长子串</h2><p>Given a string <code>s</code>, find the length of the <strong>longest substring</strong> without repeating characters.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">lengthOfLongestSubstring</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>	&#125;<br>	<span class="hljs-keyword">var</span> freq [<span class="hljs-number">127</span>]<span class="hljs-type">int</span><br>	result, left, right := <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span><br><br>	<span class="hljs-keyword">for</span> left &lt; <span class="hljs-built_in">len</span>(s) &#123;<br>		<span class="hljs-keyword">if</span> right+<span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(s) &amp;&amp; freq[s[right+<span class="hljs-number">1</span>]] == <span class="hljs-number">0</span> &#123;<br>			freq[s[right+<span class="hljs-number">1</span>]]++<br>			right++<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			freq[s[left]]--<br>			left++<br>		&#125;<br>		result = max(result, right-left+<span class="hljs-number">1</span>)<br>	&#125;<br>	<span class="hljs-keyword">return</span> result<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">max</span><span class="hljs-params">(a, b <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">if</span> a &gt; b &#123;<span class="hljs-keyword">return</span> a&#125;<br>    <span class="hljs-keyword">return</span> b<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>滑动窗口的右边界不断的右移，只要没有重复的字符，就持续向右扩大窗口边界。一旦出现了重复字符，就需要缩小左边界，直到重复的字符移出了左边界，然后继续移动滑动窗口的右边界。以此类推，每次移动需要计算当前长度，并判断是否需要更新最大长度，最终最大的值就是题目中的所求。</p>
+<h2 id="146-LRU缓存机制"><a href="#146-LRU缓存机制" class="headerlink" title="146. LRU缓存机制"></a>146. LRU缓存机制</h2><p>Design a data structure that follows the constraints of a <strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU">Least Recently Used (LRU) cache</a></strong>.</p>
+<p>Implement the <code>LRUCache</code> class:</p>
+<ul>
+<li><code>LRUCache(int capacity)</code> Initialize the LRU cache with <strong>positive</strong> size <code>capacity</code>.</li>
+<li><code>int get(int key)</code> Return the value of the <code>key</code> if the key exists, otherwise return <code>-1</code>.</li>
+<li><code>void put(int key, int value)</code> Update the value of the <code>key</code> if the <code>key</code> exists. Otherwise, add the <code>key-value</code> pair to the cache. If the number of keys exceeds the <code>capacity</code> from this operation, <strong>evict</strong> the least recently used key.</li>
+</ul>
+<p>The functions <code>get</code> and <code>put</code> must each run in <code>O(1)</code> average time complexity</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> LRUCache <span class="hljs-keyword">struct</span> &#123;<br>    Head, Tail *Node<br>    Keys       <span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]*Node<br>    Cap        <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Node <span class="hljs-keyword">struct</span> &#123;<br>    Key, Val    <span class="hljs-type">int</span><br>    Prev, Next  *Node<br>&#125;<br><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Constructor</span><span class="hljs-params">(capacity <span class="hljs-type">int</span>)</span></span> LRUCache &#123;<br>    <span class="hljs-keyword">return</span> LRUCache&#123;Keys: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]*Node), Cap: capacity&#125;<br>&#125;<br><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(cache *LRUCache)</span></span> Get(key <span class="hljs-type">int</span>) <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">if</span> node, ok := cache.Keys[key]; ok &#123;<br>        cache.Remove(node) <span class="hljs-comment">// 从队伍里面剔除</span><br>        cache.Add(node) <span class="hljs-comment">// 放到队尾，重新插入更新一下</span><br>        <span class="hljs-keyword">return</span> node.Val<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span><br>&#125;<br><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(cache *LRUCache)</span></span> Put(key <span class="hljs-type">int</span>, value <span class="hljs-type">int</span>)  &#123;<br>    <span class="hljs-keyword">if</span> node, ok := cache.Keys[key]; ok &#123;<br>		node.Val = value <span class="hljs-comment">// 找到，更新key对应的value</span><br>		cache.Remove(node)<br>		cache.Add(node)<br>		<span class="hljs-keyword">return</span><br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		node = &amp;Node&#123;Key: key, Val: value&#125; <span class="hljs-comment">// 创建一个新的节点</span><br>		cache.Keys[key] = node <span class="hljs-comment">// 更新map</span><br>		cache.Add(node) <span class="hljs-comment">// 插入队尾</span><br>	&#125;<br>	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cache.Keys) &gt; cache.Cap &#123; <span class="hljs-comment">// 如果超过容量了</span><br>		<span class="hljs-built_in">delete</span>(cache.Keys, cache.Tail.Key) <span class="hljs-comment">// 删除map中对应的k-v</span><br>		cache.Remove(cache.Tail) <span class="hljs-comment">// 删除队头的node</span><br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(cache *LRUCache)</span></span> Add(node *Node) &#123;<br>    node.Prev = <span class="hljs-literal">nil</span><br>    node.Next = cache.Head <span class="hljs-comment">// 左边是队尾，右边是队头</span><br>    <span class="hljs-keyword">if</span> cache.Head != <span class="hljs-literal">nil</span> &#123;<br>        cache.Head.Prev = node <span class="hljs-comment">// Prev在右边，Next在左边</span><br>    &#125;<br>    cache.Head = node <span class="hljs-comment">// 更新head</span><br>    <br>    <span class="hljs-keyword">if</span> cache.Tail == <span class="hljs-literal">nil</span> &#123; <span class="hljs-comment">// 当存储为空的时候，才如此更新，保证Tail有值，后续才好插入。</span><br>        cache.Tail = node<br>        cache.Tail.Next = <span class="hljs-literal">nil</span><br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(cache *LRUCache)</span></span> Remove(node *Node) &#123;<br>    <span class="hljs-keyword">if</span> node == cache.Head &#123; <span class="hljs-comment">// 如果要移除的节点在Head（右边）</span><br>        cache.Head = node.Next <br>        node.Next = <span class="hljs-literal">nil</span> <br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    <span class="hljs-keyword">if</span> node == cache.Tail &#123; <span class="hljs-comment">// 如果要移除的节点在Tail（左边）</span><br>        cache.Tail = node.Prev<br>        node.Prev.Next = <span class="hljs-literal">nil</span><br>        node.Prev = <span class="hljs-literal">nil</span><br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    node.Prev.Next = node.Next<br>    node.Next.Prev = node.Prev<br>&#125;<br><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Your LRUCache object will be instantiated and called as such:</span><br><span class="hljs-comment"> * obj := Constructor(capacity);</span><br><span class="hljs-comment"> * param_1 := obj.Get(key);</span><br><span class="hljs-comment"> * obj.Put(key,value);</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure>
+<p>主体结构就是map来做查询，双向链表来存储。</p>
+<p>GET PUT方法中包含，add和remove，add都是对尾部的增加，remove都是对头部的剔除</p>
+<h2 id="215-数组中的第K个最大元素"><a href="#215-数组中的第K个最大元素" class="headerlink" title="215. 数组中的第K个最大元素"></a>215. 数组中的第K个最大元素</h2><p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <em>the</em> <code>kth</code> <em>largest element in the array</em>.</p>
+<p>Note that it is the <code>kth</code> largest element in the sorted order, not the <code>kth</code> distinct element.</p>
+<p>You must solve it in <code>O(n)</code> time complexity.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findKthLargest</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>, k <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>		sort.Ints(nums)<br>	  <span class="hljs-keyword">return</span> nums[<span class="hljs-built_in">len</span>(nums)-k]<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="15-三数之和"><a href="#15-三数之和" class="headerlink" title="15. 三数之和"></a>15. 三数之和</h2><p>Given an integer array nums, return all the triplets <code>[nums[i], nums[j], nums[k]]</code> such that <code>i != j</code>, <code>i != k</code>, and <code>j != k</code>, and <code>nums[i] + nums[j] + nums[k] == 0</code>.</p>
+<p>Notice that the solution set must not contain duplicate triplets.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">threeSum</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span>[][]<span class="hljs-type">int</span>&#123;<br>	sort.Ints(nums)<br>	res:=[][]<span class="hljs-type">int</span>&#123;&#125;<br>	<br>	<span class="hljs-keyword">for</span> i:=<span class="hljs-number">0</span>;i&lt;<span class="hljs-built_in">len</span>(nums)<span class="hljs-number">-2</span>;i++&#123;<br>		n1:=nums[i]<br>		<span class="hljs-keyword">if</span> n1&gt;<span class="hljs-number">0</span>&#123; <span class="hljs-comment">// 排序后如果第一个元素已经大于0后面都没有意义了</span><br>			<span class="hljs-keyword">break</span><br>		&#125;<br>		<span class="hljs-keyword">if</span> i&gt;<span class="hljs-number">0</span>&amp;&amp;n1==nums[i<span class="hljs-number">-1</span>]&#123; <span class="hljs-comment">// 如果当前位和前一位是一样的，代表重复，如果和后面的一样的话等于是a不给b选择的机会了</span><br>			<span class="hljs-keyword">continue</span><br>		&#125;<br>		l,r:=i+<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(nums)<span class="hljs-number">-1</span><br>		<span class="hljs-keyword">for</span> l&lt;r&#123;<br>			n2,n3:=nums[l],nums[r]<br>			<span class="hljs-keyword">if</span> n1+n2+n3==<span class="hljs-number">0</span>&#123;<br>				res=<span class="hljs-built_in">append</span>(res,[]<span class="hljs-type">int</span>&#123;n1,n2,n3&#125;)<br>				<span class="hljs-keyword">for</span> l&lt;r&amp;&amp;nums[l]==n2&#123; <span class="hljs-comment">// 一直往后找找到不一样为止</span><br>					l++<br>				&#125;<br>				<span class="hljs-keyword">for</span> l&lt;r&amp;&amp;nums[r]==n3&#123; <span class="hljs-comment">// 一直往前找找到不一样为止</span><br>					r--<br>				&#125;<br>			&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> n1+n2+n3&lt;<span class="hljs-number">0</span>&#123;<br>				l++<br>			&#125;<span class="hljs-keyword">else</span> &#123;<br>				r--<br>			&#125;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> res<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>去重逻辑的思考</strong></p>
+<p><strong>a的去重</strong></p>
+<p>说道去重，其实主要考虑三个数的去重。 a, b ,c, 对应的就是 nums[i]，nums[left]，nums[right]</p>
+<p>a 如果重复了怎么办，a是nums里遍历的元素，那么应该直接跳过去。</p>
+<p>但这里有一个问题，是判断 nums[i] 与 nums[i + 1]是否相同，还是判断 nums[i] 与 nums[i-1] 是否相同。</p>
+<p>有同学可能想，这不都一样吗。</p>
+<p>其实不一样！</p>
+<p>都是和 nums[i]进行比较，是比较它的前一个，还是比较他的后一个。</p>
+<p>如果我们的写法是 这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> (nums[i] == nums[i + <span class="hljs-number">1</span>]) &#123; <span class="hljs-comment">// 去重操作</span><br>    <span class="hljs-keyword">continue</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>那就我们就把 三元组中出现重复元素的情况直接pass掉了。 例如{-1, -1 ,2} 这组数据，当遍历到第一个-1 的时候，判断 下一个也是-1，那这组数据就pass了。</p>
+<p><strong>我们要做的是 不能有重复的三元组，但三元组内的元素是可以重复的！</strong></p>
+<p>所以这里是有两个重复的维度。</p>
+<p>那么应该这么写：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) &#123;<br>    <span class="hljs-keyword">continue</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这么写就是当前使用 nums[i]，我们判断前一位是不是一样的元素，在看 {-1, -1 ,2} 这组数据，当遍历到 第一个 -1 的时候，只要前一位没有-1，那么 {-1, -1 ,2} 这组数据一样可以收录到 结果集里。</p>
+<p>这是一个非常细节的思考过程。</p>
+<h2 id="912-快速排序"><a href="#912-快速排序" class="headerlink" title="912. 快速排序"></a>912. 快速排序</h2><p>Given an array of integers <code>nums</code>, sort the array in ascending order.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">quick</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>, start, end <span class="hljs-type">int</span>)</span></span> &#123;<br>    <span class="hljs-keyword">if</span> start &lt; end &#123; <br>        pivot := nums[start]<br>        i, j := start + <span class="hljs-number">1</span>, end<br>        <br>        <span class="hljs-keyword">for</span> i &lt;= j &#123;<br>            <span class="hljs-keyword">if</span> nums[i] &lt;= pivot &#123; <span class="hljs-comment">// left smaller then the pivot, continue</span><br>                i++<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> nums[j] &gt;= pivot &#123; <span class="hljs-comment">// right bigger than the pivot, continue</span><br>                j--<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                nums[j], nums[i] = nums[i], nums[j]<br>                j--<br>                i++<br>            &#125;<br>        &#125;<br>        <br>        nums[j], nums[start] = nums[start], nums[j] <span class="hljs-comment">// i meet j, then exchange</span><br>        <br>        quick(nums, start, j - <span class="hljs-number">1</span>)<br>        quick(nums, j + <span class="hljs-number">1</span>, end)<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sortArray</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> &#123;<br>    quick(nums, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> nums<br>&#125; <br></code></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 交换的新写法</span><br>a := <span class="hljs-number">0</span><br>b := <span class="hljs-number">1</span><br>a, b = b, a<br></code></pre></td></tr></table></figure>
+<ol>
+<li>找到标兵</li>
+<li>排序，要求左边都比标兵小，右边都比标兵大，交换</li>
+<li>递归下一层，直到start和end相遇</li>
+</ol>
+<h2 id="102-二叉树的层序遍历"><a href="#102-二叉树的层序遍历" class="headerlink" title="102. 二叉树的层序遍历"></a>102. 二叉树的层序遍历</h2><p>Given the <code>root</code> of a binary tree, return <em>the level order traversal of its nodes’ values</em>. (i.e., from left to right, level by level).</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 解法一 BFS</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">levelOrder</span><span class="hljs-params">(root *TreeNode)</span></span> [][]<span class="hljs-type">int</span> &#123;<br>	<span class="hljs-keyword">if</span> root == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> [][]<span class="hljs-type">int</span>&#123;&#125;<br>	&#125;<br>	queue := []*TreeNode&#123;root&#125;<br>	res := <span class="hljs-built_in">make</span>([][]<span class="hljs-type">int</span>, <span class="hljs-number">0</span>)<br>	<span class="hljs-keyword">for</span> <span class="hljs-built_in">len</span>(queue) &gt; <span class="hljs-number">0</span> &#123;<br>		l := <span class="hljs-built_in">len</span>(queue)<br>		tmp := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, <span class="hljs-number">0</span>, l)<br>		<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; l; i++ &#123;<br>            node := queue[i]<br>			<span class="hljs-keyword">if</span> node.Left != <span class="hljs-literal">nil</span> &#123;<br>				queue = <span class="hljs-built_in">append</span>(queue, node.Left)<br>			&#125;<br>			<span class="hljs-keyword">if</span> node.Right != <span class="hljs-literal">nil</span> &#123;<br>				queue = <span class="hljs-built_in">append</span>(queue, node.Right)<br>			&#125;<br>			tmp = <span class="hljs-built_in">append</span>(tmp, queue[i].Val)<br>		&#125;<br>		queue = queue[l:]<br>		res = <span class="hljs-built_in">append</span>(res, tmp)<br>	&#125;<br>	<span class="hljs-keyword">return</span> res<br>&#125;<br></code></pre></td></tr></table></figure>
+<ol>
+<li>队列不为空</li>
+<li>用一个循环清空队列弄好新的队列</li>
+<li>直到所有的队列清空，结束</li>
+</ol>
+<h2 id="33-搜索旋转排序数组"><a href="#33-搜索旋转排序数组" class="headerlink" title="33. 搜索旋转排序数组"></a>33. 搜索旋转排序数组</h2><p>There is an integer array <code>nums</code> sorted in ascending order (with <strong>distinct</strong>values).</p>
+<p>Prior to being passed to your function, <code>nums</code> is <strong>possibly rotated</strong> at an unknown pivot index <code>k</code> (<code>1 &lt;= k &lt; nums.length</code>) such that the resulting array is <code>[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]</code> (<strong>0-indexed</strong>). For example, <code>[0,1,2,4,5,6,7]</code> might be rotated at pivot index <code>3</code> and become <code>[4,5,6,7,0,1,2]</code>.</p>
+<p>Given the array <code>nums</code> <strong>after</strong> the possible rotation and an integer <code>target</code>, return <em>the index of</em> <code>target</code> <em>if it is in</em> <code>nums</code><em>, or</em> <code>-1</code> <em>if it is not in</em> <code>nums</code>.</p>
+<p>You must write an algorithm with <code>O(log n)</code> runtime complexity.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">search</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>, target <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(nums) == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span><br>	&#125;<br>	low, high := <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums)<span class="hljs-number">-1</span><br>	<span class="hljs-keyword">for</span> low &lt;= high &#123;<br>		mid := low + (high-low)&gt;&gt;<span class="hljs-number">1</span><br>		<span class="hljs-keyword">if</span> nums[mid] == target &#123;<br>			<span class="hljs-keyword">return</span> mid<br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> nums[mid] &gt; nums[low] &#123; <span class="hljs-comment">// 在数值大的一部分区间里</span><br>			<span class="hljs-keyword">if</span> nums[low] &lt;= target &amp;&amp; target &lt; nums[mid] &#123;<br>				high = mid - <span class="hljs-number">1</span><br>			&#125; <span class="hljs-keyword">else</span> &#123;<br>				low = mid + <span class="hljs-number">1</span><br>			&#125;<br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> nums[mid] &lt; nums[high] &#123; <span class="hljs-comment">// 在数值小的一部分区间里</span><br>			<span class="hljs-keyword">if</span> nums[mid] &lt; target &amp;&amp; target &lt;= nums[high] &#123;<br>				low = mid + <span class="hljs-number">1</span><br>			&#125; <span class="hljs-keyword">else</span> &#123;<br>				high = mid - <span class="hljs-number">1</span><br>			&#125;<br>		&#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 如果落在了low或者high上，low右移，high左移</span><br>			<span class="hljs-keyword">if</span> nums[low] == nums[mid] &#123;<br>				low++<br>			&#125;<br>			<span class="hljs-keyword">if</span> nums[high] == nums[mid] &#123;<br>				high--<br>			&#125;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这个和普通的二分查找有什么不一样呢？</p>
+<p>因为二分的前提是本身有序，所以这个相当于用一个断点打乱了你的排序。你需要做的就是识别这个断点，由于要求O(logN)所以说不能先找到，而是要在查找的过程中识别断点。</p>
+<p>左边一定比右边的大，然后low代表的大区域，high代表小区域</p>
+<h2 id="165-比较版本号"><a href="#165-比较版本号" class="headerlink" title="165. 比较版本号"></a>165. 比较版本号</h2><p>Given two version numbers, <code>version1</code> and <code>version2</code>, compare them.</p>
+<p>Version numbers consist of <strong>one or more revisions</strong> joined by a dot <code>&#39;.&#39;</code>. Each revision consists of <strong>digits</strong> and may contain leading <strong>zeros</strong>. Every revision contains <strong>at least one character</strong>. Revisions are <strong>0-indexed from left to right</strong>, with the leftmost revision being revision 0, the next revision being revision 1, and so on. For example <code>2.5.33</code> and <code>0.1</code> are valid version numbers.</p>
+<p>To compare version numbers, compare their revisions in <strong>left-to-right order</strong>. Revisions are compared using their <strong>integer value ignoring any leading zeros</strong>. This means that revisions <code>1</code> and <code>001</code> are considered <strong>equal</strong>. If a version number does not specify a revision at an index, then <strong>treat the revision as <code>0</code></strong>. For example, version <code>1.0</code> is less than version <code>1.1</code> because their revision 0s are the same, but their revision 1s are <code>0</code> and <code>1</code> respectively, and <code>0 &lt; 1</code>.</p>
+<p><em>Return the following:</em></p>
+<ul>
+<li>If <code>version1 &lt; version2</code>, return <code>-1</code>.</li>
+<li>If <code>version1 &gt; version2</code>, return <code>1</code>.</li>
+<li>Otherwise, return <code>0</code>.</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">compareVersion</span><span class="hljs-params">(version1 <span class="hljs-type">string</span>, version2 <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>	x, y, i, j := <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">-1</span><br><br>	<span class="hljs-keyword">for</span> i &lt; <span class="hljs-built_in">len</span>(version1) || j &lt; <span class="hljs-built_in">len</span>(version2) &#123;<br>		x, i = readInt(version1, i+<span class="hljs-number">1</span>)<br>		y, j = readInt(version2, j+<span class="hljs-number">1</span>)<br><br>		<span class="hljs-keyword">switch</span> &#123;<br>		<span class="hljs-keyword">case</span> x &lt; y:<br>			<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span><br>		<span class="hljs-keyword">case</span> y &lt; x:<br>			<span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>		&#125;<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">readInt</span><span class="hljs-params">(s <span class="hljs-type">string</span>, index <span class="hljs-type">int</span>)</span></span> (<span class="hljs-type">int</span>, <span class="hljs-type">int</span>) &#123;<br>	result := <span class="hljs-number">0</span><br>	<span class="hljs-keyword">for</span> ; index &lt; <span class="hljs-built_in">len</span>(s) &amp;&amp; s[index] != <span class="hljs-string">&#x27;.&#x27;</span>; index++ &#123;<br>		result = result*<span class="hljs-number">10</span> + <span class="hljs-type">int</span>(s[index]-<span class="hljs-string">&#x27;0&#x27;</span>)<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> result, index<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们要分区的思考这个问题，先找到对应的区域。<code>int(s[index]-&#39;0&#39;)</code>来转换成int，如果是英文字母的话就用<code>-&#39;a&#39;</code>来转换。这样我们对于数据的处理就是，比如12.04就是1*10 + 2，如果1的位置是0的话，则不会成为整数。</p>
+<p>我们readInt函数有两个作用，一个是找到对应区间的数的整数，第二个作用是找到对应的下一个出发的index。我们不用对应位去比较，而是全部提出来然后直接比整数的大小。</p>
+<h2 id="46-全排列"><a href="#46-全排列" class="headerlink" title="46. 全排列"></a>46. 全排列</h2><p>Given an array <code>nums</code> of distinct integers, return <em>all the possible permutations</em>. You can return the answer in <strong>any order</strong>.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">permute</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> [][]<span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(nums) == <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-keyword">return</span> [][]<span class="hljs-type">int</span>&#123;&#125;<br>    &#125;<br>    c, res := []<span class="hljs-type">int</span>&#123;&#125;, [][]<span class="hljs-type">int</span>&#123;&#125;<br>    used := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">bool</span>)<br>    dfs(used, c, nums, &amp;res)<br>    <span class="hljs-keyword">return</span> res<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dfs</span><span class="hljs-params">(used <span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">bool</span>, c, nums []<span class="hljs-type">int</span>, res *[][]<span class="hljs-type">int</span>)</span></span> &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(c) == <span class="hljs-built_in">len</span>(nums) &#123;<br>        b := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, <span class="hljs-built_in">len</span>(c))<br>        <span class="hljs-built_in">copy</span>(b, c)<br>        *res = <span class="hljs-built_in">append</span>(*res, b)<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    <br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(nums); i++ &#123;<br>        <span class="hljs-keyword">if</span> ok, _ := used[nums[i]]; ok &#123;<br>            <span class="hljs-keyword">continue</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            used[nums[i]] = <span class="hljs-literal">true</span><br>            c = <span class="hljs-built_in">append</span>(c, nums[i])<br>            dfs(used, c, nums, res)<br>            used[nums[i]] = <span class="hljs-literal">false</span><br>            c = c[:<span class="hljs-built_in">len</span>(c)<span class="hljs-number">-1</span>]<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>先把所有的情况都写出来，再慢慢减枝</p>
+<h1 id="HARD"><a href="#HARD" class="headerlink" title="HARD"></a>HARD</h1><h2 id="25-K个一组翻转链表"><a href="#25-K个一组翻转链表" class="headerlink" title="25. K个一组翻转链表"></a>25. K个一组翻转链表</h2><p>Given the <code>head</code> of a linked list, reverse the nodes of the list <code>k</code> at a time, and return <em>the modified list</em>.</p>
+<p><code>k</code> is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of <code>k</code> then left-out nodes, in the end, should remain as it is.</p>
+<p>You may not alter the values in the list’s nodes, only nodes themselves may be changed.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for singly-linked list.</span><br><span class="hljs-comment"> * type ListNode struct &#123;</span><br><span class="hljs-comment"> *     Val int</span><br><span class="hljs-comment"> *     Next *ListNode</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">reverseKGroup</span><span class="hljs-params">(head *ListNode, k <span class="hljs-type">int</span>)</span></span> *ListNode &#123;<br>	curr := head<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; k; i++ &#123;<br>		<span class="hljs-keyword">if</span> curr == <span class="hljs-literal">nil</span> &#123;<br>			<span class="hljs-keyword">return</span> head<br>		&#125;<br>		curr = curr.Next<br>	&#125;<br>	newHead := reverse(head, curr) <span class="hljs-comment">// curr此时是下一个的开头</span><br>	head.Next = reverseKGroup(curr, k)<br>	<span class="hljs-keyword">return</span> newHead<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">reverse</span><span class="hljs-params">(first *ListNode, last *ListNode)</span></span> *ListNode &#123;<br>    curr := first<br>	prev := last<br>	<span class="hljs-keyword">for</span> curr != last &#123;<br>		tmp := curr.Next<br>		curr.Next = prev<br>		prev = curr<br>		curr = tmp<br>	&#125;<br>	<span class="hljs-keyword">return</span> prev<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/algorithm/">algorithm</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/LeetCode/">LeetCode</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/14/html-css-js/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">html+css+js</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/26/redis-study/">
+                        <span class="hidden-mobile">redis-study</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> & <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
