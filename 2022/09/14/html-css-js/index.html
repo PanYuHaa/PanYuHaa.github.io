@@ -23,11 +23,13 @@
 <meta property="og:site_name" content="PPStudy">
 <meta property="og:description" content="HTML整体框架文件类型 ​    html（指定语言） ​        head（制定字符集） ​        body ​    &#x2F;html 元数据&lt;meta&gt;描述数据的数据 常用结构1. &lt;p&gt;段落2. 列表​    有序列表&lt;ol&gt; ​    无序列表&lt;ul&gt; ​        列表&lt;li&gt; 3. 图片&lt;img &amp;#12">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.w3schools.com/css/grid_gaps.png">
 <meta property="article:published_time" content="2022-09-14T03:50:00.000Z">
-<meta property="article:modified_time" content="2022-09-18T03:14:36.851Z">
+<meta property="article:modified_time" content="2022-09-22T12:37:42.752Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Front-End Engineer">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.w3schools.com/css/grid_gaps.png">
   
   
   <title>html+css+js - PPStudy</title>
@@ -199,7 +201,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      3.7k 字
     </span>
   
 
@@ -208,7 +210,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14 分钟
+      31 分钟
     </span>
   
 
@@ -277,7 +279,68 @@
 <h2 id="针对-lt-a-gt-锚元素的一些css"><a href="#针对-lt-a-gt-锚元素的一些css" class="headerlink" title="针对&lt;a&gt;锚元素的一些css"></a>针对<code>&lt;a&gt;</code>锚元素的一些css</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-comment">/* 超链接静态颜色 */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:link</span> &#123;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#1098ad</span>;<br>  <span class="hljs-attribute">text-decoration</span>: none;<br>&#125;<br><br><span class="hljs-comment">/* 点击之后的颜色 */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:visited</span> &#123;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#1098ad</span>;<br>&#125;<br><br><span class="hljs-comment">/* 鼠标悬停的颜色 */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:hover</span> &#123;<br>  <span class="hljs-attribute">color</span>: orangered;<br>  <span class="hljs-attribute">font-weight</span>: bold;<br>  <span class="hljs-attribute">text-decoration</span>: underline orangered;<br>&#125;<br><br><span class="hljs-comment">/* 激活后的颜色（鼠标点击但不确定的时候） */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:active</span> &#123;<br>  <span class="hljs-attribute">background-color</span>: black;<br>  <span class="hljs-attribute">font-style</span>: italic;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>口诀LVHA</p>
 <h2 id="CSS选择器的优先级"><a href="#CSS选择器的优先级" class="headerlink" title="CSS选择器的优先级"></a>CSS选择器的优先级</h2><p>同级别下，最后一个选择器作为code applies</p>
-<h3 id="最最高级-！important-关键字"><a href="#最最高级-！important-关键字" class="headerlink" title="最最高级 - ！important 关键字"></a>最最高级 - ！important 关键字</h3><h3 id="最高级-内敛样式"><a href="#最高级-内敛样式" class="headerlink" title="最高级 - 内敛样式"></a>最高级 - 内敛样式</h3><h3 id="高级-ID-选择器"><a href="#高级-ID-选择器" class="headerlink" title="高级 - ID 选择器"></a>高级 - ID 选择器</h3><h3 id="中级-继承-选择器-or-伪继承-选择器"><a href="#中级-继承-选择器-or-伪继承-选择器" class="headerlink" title="中级 - 继承 选择器 or 伪继承 选择器"></a>中级 - 继承 选择器 or 伪继承 选择器</h3><h3 id="低级-元素-选择器"><a href="#低级-元素-选择器" class="headerlink" title="低级 - 元素 选择器"></a>低级 - 元素 选择器</h3><h3 id="最低级-通用-选择器"><a href="#最低级-通用-选择器" class="headerlink" title="最低级 - 通用 选择器"></a>最低级 - 通用 选择器</h3><p>selector specificity显示优先级</p>
+<h3 id="最最高级-！important-关键字"><a href="#最最高级-！important-关键字" class="headerlink" title="最最高级 - ！important 关键字"></a>最最高级 - ！important 关键字</h3><h3 id="最高级-内敛样式"><a href="#最高级-内敛样式" class="headerlink" title="最高级 - 内敛样式"></a>最高级 - 内敛样式</h3><h3 id="高级-ID-选择器"><a href="#高级-ID-选择器" class="headerlink" title="高级 - ID 选择器"></a>高级 - ID 选择器</h3><h3 id="中级-继承-选择器-or-伪继承-选择器"><a href="#中级-继承-选择器-or-伪继承-选择器" class="headerlink" title="中级 - 继承 选择器 or 伪继承 选择器"></a>中级 - 继承 选择器 or 伪继承 选择器</h3><h3 id="低级-元素-选择器"><a href="#低级-元素-选择器" class="headerlink" title="低级 - 元素 选择器"></a>低级 - 元素 选择器</h3><h3 id="最低级-通用-选择器"><a href="#最低级-通用-选择器" class="headerlink" title="最低级 - 通用 选择器"></a>最低级 - 通用 选择器</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">* &#123;<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>selector specificity显示优先级</p>
+<h2 id="CSS-BOX-MODEL"><a href="#CSS-BOX-MODEL" class="headerlink" title="CSS BOX MODEL"></a>CSS BOX MODEL</h2><p><a target="_blank" rel="noopener" href="https://www.w3schools.com/css/css_boxmodel.asp">https://www.w3schools.com/css/css_boxmodel.asp</a></p>
+<h3 id="Margins-amp-paddings"><a href="#Margins-amp-paddings" class="headerlink" title="Margins &amp; paddings"></a>Margins &amp; paddings</h3><p>这俩不是文本属性，所以不能够进行继承。想要全局的话就要用通用选择器。</p>
+<p>当有两个相叠加的时候，比如上和下，他们会取大的那个作为间距。（折叠边距，边距塌陷）</p>
+<p><strong>块级元素会占据父元素宽度的100%</strong></p>
+<h3 id="块级元素-可以创造垂直空间-BLOCK-LEVEL-BOXES"><a href="#块级元素-可以创造垂直空间-BLOCK-LEVEL-BOXES" class="headerlink" title="块级元素(可以创造垂直空间) BLOCK-LEVEL BOXES"></a>块级元素(可以创造垂直空间) BLOCK-LEVEL BOXES</h3><p><strong>display:block</strong></p>
+<p>body, main, header, footer, section, nav, aside, div, h1-h6, p, ul, ol, li, etc.</p>
+<h3 id="内联块元素-INLINE-BLOCK-BOXES"><a href="#内联块元素-INLINE-BLOCK-BOXES" class="headerlink" title="内联块元素 INLINE-BLOCK BOXES"></a>内联块元素 INLINE-BLOCK BOXES</h3><p><strong>display: inline-block</strong></p>
+<p>Img</p>
+<p>只占用自己应该占用的空间，而不有任何的换行符。我们就是没有换行符，但是可以用margin来增加垂直空间。</p>
+<h3 id="内联元素-不创造任何垂直空间-INLINE-LEVEL-BOXES"><a href="#内联元素-不创造任何垂直空间-INLINE-LEVEL-BOXES" class="headerlink" title="内联元素(不创造任何垂直空间) INLINE-LEVEL BOXES"></a>内联元素(不创造任何垂直空间) INLINE-LEVEL BOXES</h3><p><strong>display:inline</strong></p>
+<p>a, img,  strong, em, button, etc.</p>
+<h2 id="定位模式"><a href="#定位模式" class="headerlink" title="定位模式"></a>定位模式</h2><h3 id="常规布局-NORMAL-FLOW"><a href="#常规布局-NORMAL-FLOW" class="headerlink" title="常规布局 NORMAL FLOW"></a>常规布局 NORMAL FLOW</h3><p>default positioning</p>
+<p>position：relative</p>
+<h3 id="绝对位置-ABSOLUTE-POSITIONING"><a href="#绝对位置-ABSOLUTE-POSITIONING" class="headerlink" title="绝对位置 ABSOLUTE POSITIONING"></a>绝对位置 ABSOLUTE POSITIONING</h3><p>他是在对应的布局块里面的绝对位置。</p>
+<h2 id="伪类和伪元素"><a href="#伪类和伪元素" class="headerlink" title="伪类和伪元素"></a>伪类和伪元素</h2><p>伪类 :</p>
+<p>伪元素 ::</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">h3</span> + <span class="hljs-selector-tag">p</span> :: first-line &#123;<br>  <span class="hljs-comment">/* 仅仅是h3的p的第一行 */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>:after 伪元素在元素之后添加内容。</p>
+<p>这个伪元素允许创作人员在元素内容的最后面插入生成内容。默认地，这个伪元素是行内元素，不过可以使用属性 display 改变这一点。</p>
+<h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><h3 id="FLOAT-LAYOUTS"><a href="#FLOAT-LAYOUTS" class="headerlink" title="FLOAT LAYOUTS"></a>FLOAT LAYOUTS</h3><p>lorem输入可以产生盲文，随机文字。</p>
+<p>就是让其在对应的父类里面飘来飘去。</p>
+<p>clearfix hack</p>
+<p>解决float造成的css塌陷的方法：增加一个clearfix（就这么叫）在类的名字中</p>
+<p><strong>一个标签内可以携带多个类名</strong></p>
+<p>类名指的是 class 的属性值。</p>
+<p>一个标签内可以携带多个类名，指的是 class 的属性值可以有多个，每一个属性值之间使用空格分隔。</p>
+<p>例子：</p>
+<p>&lt;标签名 class = ”值1 值2 值3”&gt;&lt;/标签名&gt;</p>
+<p>多个类名的优点：</p>
+<p>1.减少 css 的代码量</p>
+<p>2.多个类名的样式会叠加到当前元素上面</p>
+<p>在clearfix::after加入一个空元素，但是本身他是inline的，所以我们要把升级成block级别。这样就赋予他内容。本身float已经漂浮起来了。</p>
+<p><strong>float都是在padding里面float！</strong></p>
+<p>其float的元素上下左右都会被float所影响如果是在同一个父布局里面的话</p>
+<p>box-sizing：border-box设定为直接就是盒子的大小，不再是height+padding的大小。变成了纯height的大小。此模式下我们的padding就不是填充的概念了，而是挤压消去多少盒子的空间。</p>
+<h3 id="FLEXBOX"><a href="#FLEXBOX" class="headerlink" title="FLEXBOX"></a>FLEXBOX</h3><p>就是box里面的元素，通过flex来操作。解决垂直居中，还有并排同高。</p>
+<p>又一个main axis 和一个 cross axis（对齐用的）</p>
+<h4 id="FLEX-CONTAINER"><a href="#FLEX-CONTAINER" class="headerlink" title="FLEX CONTAINER"></a>FLEX CONTAINER</h4><ul>
+<li>gap: 0 | { length }</li>
+<li>justify-content: flex-start | flex-end | center | space-between | space around | space-evenly  <strong>通过横轴排列元素</strong></li>
+<li>align-items: stretch | flex-start | flex-end | center | baseline <strong>通过纵轴排列元素</strong></li>
+<li>flex-direction: row | row-reverse | column | column-reverse</li>
+<li>flex-wrap: nowrap | wrap | wrap-reverse</li>
+<li>align-content: stretch | flex-start | flex-end | center | space-between | space-around</li>
+</ul>
+<h4 id="FLEX-ITEMS"><a href="#FLEX-ITEMS" class="headerlink" title="FLEX ITEMS"></a>FLEX ITEMS</h4><ul>
+<li>align-self: auto | stretch | flex-start | flex-end | center | baseline</li>
+<li>flex-grow: 0 | { integer } <strong>1为开启，自动填充剩余空间，如果有的话</strong>(常用于按比例填充)</li>
+<li>flex-shrink: 1 | { integer } <strong>1为开启， flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据flex-shrink 的值</strong></li>
+<li>flex-basis: auto | { length } <strong>并非严格宽度，在不超过的情况下是设置的大小</strong></li>
+<li>flex: 0 1 auto | { int } { int } { len } <strong>第一个是flex-grow 第二个是flex-shrink 第三个是flex-basis</strong></li>
+<li>order: 0 | { integer } <strong>默认初始都为0</strong></li>
+</ul>
+<h3 id="CSS-GRID-css网格"><a href="#CSS-GRID-css网格" class="headerlink" title="CSS GRID(css网格)"></a>CSS GRID(css网格)</h3><p>适合大布局的</p>
+<p>1D布局用flex box</p>
+<p>2D布局用GRID </p>
+<p>fr单位不是px</p>
+<p>如果有一个显式的固定值，那么fr就是以这个为单位1fr</p>
+<p><img src="https://www.w3schools.com/css/grid_gaps.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>有隐式行和显式行 </p>
 
             </div>
             <hr>
