@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon1.png">
+  <link rel="icon" href="/img/favicon1.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Peter Pan">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Js基础变量定义 var, let, constconst声明的不能变 let声明的变量会变 let声明的变量可以改变，值和类型都可以改变；const声明的常量不可以改变，这意味着，const一旦声明，就必须立即初始化，不能以后再赋值数组和对象等复合类型的变量，变量名不指向数据，而是指向数据所在的地址。 https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;4e9cd99ecbf5 var在ES6之">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript">
+<meta property="og:url" content="http://example.com/2022/10/08/JavaScript/index.html">
+<meta property="og:site_name" content="PPStudy">
+<meta property="og:description" content="Js基础变量定义 var, let, constconst声明的不能变 let声明的变量会变 let声明的变量可以改变，值和类型都可以改变；const声明的常量不可以改变，这意味着，const一旦声明，就必须立即初始化，不能以后再赋值数组和对象等复合类型的变量，变量名不指向数据，而是指向数据所在的地址。 https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;4e9cd99ecbf5 var在ES6之">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="data:image/png;base64,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">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-e510730cbb214ebae66eed01b61396c0_720w.jpg">
+<meta property="article:published_time" content="2022-10-08T10:01:36.000Z">
+<meta property="article:modified_time" content="2022-10-13T23:57:55.254Z">
+<meta property="article:author" content="Peter Pan">
+<meta property="article:tag" content="Front-End Engineer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="data:image/png;base64,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">
+  
+  
+  <title>JavaScript - PPStudy</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/banner2.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JavaScript">
+              
+                JavaScript
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-10-08 18:01" pubdate>
+        October 8, 2022 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.1k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      26 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JavaScript</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Js基础"><a href="#Js基础" class="headerlink" title="Js基础"></a>Js基础</h1><h2 id="变量定义-var-let-const"><a href="#变量定义-var-let-const" class="headerlink" title="变量定义 var, let, const"></a>变量定义 var, let, const</h2><p>const声明的不能变</p>
+<p>let声明的变量会变</p>
+<p><strong>let声明的变量可以改变，值和类型都可以改变；const声明的常量不可以改变</strong>，这意味着，const一旦声明，就必须立即初始化，不能以后再赋值数组和对象等复合类型的变量，变量名不指向数据，而是指向数据所在的地址。</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4e9cd99ecbf5">https://www.jianshu.com/p/4e9cd99ecbf5</a></p>
+<p>var在ES6之前一直在用 跟let一样。var是函数范围，let是块作用域</p>
+<p>不写let就是全局变量。</p>
+<p>ES6 模版字符串 ${abc} 还有 对于不规则的字符串使用``来标记</p>
+<p>NaN 是number但是是无效number</p>
+<p>只有加号可以做字符串拼接</p>
+<p>===是严格的相等运算符号，==是松散的相等运算符号，‘18’ == 18 是true 而 ===不行</p>
+<p>!== 对应 ===， != 对应 ==</p>
+<p>三元表达式可以有返回值</p>
+<h2 id="ES5-ES6-and-ESNext"><a href="#ES5-ES6-and-ESNext" class="headerlink" title="ES5, ES6+ and ESNext"></a>ES5, ES6+ and ESNext</h2><p>“use strict” 指令在 JavaScript 1.8.5 (ECMAScript5) 中新增。</p>
+<p>它不是一条语句，但是是一个字面量表达式，在 JavaScript 旧版本中会被忽略。</p>
+<p>“use strict” 的目的是指定代码在严格条件下执行。</p>
+<p>严格模式下你不能使用未声明的变量。</p>
+<h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><p>1、普通函数</p>
+<p>2、匿名函数</p>
+<p>3、箭头函数</p>
+<p>写单行函数用的 =&gt; 表达式，表达式也可以是代码块。</p>
+<p>（输入值，可以是多个）=&gt; {代码块}</p>
+<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><p>push 添加到队尾</p>
+<p>unshift 添加到队头</p>
+<p>pop 弹出最后一个元素</p>
+<p>shift 弹出第一个元素</p>
+<p>indexOf找具体下标</p>
+<p>includes包含元素判断</p>
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><p>在JavaScript中， prompt() 方法被<strong>用于展示一个提示框去提示用户进行输入</strong>。</p>
+<p>this指针用来防止和属性域中相同的命名。</p>
+<h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><p>Math.trunc() 会剔除整数部分</p>
+<p>Math.random() 会随机 0 &lt;= x &lt; 1 的数</p>
+<h2 id="Console"><a href="#Console" class="headerlink" title="Console"></a>Console</h2><p>console.table()</p>
+<p>console.log()</p>
+<p>log里面要${data}的话需要用``括住</p>
+<h2 id="✨DOM-amp-DOM-操作"><a href="#✨DOM-amp-DOM-操作" class="headerlink" title="✨DOM &amp; DOM 操作"></a>✨DOM &amp; DOM 操作</h2><p><img src="data:image/png;base64,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" srcset="/img/loading.gif" lazyload alt="JavaScript HTML DOM - DEV Community 👩‍💻👨‍💻"></p>
+<p>DOM TREE 对应 html 结构。</p>
+<p>dom并不是js</p>
+<h3 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h3><p>选择器选择出类，执行监听事件，传入事件类型，告诉时间需要做什么传入一个函数值。</p>
+<p>classList就是某个标签的class name的所有。</p>
+<h4 id="监听动作"><a href="#监听动作" class="headerlink" title="监听动作"></a>监听动作</h4><p>click，keydown，keyup，keypress</p>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>1、高级语言</p>
+<p>2、垃圾回收机制</p>
+<p>3、实时编译系统</p>
+<p>4、多范式语言</p>
+<p>​    程序化编程</p>
+<p>​    OOP</p>
+<p>​    函数编程FP</p>
+<p>5、原型链编程</p>
+<p>6、动态类型</p>
+<p>​    不需要手动定义变量类型，强类型语言，定义完成后，不再变化类型（如果不转换的话）</p>
+<p>7、单线程</p>
+<p>8、非阻塞事件循环并发模型</p>
+<h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><p>js引擎。v8和nodeJS。</p>
+<p>引擎里面包含调用栈（上下文）和堆。</p>
+<p>js直接通过解释器运行程序，不用通过编译器编程机器编码再运行。（类似python，之前的js）</p>
+<p>现代js是即时编译just in time（JIT）定期提前编译再运行。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-e510730cbb214ebae66eed01b61396c0_720w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>解释型语言逐行解析代码，逐行执行，即开即用，无需准备时间，但是运行速度较慢</p>
+<p>编译型语言将代码一次性编译成机器码，直接被机器直接执行，运行速度快，但运行前的准备时间较长</p>
+<p>RUNTIME IN THE BROWSER（引擎 + WEB APIs + CALLBACK QUEUE回调函数）</p>
+<p>WEB APIs中有DOM、Timers、Fetch API等等</p>
+<p>EVENT LOOP 事件循环：当调用栈为空的时候从回调函数队列中找到事件函数，放进调用栈</p>
+<p>nodejs没有WEB APIs他代替的是浏览器。但nodejs里面有c++绑定和线程池。</p>
+<p>执行上下文CONTEXT中包含三样，变量环境，Scope chain作用域链， this keyword</p>
+<p>其中箭头函数没有this关键字和参数对象，return会把执行上下文弹出调用栈放到内存中运行。</p>
+<p>全局作用域（整体），函数作用域（函数块）和块作用域（if、for）</p>
+<p>只有let和const会在块作用域中，var的话不会收到块作用域的控制，还是可以被访问，var是函数作用域，ES5之前只有函数作用域和全局作用域。</p>
+<p>子作用域可以访问父作用域中的所有变量，但父作用域不能访问子作用域的变量。（变量查找）重点在于声明的位置。同级之间不能互相访问。（作用域只与定义变量当时的位置有关）</p>
+<p>hoisting吊装，在一个作用域内，变量的定义会被移到代码顶部，而变量的赋值则保持原来的位置。</p>
+<p>箭头函数可以帮忙继承this关键字进入下一层域</p>
+<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><p>const共享内存，let不共享内存设置新的值会开新的空间。调用栈里面存放变量，堆HEAP里面存储对象，对象名字指向调用栈中的地址，但地址是个hash值，hash值对应一个Heap中的空间。对象默认共享内存的，你新引用一个变量指向对象，修改属性是会修改被引用的对象内部的值的。</p>
+<p>浅拷贝只拷贝数值，深拷贝拷贝所有内容。</p>
+<p>解构数组（用[ ]）解构对象（用{ }）</p>
+<p>还有…语法糖 ??检测 null 和 undefined</p>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>for of 可以用 continue 和 break 中断</p>
+<p>ES6支持内嵌对象，之前需要起名字。</p>
+<p>ES2020用一个？来判断当前的属性是不是空的 ？？合并运算符（如果前者ok那么就可以run，要不就用后面的提示）</p>
+<p>Object.values 对象里面的值</p>
+<p>Object.keys 对象包含的key</p>
+<p>Object.entires 整个对象，包含kv</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p><strong>Set</strong></p>
+<p>没有重复元素</p>
+<p>const set = new Set()</p>
+<p>通过add添加</p>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/js/js_object_sets.asp">https://www.w3school.com.cn/js/js_object_sets.asp</a></p>
+<p><strong>Map</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/js/js_object_maps.asp">https://www.w3school.com.cn/js/js_object_maps.asp</a></p>
+<p>const rest = new Map()</p>
+<p>放入是set 拿出来是get</p>
+<p>对象可以转换为map </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(&#123;object&#125;))<br></code></pre></td></tr></table></figure>
+<p>遍历</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> &#123;map&#125;) &#123;<br>  ...<br>&#125;;<br><br>[...&#123;map&#125;]<br></code></pre></td></tr></table></figure>
+<p><strong>String</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/jsref/jsref_obj_string.asp">https://www.w3school.com.cn/jsref/jsref_obj_string.asp</a></p>
+<p>可以在入参的时候直接初始化</p>
+<p>js没有引用传递，仅仅按照值传递</p>
+<p>原始数据类型在调用栈中会生成副本，此时副本的改动与原数据无关；引用类型在堆中直接被改变。</p>
+<p>以下为原始数据类型。</p>
+<ul>
+<li>string</li>
+<li>number</li>
+<li>bigint</li>
+<li>boolean</li>
+<li>null</li>
+<li>undefined</li>
+<li>symbol</li>
+</ul>
+<p>函数是一个对象。 </p>
+<p>高阶函数，可以接受别的函数作为输入（回调函数）。一个函数他可以return一个函数，所有的函数都是值。</p>
+<p>函数可以当作参数</p>
+<p>forEach给每个对象增加回调函数。自动调用。</p>
+<p><strong>函数式编程</strong></p>
+<p>对象里面里面直接写 函数名（变量）{} </p>
+<p>我们可以直接提取出来函数的名字return一个函数变量，第二步然后我们可以直接用那个函数对象名.call（指定对象，变量1，变量2）</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018270750">https://segmentfault.com/a/1190000018270750</a> 上下文绑定相关。</p>
+<p>call会立即调用而bind只是绑定，bind可以绑定很多对象，函数也是对象。可以让一个函数bind函数a后拥有有另外一个函数a先调用新绑定的。。</p>
+<p>但是bind和call会更新上下文，需要用_this, that, self等来记录上下文。</p>
+<p>也就是说，区别是，当你希望改变上下文环境之后并非立即执行，而是回调执行的时候，使用 bind() 方法。而 apply/call 则会立即执行函数。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Front-End-Engineer/">Front-End Engineer</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Front-End-Engineer/">Front-End Engineer</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/14/html-css-js/">
+                        <span class="hidden-mobile">html+css+js</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> & <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

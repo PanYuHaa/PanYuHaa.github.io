@@ -25,7 +25,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.w3schools.com/css/grid_gaps.png">
 <meta property="article:published_time" content="2022-09-14T03:50:00.000Z">
-<meta property="article:modified_time" content="2022-09-28T08:13:00.220Z">
+<meta property="article:modified_time" content="2022-10-07T01:18:45.374Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Front-End Engineer">
 <meta name="twitter:card" content="summary_large_image">
@@ -201,7 +201,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.5k 字
+      6.8k 字
     </span>
   
 
@@ -210,7 +210,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      38 分钟
+      57 分钟
     </span>
   
 
@@ -257,11 +257,14 @@
 <p>width 宽度</p>
 <p>height 高度</p>
 <p>transform: scale({倍数});</p>
+<p>filter: brightness(0); 属性滤镜</p>
+<p>opacity: 100%; 透明度</p>
 <h3 id="4-锚元素-lt-a-gt"><a href="#4-锚元素-lt-a-gt" class="headerlink" title="4. 锚元素&lt;a&gt;"></a>4. 锚元素<code>&lt;a&gt;</code></h3><p>可以插入在p中的元素，比如超链接</p>
 <p>通常<strong>a元素</strong>不添加target属性时是在当前页面加载链接。当我们需要每次都在新选项卡加载链接时，则会在<strong>元素</strong>上添加<strong>target=”_blank”</strong> 关键字写法，也是大家经常使用的方法。</p>
 <h3 id="5-段落格式"><a href="#5-段落格式" class="headerlink" title="5. 段落格式"></a>5. 段落格式</h3><figure class="highlight html"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span>文章头<span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>导航<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span>文章正文<span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span><br></code></pre></td></tr></table></figure>
 <p>统一用<code>&lt;div&gt;&lt;/div&gt;</code>来表示，不代表意义，单纯的是一个盒子，比如上面这仨就是语义html</p>
 <p><code>&lt;asides&gt;&lt;/asides&gt;</code>标签常用来写补充信息</p>
+<p><code>&lt;figure&gt;</code>里面才可以用 <code>&lt;figurecation&gt;</code></p>
 <h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><p>INLINE内联CSS, INTERNAL内部CSS, EXTERNAL外部CSS</p>
 <p>在html的head中，通过link来连接css文件</p>
 <p><code>&lt;span&gt;</code>一个普通的内联文字标签</p>
@@ -278,6 +281,13 @@
 <h1 id="00-ff-ff-三位表示的也是rgb的三色的0-255"><a href="#00-ff-ff-三位表示的也是rgb的三色的0-255" class="headerlink" title="00 ff ff 三位表示的也是rgb的三色的0-255"></a>00 ff ff 三位表示的也是rgb的三色的0-255</h1><p>border: 5px solid #1098ad; 【粗细、样式、颜色】也分为top，bottom等等</p>
 <p>伪类</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">li</span><span class="hljs-selector-pseudo">:first</span>-child &#123;<br>  <span class="hljs-attribute">font-weight</span>: bold;<br>&#125; <br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">是从1开始计数，也可以用odd这样的关键字</span><br><span class="hljs-comment">*/</span><br><span class="hljs-selector-tag">li</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">2</span>) &#123; <br>  <span class="hljs-attribute">color</span>:red;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css">&lt;<span class="hljs-selector-tag">input</span><br>                    id=&quot;full-name&quot;<br>                    type=&quot;text&quot;<br>                    placeholder=&quot;John Smith&quot;<br>                    required<br>                  /&gt;<br></code></pre></td></tr></table></figure>
+<p>这是input标签的几个属性</p>
+<p>for 属性规定 label 与哪个表单元素绑定。</p>
+<p>label和input都是内联元素</p>
+<p>require必须填写，要不不能提交表单。    </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css">*<span class="hljs-selector-pseudo">:focus</span> &#123;<br>  <span class="hljs-attribute">outline</span>: none;<br>  <span class="hljs-comment">/* outline: 4px dotted #e67e22; */</span><br>  <span class="hljs-comment">/* outline-offset: 8px; */</span><br>  <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0.8rem</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">230</span>, <span class="hljs-number">125</span>, <span class="hljs-number">34</span>, <span class="hljs-number">0.5</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>focus就是点击表格后的状态。</p>
 <h2 id="针对-lt-a-gt-锚元素的一些css"><a href="#针对-lt-a-gt-锚元素的一些css" class="headerlink" title="针对&lt;a&gt;锚元素的一些css"></a>针对<code>&lt;a&gt;</code>锚元素的一些css</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-comment">/* 超链接静态颜色 */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:link</span> &#123;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#1098ad</span>;<br>  <span class="hljs-attribute">text-decoration</span>: none;<br>&#125;<br><br><span class="hljs-comment">/* 点击之后的颜色 */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:visited</span> &#123;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#1098ad</span>;<br>&#125;<br><br><span class="hljs-comment">/* 鼠标悬停的颜色 */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:hover</span> &#123;<br>  <span class="hljs-attribute">color</span>: orangered;<br>  <span class="hljs-attribute">font-weight</span>: bold;<br>  <span class="hljs-attribute">text-decoration</span>: underline orangered;<br>&#125;<br><br><span class="hljs-comment">/* 激活后的颜色（鼠标点击但不确定的时候） */</span><br><span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:active</span> &#123;<br>  <span class="hljs-attribute">background-color</span>: black;<br>  <span class="hljs-attribute">font-style</span>: italic;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>口诀LVHA</p>
 <h2 id="CSS选择器的优先级"><a href="#CSS选择器的优先级" class="headerlink" title="CSS选择器的优先级"></a>CSS选择器的优先级</h2><p>同级别下，最后一个选择器作为code applies</p>
@@ -302,6 +312,7 @@
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">h3</span> + <span class="hljs-selector-tag">p</span> :: first-line &#123;<br>  <span class="hljs-comment">/* 仅仅是h3的p的第一行 */</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>:after 伪元素在元素之后添加内容。</p>
 <p>这个伪元素允许创作人员在元素内容的最后面插入生成内容。默认地，这个伪元素是行内元素，不过可以使用属性 display 改变这一点。</p>
+<p>.page-link.page-link—current 联合and选择器，在有前者的情况下还有后者。</p>
 <h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><h3 id="FLOAT-LAYOUTS"><a href="#FLOAT-LAYOUTS" class="headerlink" title="FLOAT LAYOUTS"></a>FLOAT LAYOUTS</h3><p>lorem输入可以产生盲文，随机文字。</p>
 <p>就是让其在对应的父类里面飘来飘去。</p>
 <p>clearfix hack</p>
@@ -329,6 +340,7 @@
 <li>align-content: stretch | flex-start | flex-end | center | space-between | space-around</li>
 <li>flex-direction: col是横着的一排排，row是纵向一列列，控制的是主轴的方向。横轴cross axis也变了，导致justify也变了方向，因为justify是根据主轴走的。</li>
 </ul>
+<p>flexbox某种程度上也是inline-block元素</p>
 <h4 id="FLEX-ITEMS"><a href="#FLEX-ITEMS" class="headerlink" title="FLEX ITEMS"></a>FLEX ITEMS</h4><ul>
 <li>align-self: auto | stretch | flex-start | flex-end | center | baseline</li>
 <li>flex-grow: 0 | { integer } <strong>1为开启，自动填充剩余空间，如果有的话</strong>(常用于按比例填充)</li>
@@ -359,7 +371,12 @@
 <p><strong>独自管理个体元素</strong></p>
 <p>水平justify-self：center</p>
 <p>纵向align-self：center</p>
-<h2 id="Table"><a href="#Table" class="headerlink" title="Table"></a>Table</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css">&lt;<span class="hljs-selector-tag">table</span>&gt;	表<br>      &lt;<span class="hljs-selector-tag">thead</span>&gt; 表头<br>        &lt;<span class="hljs-selector-tag">tr</span>&gt;	表行<br>          &lt;<span class="hljs-selector-tag">td</span>&gt;	表列名<br></code></pre></td></tr></table></figure>
+<p>.grid:not(:last-child) {</p>
+<p>  margin-bottom: 9.6rem;</p>
+<p>}</p>
+<p>not除了某某</p>
+<h2 id="Table"><a href="#Table" class="headerlink" title="Table"></a>Table</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css">&lt;<span class="hljs-selector-tag">table</span>&gt;	表<br>      &lt;<span class="hljs-selector-tag">thead</span>&gt; 表头<br>			&lt;<span class="hljs-selector-tag">tbody</span>&gt; 表主体<br>        &lt;<span class="hljs-selector-tag">tr</span>&gt;	表行<br>					&lt;<span class="hljs-selector-tag">th</span>&gt;  表列名不过会加粗 weight = bold<br>          &lt;<span class="hljs-selector-tag">td</span>&gt;	表列名<br></code></pre></td></tr></table></figure>
+<p>默认每个ceil自己管理好自己，所以如果需要融合需要边界塌陷。</p>
 <h1 id="设计习惯"><a href="#设计习惯" class="headerlink" title="设计习惯"></a>设计习惯</h1><h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><p>用16px到32px的大小 正文</p>
 <p>长文本尝试用20px或者更大</p>
 <p>weight不低于400</p>
@@ -373,6 +390,33 @@
 <p>transform搞的是元素的的高度</p>
 <p>所以想让一个元素在其父元素的位置居中就要 top：50% 搭配 transform：translate（0，-50%）</p>
 <p><code>&amp;nbsp;</code>none breaking space</p>
+<p>Viewport height 视口高度 就是你已打开可以直接看到的所有地方</p>
+<p>Viewport width</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">width</span>: <span class="hljs-number">1200px</span>;<br><span class="hljs-attribute">position</span>: absolute;<br><span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;<br><span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;<br><span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);<br><br>// 在某段画板上的居中操作<br></code></pre></td></tr></table></figure>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>cover 的特性是讓背景圖整個「不變形」、「寬高等比例」、「在必要時局部裁切」的</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">background-size</span>: cover;<br><span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">linear-gradient</span>(<br>            <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.6</span>),<br>            <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.6</span>)<br>          ),<br>          <span class="hljs-built_in">url</span>(<span class="hljs-string">hero.jpg</span>);<br></code></pre></td></tr></table></figure>
+<p>套滤镜</p>
+<p>类选择器的优先级一定高于普通元素选择器。</p>
+<p>Margin-left 顶到最右边。</p>
+<h3 id="滚动"><a href="#滚动" class="headerlink" title="滚动"></a>滚动</h3><p>处理不适合的元素</p>
+<p>overflow: scroll;</p>
+<p>如果是flex box的话 我们需要flex-shrink: 0; 因为这个磨人flex-shrink: 1；他会压缩flex box 里面的元素。</p>
+<h2 id="响应式设计理论"><a href="#响应式设计理论" class="headerlink" title="响应式设计理论"></a>响应式设计理论</h2><h3 id="流式布局"><a href="#流式布局" class="headerlink" title="流式布局"></a>流式布局</h3><p>适应视口</p>
+<p>可以设置通用助手类</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-class">.margin-right-sm</span> &#123;<br>  <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">1.6rem</span> <span class="hljs-meta">!important</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>!important 有最高优先级</p>
+<p>可重用组件。</p>
+<h3 id="响应单元"><a href="#响应单元" class="headerlink" title="响应单元"></a>响应单元</h3><p>用rem单位，rem只是代名词而已，会在使用的时候自动转换。如果更改html中的font-size，那么他的rem就会变化。</p>
+<p>transition: background-color 1s; 可以让按钮有动画。</p>
+<p>文件夹路径，注意默认没有..是当前路径，直接写是当前路径，加上..是总工程路径。</p>
+<h3 id="灵活图片"><a href="#灵活图片" class="headerlink" title="灵活图片"></a>灵活图片</h3><h3 id="媒体查询"><a href="#媒体查询" class="headerlink" title="媒体查询"></a>媒体查询</h3><p>我们隔离不同的media是隔离的设备，给不同的设备一个区间。设置断点。</p>
+<p><strong>rem</strong> 单位翻译为像素值是由html 元素的字体大小决定的。 此字体大小会被浏览器中字体大小的设置影响，除非显式重写一个具体单位。 <strong>em</strong> 单位转为像素值，取决于他们使用的字体大小。 此字体大小受从父元素继承过来的字体大小，除非显式重写与一个具体单位。</p>
+<p>一般是200px为跨度</p>
+<p>display无法用transaction做动画因为直接不显示了</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-comment">/* 1) Hide it visually */</span><br><span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;<br><br><span class="hljs-comment">/* 2) Make it unaccessible to mouse and keyboard */</span><br><span class="hljs-attribute">pointer-events</span>: none;<br><br><span class="hljs-comment">/* 3) Hide it from screen readers */</span><br><span class="hljs-attribute">visibility</span>: hidden;<br></code></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs css">选择器类别<br><br><span class="hljs-selector-id">#header</span>&#123;&#125;<br>&lt;!--匹配ID=&quot;<span class="hljs-selector-tag">header</span>&quot;的元素--&gt;<br><span class="hljs-selector-class">.header</span>&#123;&#125;<br>&lt;!--匹配class=&quot;<span class="hljs-selector-tag">header</span>&quot;的元素--&gt;<br><span class="hljs-selector-class">.header</span> <span class="hljs-selector-class">.logo</span>&#123;&#125;<br>&lt;!--匹配class=&quot;<span class="hljs-selector-tag">header</span>&quot;下，class=&quot;logo&quot;的元素，--&gt;<br><span class="hljs-selector-class">.header</span><span class="hljs-selector-class">.mobile</span>&#123;&#125;<br>&lt;!--匹配class=&quot;<span class="hljs-selector-tag">header</span> mobile&quot;的元素--&gt;<br><span class="hljs-selector-class">.header</span> <span class="hljs-selector-tag">p</span>, <span class="hljs-selector-class">.header</span> <span class="hljs-selector-tag">h3</span>&#123;&#125;<br>&lt;!--匹配class=&quot;<span class="hljs-selector-tag">header</span>&quot;下的<span class="hljs-selector-tag">P</span>元素和<span class="hljs-selector-tag">h3</span>元素。--&gt;<br><span class="hljs-selector-id">#header</span> <span class="hljs-selector-class">.nav</span>&gt;<span class="hljs-selector-tag">li</span>&#123;&#125;<br>&lt;!--匹配ID＝&quot;<span class="hljs-selector-tag">header</span>&quot;元素下，class=&quot;<span class="hljs-selector-tag">nav</span>&quot;元素的直接子元素<span class="hljs-selector-tag">li</span>。--&gt;<br><span class="hljs-selector-id">#header</span> <span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:hover</span>&#123;&#125;<br>&lt;!--匹配ID=&quot;<span class="hljs-selector-tag">header</span>&quot;元素下，<span class="hljs-selector-tag">a</span>元素的伪类--&gt;````<br></code></pre></td></tr></table></figure>
+<p>.nav-open .main-nav 等于是.nav-open 存在包裹的时候 .main-nav 才存在</p>
+<p>通过 href 中的 </p>
 
             </div>
             <hr>
@@ -406,6 +450,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/10/08/JavaScript/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaScript</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
