@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon1.png">
+  <link rel="icon" href="/img/favicon1.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Peter Pan">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="项目开发项目配置和框架集成项目结构1234567891011121314151617181920212223242526272829303132333435363738io +- github     +- xxyopen           +- novel            +- NovelApplication.java -- 项目启动类            |">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小说游园会 study">
+<meta property="og:url" content="http://example.com/2022/11/11/%E5%B0%8F%E8%AF%B4%E6%B8%B8%E5%9B%AD%E4%BC%9A%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="PPStudy">
+<meta property="og:description" content="项目开发项目配置和框架集成项目结构1234567891011121314151617181920212223242526272829303132333435363738io +- github     +- xxyopen           +- novel            +- NovelApplication.java -- 项目启动类            |">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/1JuZ1qI.png">
+<meta property="article:published_time" content="2022-11-11T09:57:27.000Z">
+<meta property="article:modified_time" content="2022-11-11T12:28:56.832Z">
+<meta property="article:author" content="Peter Pan">
+<meta property="article:tag" content="Java-Project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/1JuZ1qI.png">
+  
+  
+  <title>小说游园会 study - PPStudy</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/banner2.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="小说游园会 study">
+              
+                小说游园会 study
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-11-11 17:57" pubdate>
+        November 11, 2022 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      42 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">小说游园会 study</h1>
+            
+            <div class="markdown-body">
+              <h1 id="项目开发"><a href="#项目开发" class="headerlink" title="项目开发"></a>项目开发</h1><h2 id="项目配置和框架集成"><a href="#项目配置和框架集成" class="headerlink" title="项目配置和框架集成"></a>项目配置和框架集成</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><figure class="highlight java"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></div></td><td class="code"><pre><code class="hljs java">io<br> +- github<br>     +- xxyopen   <br>        +- novel<br>            +- NovelApplication.java -- 项目启动类<br>            |<br>            +- core -- 项目核心模块，包括各种工具、配置和常量等<br>            |   +- common -- 业务无关的通用模块<br>            |   |   +- exception -- 通用异常处理<br>            |   |   +- constant -- 通用常量   <br>            |   |   +- req -- 通用请求数据格式封装，例如分页请求数据  <br>            |   |   +- resp -- 接口响应工具及响应数据格式封装 <br>            |   |   +- util -- 通用工具   <br>            |   | <br>            |   +- auth -- 用户认证授权相关<br>            |   +- config -- 业务相关配置<br>            |   +- constant -- 业务相关常量         <br>            |   +- filter -- 过滤器 <br>            |   +- interceptor -- 拦截器<br>            |   +- task -- 定时任务<br>            |   +- util -- 业务相关工具 <br>            |   +- wrapper -- 装饰器<br>            |<br>            +- dto -- 数据传输对象，包括对各种 Http 请求和响应数据的封装<br>            |   +- req -- Http 请求数据封装<br>            |   +- resp -- Http 响应数据封装<br>            |<br>            +- dao -- 数据访问层，与底层 MySQL 进行数据交互<br>            +- manager -- 通用业务处理层，对第三方平台封装、对 Service 层通用能力的下沉以及对多个 DAO 的组合复用 <br>            +- service -- 相对具体的业务逻辑服务层  <br>            +- controller -- 主要是处理各种 Http 请求，各类基本参数校验，或者不复用的业务简单处理，返回 JSON 数据等<br>            |   +- front -- 小说门户相关接口<br>            |   +- author -- 作家管理后台相关接口<br>            |   +- admin -- 平台管理后台相关接口<br>            |   +- app -- app 接口<br>            |   +- applet -- 小程序接口<br>            |   +- open -- 开放接口，供第三方调用 <br><br></code></pre></td></tr></table></figure>
+<h3 id="通用请求-响应数据格式封装"><a href="#通用请求-响应数据格式封装" class="headerlink" title="通用请求/响应数据格式封装"></a>通用请求/响应数据格式封装</h3><p>分页请求数据格式封装，所有分页请求的 Dto 类都应继承该类</p>
+<p>Dto的解释</p>
+<p><img src="https://i.imgur.com/1JuZ1qI.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>通俗的解释： VO:(View Object）：视图对象，用于展示层。 DTO（Data Transfer Object）：数据传输对象 DO（Domain Object）：领域对象，就是从现实世界中抽象出来的有形或无形的业务实体。 PO（Persistent Object）：持久化对象，它跟持久层（通常是[、关系型数据库、的数据结构形成一一对应的映射关系。</p>
+<p><strong>以下为自己的浅短理解，主要是用于帮组自己记忆，上边的能理解，就不用看下边的。</strong></p>
+<p>自己的理解：</p>
+<p>方向：后端–&gt;前端 VO：前端页面显示使用的数据，后端传递给前端的。</p>
+<p>方向：前端–&gt;后端 DTO：前端调用后端接口的时候传递给后端 DO：controller中接收到DTO之后，新建一个DO传递给service， PO：service接收到传递的DO之后，转换成一个PO，传给mapper的方法，进行持久化处理。</p>
+<p>两部分一个是通用的请求分页类，一个是请求响应类</p>
+<p><strong>面向切面编程AOP</strong>，一种解除耦合的方法，我们通过注解或者一些代码来将不涉及业务的代码放在切面类中进行处理。</p>
+<h3 id="Rest-接口响应工具及响应数据格式封装"><a href="#Rest-接口响应工具及响应数据格式封装" class="headerlink" title="Rest 接口响应工具及响应数据格式封装"></a>Rest 接口响应工具及响应数据格式封装</h3><p>在<code>io.github.xxyopen.novel.core.common.constant</code>包下创建错误码枚举类</p>
+<p>在<code>io.github.xxyopen.novel.core.common.resp</code>包下创建 Http Rest 响应工具及数据格式封装类</p>
+<h3 id="通用异常处理"><a href="#通用异常处理" class="headerlink" title="通用异常处理"></a>通用异常处理</h3><p><strong>@EqualsAndHashCode</strong>注解</p>
+<p>原文中提到的大致有以下几点：</p>
+<ol>
+<li><p>此注解会生成equals(Object other) 和 hashCode()方法。 </p>
+</li>
+<li><p>它默认使用非静态，非瞬态的属性 </p>
+</li>
+<li><p>可通过参数exclude排除一些属性 </p>
+</li>
+<li><p>可通过参数of指定仅使用哪些属性 </p>
+</li>
+<li><p>它默认仅使用该类中定义的属性且不调用父类的方法 </p>
+</li>
+<li><p>可通过callSuper=true解决上一点问题。让其生成的方法中调用父类的方法。</p>
+</li>
+</ol>
+<p>另：@Data相当于@Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode这5个注解的合集。</p>
+<p>通过官方文档，可以得知，当使用@Data注解时，则有了@EqualsAndHashCode注解，那么就会在此类中存在equals(Object other) 和 hashCode()方法，且不会使用父类的属性，这就导致了可能的问题。 </p>
+<p>比如，有多个类有相同的部分属性，把它们定义到父类中，恰好id（数据库主键）也在父类中，那么就会存在部分对象在比较时，它们并不相等，却因为lombok自动生成的equals(Object other) 和 hashCode()方法判定为相等，从而导致出错。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 自定义业务异常，用于处理用户请求时，业务错误时抛出</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> xiongxiaoyang</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2022/5/11</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@EqualsAndHashCode(callSuper = true)</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BusinessException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RuntimeException</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ErrorCodeEnum errorCodeEnum;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BusinessException</span><span class="hljs-params">(ErrorCodeEnum errorCodeEnum)</span> &#123;<br>        <span class="hljs-comment">// 不调用父类 Throwable的fillInStackTrace() 方法生成栈追踪信息，提高应用性能</span><br>        <span class="hljs-comment">// 构造器之间的调用必须在第一行</span><br>        <span class="hljs-built_in">super</span>(errorCodeEnum.getMessage(), <span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>);<br>        <span class="hljs-built_in">this</span>.errorCodeEnum = errorCodeEnum;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>@EqualsAndHashCode只继承属性，不继承方法。</p>
+<p>这里异常分为三大类：数据校验异常、业务处理异常、处理系统异常</p>
+<h3 id="常量类创建"><a href="#常量类创建" class="headerlink" title="常量类创建"></a>常量类创建</h3><p>基本常量如是、否、性别常量等。</p>
+<p>API路径常量。</p>
+<p>业务相关常量包含了：通用常量类、 API 路由常量类、缓存常量类等等。</p>
+<h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><p>跨域是指浏览器从一个域名的网页去请求另一个域名的资源时，域名、端口、协议任一不同，都是跨域。在前后端分离的模式下，前后端的域名是不一致的，此时就会发生跨域访问问题。</p>
+<p>跨域是出于浏览器的同源策略限制，同源策略（Sameoriginpolicy）是一种约定，它是浏览器最核心也最基本的安全功能，如果缺少了同源策略，则浏览器的正常功能可能都会受到影响。</p>
+<p>我们可以通过前端配置、后端配置或 nginx 配置来解决跨域问题。</p>
+<p>如果选择前端配置，我们可以使用 node 中间件 proxy 配置跨域，前端通过 node proxy 来转发我们的接口请求，和浏览器直接打交道的是 node proxy，这样可以避免浏览器的同源策略。配置示例如下：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs nginx">proxy: &#123;<br>  &#x27;/api&#x27;: &#123;<br>    target: &#x27;http://localhost:8888&#x27;,<br>    // 请求改变源，此时 <span class="hljs-attribute">nginx</span> 可以获取到真实的请求 ip<br>    changeOrigin: <span class="hljs-literal">true</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果通过 nginx 配置来解决跨域问题，我们在配置 location 路径转发时需要加上如下的配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 允许的请求头</span><br><span class="hljs-attribute">add_header</span> <span class="hljs-string">&#x27;Access-Control-Allow-Methods&#x27;</span> <span class="hljs-string">&#x27;GET,OPTIONS,POST,PUT,DELETE&#x27;</span> always;<br><span class="hljs-attribute">add_header</span> <span class="hljs-string">&#x27;Access-Control-Allow-Credentials&#x27;</span> <span class="hljs-string">&#x27;true&#x27;</span> always;<br><span class="hljs-attribute">add_header</span> <span class="hljs-string">&#x27;Access-Control-Allow-Origin&#x27;</span> <span class="hljs-string">&#x27;<span class="hljs-variable">$http_origin</span>&#x27;</span> always;<br><span class="hljs-attribute">add_header</span> Access-Control-Allow-Headers <span class="hljs-variable">$http_access_control_request_headers</span>;<br><span class="hljs-attribute">add_header</span> Access-Control-Max-Age <span class="hljs-number">3600</span>;<br><span class="hljs-comment"># 头转发</span><br><span class="hljs-attribute">proxy_set_header</span> Host <span class="hljs-variable">$host</span>;<br><span class="hljs-attribute">proxy_set_header</span> X-Real-Ip <span class="hljs-variable">$remote_addr</span>;<br><span class="hljs-attribute">proxy_set_header</span> X-Forwarded-For <span class="hljs-variable">$proxy_add_x_forwarded_for</span>;<br><span class="hljs-attribute">proxy_connect_timeout</span> <span class="hljs-number">1000</span>;<br><span class="hljs-attribute">proxy_read_timeout</span> <span class="hljs-number">1000</span>;<br><span class="hljs-comment"># 跨域配置</span><br><span class="hljs-attribute">if</span> (<span class="hljs-variable">$request_method</span> = OPTIONS ) &#123; <span class="hljs-attribute">return</span> <span class="hljs-number">200</span>; &#125;<br></code></pre></td></tr></table></figure>
+<p>因为我们项目的侧重点在后端，而且 Spring MVC 提供了跨域解决方案（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS (opens new window)</a>）的支持。所以我们这里通过后端配置来解决跨域问题。</p>
+<p>首先我们需要在 application.yml 配置文件中添加跨域相关的配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 项目配置</span><br><span class="hljs-attr">novel:</span><br>  <span class="hljs-comment"># 跨域配置</span><br>  <span class="hljs-attr">cors:</span><br>    <span class="hljs-comment"># 允许跨域的域名</span><br>    <span class="hljs-attr">allow-origins:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">http://localhost:1024</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">http://localhost:8080</span><br></code></pre></td></tr></table></figure>
+<p>然后在<code>io.github.xxyopen.novel.core.config</code>包下创建 CorsProperties 类来绑定 CORS 配置属性:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 跨域配置属性</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> xiongxiaoyang</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2022/5/17</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;novel.cors&quot;)</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CorsProperties</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 允许跨域的域名</span><br><span class="hljs-comment">     * */</span><br>    <span class="hljs-keyword">private</span> List&lt;String&gt; allowOrigins;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>最后在<code>io.github.xxyopen.novel.core.config</code>包下增加如下的 CORS 配置类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 跨域配置</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> xiongxiaoyang</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2022/5/13</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableConfigurationProperties(CorsProperties.class)</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CorsConfig</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CorsProperties corsProperties;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> CorsFilter <span class="hljs-title function_">corsFilter</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">CorsConfiguration</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CorsConfiguration</span>();<br>        <span class="hljs-comment">// 允许的域,不要写*，否则cookie就无法使用了</span><br>        <span class="hljs-keyword">for</span> (String allowOrigin : corsProperties.getAllowOrigins()) &#123;<br>            config.addAllowedOrigin(allowOrigin);<br>        &#125;<br>        <span class="hljs-comment">// 允许的头信息</span><br>        config.addAllowedHeader(<span class="hljs-string">&quot;*&quot;</span>);<br>        <span class="hljs-comment">// 允许的请求方式</span><br>        config.addAllowedMethod(<span class="hljs-string">&quot;*&quot;</span>);<br>        <span class="hljs-comment">// 是否允许携带Cookie信息</span><br>        config.setAllowCredentials(<span class="hljs-literal">true</span>);<br><br>        <span class="hljs-type">UrlBasedCorsConfigurationSource</span> <span class="hljs-variable">configurationSource</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UrlBasedCorsConfigurationSource</span>();<br>        <span class="hljs-comment">// 添加映射路径，拦截一切请求</span><br>        configurationSource.registerCorsConfiguration(<span class="hljs-string">&quot;/**&quot;</span>,config);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CorsFilter</span>(configurationSource);<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java-Project/">Java-Project</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/15/JavaGuide/">
+                        <span class="hidden-mobile">JavaGuide</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> & <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
