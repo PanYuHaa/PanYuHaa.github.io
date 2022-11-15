@@ -24,8 +24,9 @@
 <meta property="og:description" content="项目开发项目配置和框架集成项目结构1234567891011121314151617181920212223242526272829303132333435363738io +- github     +- xxyopen           +- novel            +- NovelApplication.java -- 项目启动类            |">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/1JuZ1qI.png">
+<meta property="og:image" content="https://docs.xxyopen.com/img/novel/xxljob.png">
 <meta property="article:published_time" content="2022-11-11T09:57:27.000Z">
-<meta property="article:modified_time" content="2022-11-11T12:28:56.832Z">
+<meta property="article:modified_time" content="2022-11-15T10:05:28.096Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Java-Project">
 <meta name="twitter:card" content="summary_large_image">
@@ -201,7 +202,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5k 字
+      9.3k 字
     </span>
   
 
@@ -210,7 +211,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      42 分钟
+      78 分钟
     </span>
   
 
@@ -283,17 +284,95 @@
 <h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><p>跨域是指浏览器从一个域名的网页去请求另一个域名的资源时，域名、端口、协议任一不同，都是跨域。在前后端分离的模式下，前后端的域名是不一致的，此时就会发生跨域访问问题。</p>
 <p>跨域是出于浏览器的同源策略限制，同源策略（Sameoriginpolicy）是一种约定，它是浏览器最核心也最基本的安全功能，如果缺少了同源策略，则浏览器的正常功能可能都会受到影响。</p>
 <p>我们可以通过前端配置、后端配置或 nginx 配置来解决跨域问题。</p>
-<p>如果选择前端配置，我们可以使用 node 中间件 proxy 配置跨域，前端通过 node proxy 来转发我们的接口请求，和浏览器直接打交道的是 node proxy，这样可以避免浏览器的同源策略。配置示例如下：</p>
+<p>如果选择<strong>前端配置</strong>，我们可以使用 node 中间件 proxy 配置跨域，前端通过 node proxy 来转发我们的接口请求，和浏览器直接打交道的是 node proxy，这样可以避免浏览器的同源策略。配置示例如下：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs nginx">proxy: &#123;<br>  &#x27;/api&#x27;: &#123;<br>    target: &#x27;http://localhost:8888&#x27;,<br>    // 请求改变源，此时 <span class="hljs-attribute">nginx</span> 可以获取到真实的请求 ip<br>    changeOrigin: <span class="hljs-literal">true</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>如果通过 nginx 配置来解决跨域问题，我们在配置 location 路径转发时需要加上如下的配置：</p>
+<p>如果通过 <strong>nginx 配置</strong>来解决跨域问题，我们在配置 location 路径转发时需要加上如下的配置：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 允许的请求头</span><br><span class="hljs-attribute">add_header</span> <span class="hljs-string">&#x27;Access-Control-Allow-Methods&#x27;</span> <span class="hljs-string">&#x27;GET,OPTIONS,POST,PUT,DELETE&#x27;</span> always;<br><span class="hljs-attribute">add_header</span> <span class="hljs-string">&#x27;Access-Control-Allow-Credentials&#x27;</span> <span class="hljs-string">&#x27;true&#x27;</span> always;<br><span class="hljs-attribute">add_header</span> <span class="hljs-string">&#x27;Access-Control-Allow-Origin&#x27;</span> <span class="hljs-string">&#x27;<span class="hljs-variable">$http_origin</span>&#x27;</span> always;<br><span class="hljs-attribute">add_header</span> Access-Control-Allow-Headers <span class="hljs-variable">$http_access_control_request_headers</span>;<br><span class="hljs-attribute">add_header</span> Access-Control-Max-Age <span class="hljs-number">3600</span>;<br><span class="hljs-comment"># 头转发</span><br><span class="hljs-attribute">proxy_set_header</span> Host <span class="hljs-variable">$host</span>;<br><span class="hljs-attribute">proxy_set_header</span> X-Real-Ip <span class="hljs-variable">$remote_addr</span>;<br><span class="hljs-attribute">proxy_set_header</span> X-Forwarded-For <span class="hljs-variable">$proxy_add_x_forwarded_for</span>;<br><span class="hljs-attribute">proxy_connect_timeout</span> <span class="hljs-number">1000</span>;<br><span class="hljs-attribute">proxy_read_timeout</span> <span class="hljs-number">1000</span>;<br><span class="hljs-comment"># 跨域配置</span><br><span class="hljs-attribute">if</span> (<span class="hljs-variable">$request_method</span> = OPTIONS ) &#123; <span class="hljs-attribute">return</span> <span class="hljs-number">200</span>; &#125;<br></code></pre></td></tr></table></figure>
-<p>因为我们项目的侧重点在后端，而且 Spring MVC 提供了跨域解决方案（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS (opens new window)</a>）的支持。所以我们这里通过后端配置来解决跨域问题。</p>
+<p>因为我们项目的侧重点在后端，而且 Spring MVC 提供了跨域解决方案（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS (opens new window)</a>）的支持。所以我们这里通过<strong>后端配置</strong>来解决跨域问题。</p>
 <p>首先我们需要在 application.yml 配置文件中添加跨域相关的配置：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 项目配置</span><br><span class="hljs-attr">novel:</span><br>  <span class="hljs-comment"># 跨域配置</span><br>  <span class="hljs-attr">cors:</span><br>    <span class="hljs-comment"># 允许跨域的域名</span><br>    <span class="hljs-attr">allow-origins:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">http://localhost:1024</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">http://localhost:8080</span><br></code></pre></td></tr></table></figure>
 <p>然后在<code>io.github.xxyopen.novel.core.config</code>包下创建 CorsProperties 类来绑定 CORS 配置属性:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 跨域配置属性</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> xiongxiaoyang</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2022/5/17</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;novel.cors&quot;)</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CorsProperties</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 允许跨域的域名</span><br><span class="hljs-comment">     * */</span><br>    <span class="hljs-keyword">private</span> List&lt;String&gt; allowOrigins;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jimoer/p/11374229.html">https://www.cnblogs.com/jimoer/p/11374229.html</a> @ConfigurationProperties注解的作用就是提取 application.yml 中的内容。</p>
 <p>最后在<code>io.github.xxyopen.novel.core.config</code>包下增加如下的 CORS 配置类：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 跨域配置</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> xiongxiaoyang</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2022/5/13</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableConfigurationProperties(CorsProperties.class)</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CorsConfig</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CorsProperties corsProperties;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> CorsFilter <span class="hljs-title function_">corsFilter</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">CorsConfiguration</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CorsConfiguration</span>();<br>        <span class="hljs-comment">// 允许的域,不要写*，否则cookie就无法使用了</span><br>        <span class="hljs-keyword">for</span> (String allowOrigin : corsProperties.getAllowOrigins()) &#123;<br>            config.addAllowedOrigin(allowOrigin);<br>        &#125;<br>        <span class="hljs-comment">// 允许的头信息</span><br>        config.addAllowedHeader(<span class="hljs-string">&quot;*&quot;</span>);<br>        <span class="hljs-comment">// 允许的请求方式</span><br>        config.addAllowedMethod(<span class="hljs-string">&quot;*&quot;</span>);<br>        <span class="hljs-comment">// 是否允许携带Cookie信息</span><br>        config.setAllowCredentials(<span class="hljs-literal">true</span>);<br><br>        <span class="hljs-type">UrlBasedCorsConfigurationSource</span> <span class="hljs-variable">configurationSource</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UrlBasedCorsConfigurationSource</span>();<br>        <span class="hljs-comment">// 添加映射路径，拦截一切请求</span><br>        configurationSource.registerCorsConfiguration(<span class="hljs-string">&quot;/**&quot;</span>,config);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CorsFilter</span>(configurationSource);<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>URL的组成：（协议 + 主机 + 端口号 + 路径）+ 客户端提供给服务器的额外参数</p>
+<p>跨域问题：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1uL4y187mk/?spm_id_from=333.337.search-card.all.click&amp;vd_source=77c4f2aaa0a307827d6898104835a353">https://www.bilibili.com/video/BV1uL4y187mk/?spm_id_from=333.337.search-card.all.click&amp;vd_source=77c4f2aaa0a307827d6898104835a353</a></p>
+<p>不设置同源规则的话会出现的问题是：你访问的是A网站，但返回请求的不是A网站是钓鱼网站的请求，结果导致了你提出了错误的响应。钓鱼网站利用你的cookie对我们本身不能用你的身份访问的网站发出请求。CSRF攻击（跨站请求伪造）</p>
+<p>跨域：<strong>当一个请求url的<code>协议</code>、<code>域名</code>、<code>端口</code>三者之间的<code>任意一个</code>与当前页面url<code>不同</code>即为<code>跨域</code></strong>，也就是说前后端分离必然出现跨域问题。</p>
+<p><strong>简单请求</strong></p>
+<p>每次都要发送二次请求很麻烦？所以做了优化（二次请求：1、跨域请求之前发送一个OPTIONS请求去询问服务器是否接受接下来的跨域请求，携带header。2、服务器在返回中增加如下header来表明是否允许这个跨域请求。浏览器收到后进行检查如果不符合要求则不会发起后续请求。</p>
+<p>当请求方法是Head、GET、POST摒弃请求头只有如下几个时，被定义为简单请求</p>
+<p>Accept</p>
+<p>Accept-Language</p>
+<p>Content-Language</p>
+<p>Last-Event-ID</p>
+<p>Content-Type</p>
+<p>简单请求会在请求中加入Origin头，直接发起请求，不会先询问了，后段返回相应的header即可。在响应中检查Access-Control-Allow-Orgin，不符合要求就报错。</p>
+<p>Spring跨域就是在response中加入header来表明返回请求的行为。</p>
+<h3 id="Mybatis-增强工具-MyBatis-Plus集成"><a href="#Mybatis-增强工具-MyBatis-Plus集成" class="headerlink" title="Mybatis 增强工具 MyBatis-Plus集成"></a>Mybatis 增强工具 MyBatis-Plus集成</h3><ol>
+<li>添加 mybatis-plus 的启动器依赖</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<ol>
+<li>配置 MapperScan 注解</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@MapperScan(&quot;io.github.xxyopen.novel.dao.mapper&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NovelApplication</span> &#123;<br><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>		SpringApplication.run(NovelApplication.class, args);<br>	&#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<ol>
+<li>因为我们系统涉及分页数据查询，所以我们还需要在<code>io.github.xxyopen.novel.core.config</code>包下配置 mybatis-plus 的分页插件：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Mybatis-Plus 配置类</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> xiongxiaoyang</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2022/5/16</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MybatisPlusConfig</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 分页插件</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title function_">mybatisPlusInterceptor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">MybatisPlusInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MybatisPlusInterceptor</span>();<br>        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PaginationInnerInterceptor</span>(DbType.MYSQL));<br>        <span class="hljs-keyword">return</span> interceptor;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<ol>
+<li>数据源配置</li>
+</ol>
+<p>YAML 是 JSON 的超集，一种用于指定分层配置数据的便捷格式。本项目中我们统一使用 YAML 格式的配置文件，所以先将 resources 目录下的 application.properties 文件重命名为 application.yml，</p>
+<p>然后在 application.yml 配置文件中加入以下数据源配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/novel?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">test123456</span><br></code></pre></td></tr></table></figure>
+<p><strong>注：根据实际的数据库环境来修改相应的IP、端口号、数据库名、用户名和密码</strong></p>
+<ol>
+<li>为了兼容 Spring Boot 3（Spring 6），在<code>org.springframework.core</code>包下创建<code>NestedIOException</code>异常类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 兼容 mybatis-plus 3.5.1</span><br><span class="hljs-comment"> * mybatis-plus 的 MybatisSqlSessionFactoryBean 中使用到了这个异常</span><br><span class="hljs-comment"> * Spring 6 开始移除了该异常</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> xiongxiaoyang</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2022/5/12</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedIOException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IOException</span> &#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="分布式缓存Redis集成和配置"><a href="#分布式缓存Redis集成和配置" class="headerlink" title="分布式缓存Redis集成和配置"></a>分布式缓存Redis集成和配置</h3><p>本地缓存虽然有着访问速度快的优点，但无法进行大数据的存储。并且当我们集群部署多个服务节点，或者后期随着业务发展进行服务拆分后，没法共享缓存和保证缓存数据的一致性。 本地缓存的数据还会随应用程序的重启而丢失，这样对于需要持久化的数据满足不了需求，还会导致重启后数据库瞬时压力过大。</p>
+<p>所以本地缓存一般适合于缓存只读数据，如统计类数据，或者每个部署节点独立的数据。其它情况就需要用到分布式缓存了。</p>
+<p>分布式缓存的集成步骤和本地缓存基本差不多，除了替换 caffeine 的依赖项为我们 redis 的依赖和配置上我们自定义的 redis 缓存管理器外，还要在配置文件中加入 redis 的连接配置。</p>
+<h3 id="搜索引擎-Elasticsearch-集成与配置"><a href="#搜索引擎-Elasticsearch-集成与配置" class="headerlink" title="搜索引擎 Elasticsearch 集成与配置"></a>搜索引擎 Elasticsearch 集成与配置</h3><p><strong>介绍</strong></p>
+<p>Elastic Stack 是一个可以帮助我们构建搜索体验、解决问题并取得成功的搜索平台。核心产品包括 Elasticsearch、Kibana、Beats 和 Logstash（也称为 <a target="_blank" rel="noopener" href="https://www.elastic.co/cn/what-is/elk-stack">ELK Stack (opens new window)</a>）等等。能够安全可靠地获取任何来源、任何格式的数据，然后实时地对数据进行搜索、分析和可视化。</p>
+<p>Elasticsearch 和 Kibana 都是在免费开源的基础上构建而成，适用于各种各样的用例，从日志开始，到能够想到的任何项目，无一不能胜任。</p>
+<p>Elasticsearch 是一个基于 JSON 的分布式、RESTful 风格的搜索和数据分析引擎，能够解决不断涌现出的各种用例。 作为 Elastic Stack 的核心，它集中存储数据，帮助发现意料之中以及意料之外的情况。</p>
+<p>Kibana 是一个免费且开放的用户界面，能够对 Elasticsearch 数据进行可视化，并在 Elastic Stack 中进行导航。我们可以进行各种操作，从跟踪查询负载，到理解请求如何流经整个应用，都能轻松完成。</p>
+<h3 id="Spring-AMQP-集成与配置"><a href="#Spring-AMQP-集成与配置" class="headerlink" title="Spring AMQP 集成与配置"></a>Spring AMQP 集成与配置</h3><p><strong>介绍</strong></p>
+<p>AMQP（高级消息队列协议）是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计，不受产品和开发语言的限制. Spring AMQP 将核心 Spring 概念应用于基于 AMQP 消息传递解决方案的开发。</p>
+<p>RabbitMQ 是基于 AMQP 协议的轻量级、可靠、可扩展、可移植的消息中间件，Spring 使用 RabbitMQ 通过 AMQP 协议进行通信。Spring Boot 为通过 RabbitMQ 使用 AMQP 提供了多种便利，包括 spring-boot-starter-amqp “Starter”。</p>
+<h3 id="分布式任务调度平台-XXL-JOB-集成与配置"><a href="#分布式任务调度平台-XXL-JOB-集成与配置" class="headerlink" title="分布式任务调度平台 XXL-JOB 集成与配置"></a>分布式任务调度平台 XXL-JOB 集成与配置</h3><p>介绍</p>
+<p>XXL-JOB 是一个开箱即用的开源分布式任务调度平台，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。由调度模块和执行模块构成：</p>
+<ul>
+<li>调度模块（调度中心）：</li>
+</ul>
+<p>负责管理调度信息，按照调度配置发出调度请求，自身不承担业务代码。调度系统与任务解耦，提高了系统可用性和稳定性，同时调度系统性能不再受限于任务模块； 支持可视化、简单且动态的管理调度信息，包括任务新建，更新，删除，GLUE开发和任务报警等，所有上述操作都会实时生效，同时支持监控调度结果以及执行日志，支持执行器Failover。</p>
+<ul>
+<li>执行模块（执行器）：</li>
+</ul>
+<p>负责接收调度请求并执行任务逻辑。任务模块专注于任务的执行等操作，开发和维护更加简单和高效； 接收“调度中心”的执行请求、终止请求和日志请求等。</p>
+<p><img src="https://docs.xxyopen.com/img/novel/xxljob.png" srcset="/img/loading.gif" lazyload alt="XXL-JOB 架构图"></p>
+<p>XXL-JOB 将调度行为抽象形成“调度中心”公共平台，而平台自身并不承担业务逻辑，“调度中心”负责发起调度请求。</p>
+<p>将任务抽象成分散的JobHandler，交由“执行器”统一管理，“执行器”负责接收调度请求并执行对应的JobHandler中业务逻辑。</p>
+<p>因此，“调度”和“任务”两部分可以相互解耦，提高系统整体稳定性和扩展性；</p>
+<h2 id="接口开发"><a href="#接口开发" class="headerlink" title="接口开发"></a>接口开发</h2><p><strong>接口规约</strong></p>
+<p>1、协议 2、路径 3、请求方法 4、请求内容 5、响应体</p>
+<p><strong>Service/DAO 层方法命名规约</strong></p>
+<ol>
+<li>获取单个对象的方法用 get 做前缀。</li>
+<li>获取多个对象的方法用 list 做前缀，复数结尾，如： listObjects。</li>
+<li>获取统计值的方法用 count 做前缀。</li>
+<li>插入的方法用 save/insert 做前缀。</li>
+<li>删除的方法用 remove/delete 做前缀。</li>
+<li>修改的方法用 update 做前缀。</li>
+</ol>
+<h3 id="首页相关接口开发"><a href="#首页相关接口开发" class="headerlink" title="首页相关接口开发"></a>首页相关接口开发</h3><p>我们要在controller、service、service.impl 包下创建首页模块、新闻模块和小说模块的API控制器Controller、业务服务类 Service 以及服务实现类 ServiceImpl</p>
+<p>在manager层下创建首页推荐小说的缓存管理类。</p>
+<p>CacheConsts包在core的constant里面。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/top-housekeeper/p/11865399.html">https://www.cnblogs.com/top-housekeeper/p/11865399.html</a> Spring boot 缓存注解。</p>
 
             </div>
             <hr>
