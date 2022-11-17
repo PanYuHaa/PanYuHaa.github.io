@@ -129,8 +129,13 @@
 <meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fimages.xiaozhuanlan.com%2Fphoto%2F2020%2Facc15860bf41c9b0ba913a591dd3a440.png&amp;sign=13d18e6518c833d446762b181c46720fa5217942f10d0d69fbc229422a460885">
 <meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fimages.xiaozhuanlan.com%2Fphoto%2F2020%2Fd6c7148d1c99572356e78cea8b652331.png&amp;sign=a0487556e92acf7d9f4c2ecba7afa92674eb2c071572b819e8017b30c22ce022">
 <meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fimages.xiaozhuanlan.com%2Fphoto%2F2020%2Fdddf4a3afe07876b3132bf9ddacb7ac0.jpg&amp;sign=8b06ebf7e9f87ae13f622f0256903bf828e03a61bfbe07cbc6664d6d0c3df909">
+<meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fimg-blog.csdnimg.cn%2Fimg_convert%2F90c90b8329fb42a78db86838b74ef184.png&amp;sign=14f685379914005a47560e5f85557dab6baea30207c5229638c3d2691702498b">
+<meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fimg-blog.csdnimg.cn%2Fimg_convert%2Ff2f7557a44dbb95963b8ddd6a0960bb9.png&amp;sign=94460982b2aeee8f9a83348240022350f1e8445c7a1223cb5662a5314f55a89b">
+<meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fstatic001.geekbang.org%2Fresource%2Fimage%2F30%2Fcf%2F309cae2e132210489d327cf55b284dcf.jpg&amp;sign=7afbbcfce49565f6f6c5c1a2831656ae78ede28a9f501fbd5463ac7cabbcde59">
+<meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fstatic001.geekbang.org%2Fresource%2Fimage%2Fcc%2Fed%2Fcc968a11925591df558da0e7393f06ed.jpg&amp;sign=e4f5070588d065e027eca49e3b172b4e94470b1b3a2bd3dc3964eb998b7626b0">
+<meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fstatic001.geekbang.org%2Fresource%2Fimage%2Fbe%2F96%2Fbe22494588ca4f79358347468cd62496.jpg&amp;sign=78edc1b55f2b125af71f9cf5b299d1493a8ba7f6e9325c1cad809c9ce8e75bb7">
 <meta property="article:published_time" content="2022-10-15T03:40:14.000Z">
-<meta property="article:modified_time" content="2022-11-15T08:02:48.347Z">
+<meta property="article:modified_time" content="2022-11-17T03:18:00.699Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary_large_image">
@@ -315,7 +320,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      722 分钟
+      728 分钟
     </span>
   
 
@@ -2926,6 +2931,34 @@
 <p>我们使用 @Scheduled 注解就能很方便地创建一个定时任务。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ScheduledTasks</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(ScheduledTasks.class);<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">SimpleDateFormate</span> <span class="hljs-variable">dateFormat</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleDateFormat</span>(<span class="hljs-string">&quot;HH:mm:ss&quot;</span>);<br>  <br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * fixedRate: 固定速率执行。每5秒执行一次。</span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-meta">@Scheduled(fixedRate = 5000)</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reportCurrentTimeWithFixedRated</span><span class="hljs-params">()</span> &#123;<br>    log.info(<span class="hljs-string">&quot;Current Thread : &#123;&#125;&quot;</span>, Thread.currentThread().getName());<br>    log.info(<span class="hljs-string">&quot;Fixed Rate Task : The time is now &#123;&#125;&quot;</span>, dateFormate.format(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>()));<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>单纯依靠 @Scheduled 注解还不行，我们还需要在SpringBoot中我们只需要在启动类上加上 @enableScheduling 注解，这样才可以启动定时任务。@enableScheduling 注解的作用是发现注解 @Scheduled 的任务并在后台执行该任务。</p>
+<h1 id="MyBatis"><a href="#MyBatis" class="headerlink" title="MyBatis"></a>MyBatis</h1><p>ORM</p>
+<h1 id="Netty"><a href="#Netty" class="headerlink" title="Netty"></a>Netty</h1><p><img src="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fimg-blog.csdnimg.cn%2Fimg_convert%2F90c90b8329fb42a78db86838b74ef184.png&amp;sign=14f685379914005a47560e5f85557dab6baea30207c5229638c3d2691702498b" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>BIO：同步阻塞IO</p>
+<p>NIO：同步非阻塞IO，高并发用NIO，有个缓冲。</p>
+<p>AIO：异步非阻塞IO，不常用。</p>
+<p><strong>介绍Netty？</strong></p>
+<p>1、它是一个基于NIO的客户端服务端框架，可以快速开发网络应用程序。</p>
+<p>2、极大简化并优化了TCP和UDP套接字服务器等网络编程，安全性也不错。</p>
+<p>3、支持多种协议如FTP、SMTP、HTTP以及各种二进制和基于文本的传统协议。</p>
+<p>官方：Netty 成功地找到了一种在不妥协可维护性和性能的情况下实现易于开发，性能，稳定性和灵活性的方法。</p>
+<p><img src="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fimg-blog.csdnimg.cn%2Fimg_convert%2Ff2f7557a44dbb95963b8ddd6a0960bb9.png&amp;sign=94460982b2aeee8f9a83348240022350f1e8445c7a1223cb5662a5314f55a89b" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h1><p><strong>什么是 Web 容器？</strong></p>
+<p>早期静态网页所以只需要HTTP服务器（如Nginx）向浏览器返回静态HTML，浏览器负责解析HTML，结果呈现给用户。</p>
+<p>要有交互，Sun公司推出了Servlet技术。Servlet就是运行在服务端的Java小程序，没有main方法，不能独立运行，需要部署到Servlet容器中，由容器来实例化掉用Servlet。</p>
+<p>Tomcat就是Serlvet容器，然后同时拥有HTTP服务器的功能，因此Tomcat就是一个HTTP服务器+Servlet容器，也叫Web容器。</p>
+<p><strong>HTTP服务器工作原理了解吗？</strong></p>
+<p>用户请求 to 浏览器 to 服务器（Tomcat）</p>
+<p><strong>tomcat总体架构？</strong></p>
+<p>1、处理 Socket 连接，负责网络字节流与 Request 和 Response 对象的转化。</p>
+<p>2、加载和管理 Servlet，以及具体处理 Request 请求。</p>
+<p>两个核心组件：<strong>连接器</strong> 和 <strong>容器</strong>。</p>
+<p><img src="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fstatic001.geekbang.org%2Fresource%2Fimage%2F30%2Fcf%2F309cae2e132210489d327cf55b284dcf.jpg&amp;sign=7afbbcfce49565f6f6c5c1a2831656ae78ede28a9f501fbd5463ac7cabbcde59" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fstatic001.geekbang.org%2Fresource%2Fimage%2Fcc%2Fed%2Fcc968a11925591df558da0e7393f06ed.jpg&amp;sign=e4f5070588d065e027eca49e3b172b4e94470b1b3a2bd3dc3964eb998b7626b0" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Context 表示一个web应用程序。</p>
+<p>Wrapper表示一个Servlet一个web程序可以有多个Wrapper。</p>
+<p>Host代表虚拟主机，可以配置多个站点。</p>
+<p>Engine表示引擎，用来管理多个虚拟站点，一个Service最多只能有一个Engine。</p>
+<p><img src="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fstatic001.geekbang.org%2Fresource%2Fimage%2Fbe%2F96%2Fbe22494588ca4f79358347468cd62496.jpg&amp;sign=78edc1b55f2b125af71f9cf5b299d1493a8ba7f6e9325c1cad809c9ce8e75bb7" srcset="/img/loading.gif" lazyload alt="img"></p>
 
             </div>
             <hr>
