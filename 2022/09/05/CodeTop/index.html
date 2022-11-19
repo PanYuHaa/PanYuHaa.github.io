@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg">
 <meta property="og:image" content="https://assets.leetcode.com/uploads/2018/10/22/rainwatertrap.png">
 <meta property="article:published_time" content="2022-09-05T01:27:12.000Z">
-<meta property="article:modified_time" content="2022-11-07T02:47:51.275Z">
+<meta property="article:modified_time" content="2022-11-19T02:09:15.806Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary_large_image">
@@ -212,7 +212,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      433 分钟
+      434 分钟
     </span>
   
 
@@ -624,6 +624,9 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for a binary tree node.</span><br><span class="hljs-comment"> * type TreeNode struct &#123;</span><br><span class="hljs-comment"> *     Val int</span><br><span class="hljs-comment"> *     Left *TreeNode</span><br><span class="hljs-comment"> *     Right *TreeNode</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">maxPathSum</span><span class="hljs-params">(root *TreeNode)</span></span> <span class="hljs-type">int</span> &#123;<br>	<span class="hljs-keyword">if</span> root == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>	&#125;<br>	max := math.MinInt32<br>	getPathSum(root, &amp;max)<br>	<span class="hljs-keyword">return</span> max<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getPathSum</span><span class="hljs-params">(root *TreeNode, maxSum *<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>	<span class="hljs-keyword">if</span> root == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> math.MinInt32<br>	&#125;<br>	left := getPathSum(root.Left, maxSum)<br>	right := getPathSum(root.Right, maxSum)<br><br>	currMax := max(max(left+root.Val, right+root.Val), root.Val)<br>	*maxSum = max(*maxSum, max(currMax, left+right+root.Val))<br>	<span class="hljs-keyword">return</span> currMax<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">max</span><span class="hljs-params">(a, b <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">if</span> a &gt; b &#123;<br>        <span class="hljs-keyword">return</span> a<br>    &#125;<br>    <span class="hljs-keyword">return</span> b<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>因为有负数，所有用math.MinInt32</p>
 <p>对于当前节点，每次比较走左边，还是走右边，还是走在当前节点不走了。再让这个和（左+根+右重新开一条路）还有最大值进行比较。</p>
+<h2 id="23-合并k个升序链表"><a href="#23-合并k个升序链表" class="headerlink" title="23. 合并k个升序链表"></a>23. 合并k个升序链表</h2><p>You are given an array of <code>k</code> linked-lists <code>lists</code>, each linked-list is sorted in ascending order.</p>
+<p><em>Merge all the linked-lists into one sorted linked-list and return it.</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
