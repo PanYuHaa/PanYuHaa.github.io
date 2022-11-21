@@ -16,13 +16,15 @@
   <meta name="author" content="Peter Pan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="数据库MySql的系统框架连接池起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。 后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。 SQL解析&#x2F;优化SQL接口：接受sql文件。 SQL解析器：解析sql语句。 SQL优化器：调整sql语句执行顺序，配合索引等进行优化。 存储引擎MyISAM或者InnoDB，sql5.7版本以后">
+    <meta name="description" content="Java集合Collection体系  Map体系  数据库MySql的系统框架连接池起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。 后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。 SQL解析&#x2F;优化SQL接口：接受sql文件。 SQL解析器：解析sql语句。 SQL优化器：调整sql语句执行顺序，配合索引等进行优化。 存储">
 <meta property="og:type" content="article">
 <meta property="og:title" content="INTERVIEW">
 <meta property="og:url" content="http://example.com/2022/11/17/INTERVIEW/index.html">
 <meta property="og:site_name" content="PPStudy">
-<meta property="og:description" content="数据库MySql的系统框架连接池起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。 后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。 SQL解析&#x2F;优化SQL接口：接受sql文件。 SQL解析器：解析sql语句。 SQL优化器：调整sql语句执行顺序，配合索引等进行优化。 存储引擎MyISAM或者InnoDB，sql5.7版本以后">
+<meta property="og:description" content="Java集合Collection体系  Map体系  数据库MySql的系统框架连接池起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。 后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。 SQL解析&#x2F;优化SQL接口：接受sql文件。 SQL解析器：解析sql语句。 SQL优化器：调整sql语句执行顺序，配合索引等进行优化。 存储">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Collection%E4%BD%93%E7%B3%BB.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Map%E4%BD%93%E7%B3%BB.jpeg?raw=true">
 <meta property="og:image" content="https://cdn.jsdeliver.net/gh/PanyuHaa/PicGo/img/Screen%20Shot%202022-11-17%20at%2018.21.29.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-18%20at%2019.48.37.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-18%20at%2020.05.31.png">
@@ -30,18 +32,26 @@
 <meta property="og:image" content="http://example.com/Users/peterpan/Desktop/Screen%20Shot%202022-11-18%20at%2020.21.36.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-18%20at%2020.27.21.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-19%20at%2012.06.52.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2009.52.25.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2009.53.46.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2009.54.41.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2009.55.31.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2010.00.27.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-19%20at%2016.05.43.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/image-20221119162231298.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/738439/1663979614062-f3219a07-0815-4b0d-9b63-750219d9e59c.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/738439/1663979628031-1ccb8eb9-5da0-46d5-a16a-01f6724c2ee1.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/738439/1663979639394-8eb65a8f-5905-473d-90d8-47cba7c58ae5.png">
 <meta property="og:image" content="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fguide-blog-images.oss-cn-shenzhen.aliyuncs.com%2Fgithub%2Fjavaguide%2Fdatabase%2Fredis%2Fredis-cluster%2Fredis-cluster-shard.png&amp;sign=33a67ec08ad62aa857bafa46a651b091322094cb5ebd49722d3e45d87d76a619">
+<meta property="og:image" content="https://raw.githubusercontent.com/csunny/etcd-from-arch-to-souce-code/master/_asserts/images/cap.jpg">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-20%20at%2010.34.25.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-20%20at%2010.34.51.png">
 <meta property="article:published_time" content="2022-11-17T02:21:22.000Z">
-<meta property="article:modified_time" content="2022-11-19T09:16:21.420Z">
+<meta property="article:modified_time" content="2022-11-21T03:00:24.534Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Back-End Engineer">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdeliver.net/gh/PanyuHaa/PicGo/img/Screen%20Shot%202022-11-17%20at%2018.21.29.png">
+<meta name="twitter:image" content="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Collection%E4%BD%93%E7%B3%BB.jpeg?raw=true">
   
   
   <title>INTERVIEW - PPStudy</title>
@@ -213,7 +223,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.5k 字
+      8.3k 字
     </span>
   
 
@@ -222,7 +232,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      55 分钟
+      70 分钟
     </span>
   
 
@@ -254,7 +264,11 @@
             <h1 style="display: none">INTERVIEW</h1>
             
             <div class="markdown-body">
-              <h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="MySql的系统框架"><a href="#MySql的系统框架" class="headerlink" title="MySql的系统框架"></a>MySql的系统框架</h2><h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><p>起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。</p>
+              <h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><p><strong>Collection体系</strong></p>
+<p><img src="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Collection%E4%BD%93%E7%B3%BB.jpeg?raw=true" srcset="/img/loading.gif" lazyload alt="Collection体系.jpeg"></p>
+<p><strong>Map体系</strong></p>
+<p><img src="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Map%E4%BD%93%E7%B3%BB.jpeg?raw=true" srcset="/img/loading.gif" lazyload alt="Map体系.jpeg"></p>
+<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="MySql的系统框架"><a href="#MySql的系统框架" class="headerlink" title="MySql的系统框架"></a>MySql的系统框架</h2><h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><p>起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。</p>
 <p>后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。</p>
 <h3 id="SQL解析-优化"><a href="#SQL解析-优化" class="headerlink" title="SQL解析/优化"></a>SQL解析/优化</h3><p>SQL接口：接受sql文件。</p>
 <p>SQL解析器：解析sql语句。</p>
@@ -330,6 +344,34 @@
 <p>null值列表用8位为单位去统计对应行列的信息，看起来是倒置的因为低位在右侧。</p>
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-19 at 12.06.52.png" srcset="/img/loading.gif" lazyload alt="dynamic数据行"> </p>
 <p>剩下的看原视频</p>
+<h2 id="MySql-为什么要有索引"><a href="#MySql-为什么要有索引" class="headerlink" title="MySql 为什么要有索引"></a>MySql 为什么要有索引</h2><h3 id="索引的问题"><a href="#索引的问题" class="headerlink" title="索引的问题"></a>索引的问题</h3><p>首先我们采用红黑树（一种自适应平衡二叉树）来构造索引，那么我们索引值就很容易了，从原来的4000次变成了log2（4000）= 11次的IO操作。二分查找的时间复杂度就是log2^(N)。</p>
+<p>为了减少IO操作所造成的磁头转换让资源开销变大，使用了B树或者B+树（多插树）来存储可以降低很多层。少了层树就减少了IO开销。</p>
+<p>B树有顺序，所以内部每一层也是用的二叉树。</p>
+<p>B树有个缺点就是</p>
+<ul>
+<li>无法批量查找</li>
+<li>查询效率不稳定</li>
+<li>树高度还有下降空间</li>
+</ul>
+<h2 id="MySql-B-树索引"><a href="#MySql-B-树索引" class="headerlink" title="MySql B+树索引"></a>MySql B+树索引</h2><h3 id="磁盘原理"><a href="#磁盘原理" class="headerlink" title="磁盘原理"></a>磁盘原理</h3><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.52.25.png" srcset="/img/loading.gif" lazyload alt="磁盘原理"></p>
+<p>因为频繁的利用数据所以我们不一次提取4kb，而一次提取8kb，这样效率更高。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.53.46.png" srcset="/img/loading.gif" lazyload alt="Screen Shot 2022-11-21 at 09.53.46"></p>
+<h3 id="树节点-“页”"><a href="#树节点-“页”" class="headerlink" title="树节点 = “页”"></a>树节点 = “页”</h3><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.54.41.png" srcset="/img/loading.gif" lazyload alt="树节点为页"></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.55.31.png" srcset="/img/loading.gif" lazyload alt="实际数据"></p>
+<h3 id="B-树的由来"><a href="#B-树的由来" class="headerlink" title="B+树的由来"></a>B+树的由来</h3><p>B树有个缺点就是</p>
+<ul>
+<li>无法批量查找</li>
+<li>查询效率不稳定</li>
+<li>树高度还有下降空间</li>
+</ul>
+<p><strong>无法批量查找：</strong></p>
+<p>叶子结点统一链接，形成单向链表。</p>
+<p><strong>查询效率不稳定：</strong></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 10.00.27.png" srcset="/img/loading.gif" lazyload alt="查询效率不稳定"></p>
+<p>是由于每次查找结束后都会返回头节点从新开始下一次搜索，这样你搜索的节点有可能在头也可能在叶子，效率很不稳定。</p>
+<p>解决办法：我们都将非叶子结点的数据都往下冗余一层，这样的话可以保证叶子结点包含所有的数据，查询都要到达底层。空间方面，我们在非叶子结点之间只存储指向下一个页的地址。</p>
+<p><strong>树高度还有下降空间：</strong></p>
+<p>解决办法：非叶子结点（目录结点）不再存储真实数据信息了，所以我们有了更多空间存储key和下一页地址空间，这样就变相的降低了树高。通常情况，一个16KB的”页“可以存储300～400个key和下一页地址空间的行。即使是2000w的数据，log以400为底，2000万的对数，log400（2000w）= 2.69 最多也就需要3层。  </p>
 <h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><h2 id="Redis缓存管理机制"><a href="#Redis缓存管理机制" class="headerlink" title="Redis缓存管理机制"></a>Redis缓存管理机制</h2><h3 id="淘汰策略"><a href="#淘汰策略" class="headerlink" title="淘汰策略"></a>淘汰策略</h3><p>由于缓存是有上限的，所以有了淘汰机制，最简单的淘汰机制就是定时删除。</p>
 <p>惰性删除，只有在查询到的时候才删除。</p>
 <p>定期删除对内存更加友好，惰性删除对 CPU 更加友好。两者各有千秋，所以 Redis 采用的是 <strong>定期删除+惰性/懒汉式删除</strong> 。 </p>
@@ -404,6 +446,39 @@
 <p>2、并发量要求太大。</p>
 <p>核心思想就是分摊压力，同样的效能给两个能干活的人一定是压力减半的。</p>
 <p><img src="https://www.yuque.com/api/filetransfer/images?url=https%3A%2F%2Fguide-blog-images.oss-cn-shenzhen.aliyuncs.com%2Fgithub%2Fjavaguide%2Fdatabase%2Fredis%2Fredis-cluster%2Fredis-cluster-shard.png&amp;sign=33a67ec08ad62aa857bafa46a651b091322094cb5ebd49722d3e45d87d76a619" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h1><h2 id="CAP基础"><a href="#CAP基础" class="headerlink" title="CAP基础"></a>CAP基础</h2><p><strong>一致性（Consistency）</strong>：等同于所有结点访问<strong>同一份</strong>【最新】的数据副本</p>
+<p><strong>可用性（Availability）</strong>：每次请求都能获取到<strong>非错</strong>的响应——但<strong>不能</strong>保证获取的数据为最新数据</p>
+<p><strong>分区容错性（Partition Tolerance）</strong>：以实际效果而言，分区相当于对通信的时限要求。系统如果不能在时限内达成数据一致性，就意味着发生了分区的情况，必须就当前操作在C和A之间做出选择。（简单解释：分区容忍性就是尽管任意数量的消息被节点间的网络<strong>丢失或延迟</strong>，系统仍然正常运行。</p>
+<p>对于一个分布式系统不可能同时满足以上三点。</p>
+<p><img src="https://raw.githubusercontent.com/csunny/etcd-from-arch-to-souce-code/master/_asserts/images/cap.jpg" srcset="/img/loading.gif" lazyload alt="CAP理论- ETCD源码剖析"></p>
+<p><strong>Q1:CAP的C和事务中的ACID的C一样吗？</strong></p>
+<p>A：不一样，因为CAP的C强调的是所有的分布式结点访问的都是<strong>最新</strong>的<strong>同一份</strong>数据。而事务中的ACID的C指的是事务前后的状态是一致的，比如说A转账给B，转移前后他俩的金钱总额不会改变。</p>
+<p><strong>一写（A可用性得到了保证）</strong></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-20 at 10.34.25.png" srcset="/img/loading.gif" lazyload alt="一写"></p>
+<p><strong>三写（C一致性得到了保证）</strong></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-20 at 10.34.51.png" srcset="/img/loading.gif" lazyload alt="三写"></p>
+<h2 id="CAP的现实用例"><a href="#CAP的现实用例" class="headerlink" title="CAP的现实用例"></a>CAP的现实用例</h2><p><strong>在分布式环境下，P一定是存在的，一旦出现了网络分区，那么一致性和可用性就一定要抛弃一个。</strong></p>
+<p>对于NoSql数据库，更加注重可用性，比如redis，所以这是一个AP系统。</p>
+<p>对于分布式关系行数据库，必须要保证一致性，比如mysql，所以这是一个CP系统。</p>
+<p>但分布式关系型数据库仍有高可用性需求，虽然达不到CAP理论中的100%可用性，但一般都具备五个9（99.999%）以上的高可用。</p>
+<p>我们可以把分布式关系型数据库看作<strong>CP+HA</strong>的系统（CP就是一致性数据库，HA就是高可用性集群，如哨兵机制实现的主从关系）。由此产生了两个广泛应用的指标。</p>
+<p><strong>RPO（Recovery Point Objective）</strong>：恢复点目标，指数据库在灾难发生后会丢失多长时间的数据。分布式关系型数据库RPO=0。</p>
+<p><strong>RTO（Recovery Time Objective）</strong>：恢复时间目标，指数据库在灾难发生后到整个系统恢复正常所需要的时间。分布式关系行数据库RTO&lt;几分钟。</p>
+<h2 id="CAP视角看较成熟的分布式方案"><a href="#CAP视角看较成熟的分布式方案" class="headerlink" title="CAP视角看较成熟的分布式方案"></a>CAP视角看较成熟的分布式方案</h2><p><strong>Quorum Replication</strong> </p>
+<p>详解 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/232351178">https://zhuanlan.zhihu.com/p/232351178</a></p>
+<ul>
+<li>N（副本数），W（写入成功副本数），R（读取成功副本数）</li>
+<li>W + R &gt; N，永远都有一个副本是最新且正确的，即最少的情况是 W + R = N + 1，这个1就是至少多出来的，如果说没有重合的地方，那么他们就不会大于N。</li>
+<li>N = 3， W = 1， R = 3（写可用AP，读一致CP）</li>
+<li>N = 3， W = 3， R = 1（写一致CP，读可用AP）</li>
+</ul>
+<p><strong>共识算法</strong></p>
+<ul>
+<li><p>副本之间有交互，leader提供读写，leader宕了选一个新leader，只有选举的短暂过程不可用</p>
+</li>
+<li><p>CP + HA</p>
+</li>
+</ul>
 
             </div>
             <hr>
