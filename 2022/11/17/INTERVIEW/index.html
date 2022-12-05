@@ -16,15 +16,21 @@
   <meta name="author" content="Peter Pan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Java集合Collection体系  Map体系  数据库MySql的系统框架连接池起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。 后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。 SQL解析&#x2F;优化SQL接口：接受sql文件。 SQL解析器：解析sql语句。 SQL优化器：调整sql语句执行顺序，配合索引等进行优化。 存储">
+    <meta name="description" content="Java集合Collection体系  Map体系  JVM内存结构 堆（heap）： 栈（stack）： 程序计数器（pc register)：记录程序执行到哪里 方法区：运行时常量池，类信息。  方法区是jvm抽象的规范。 永久代（permgen）是堆空间的一部分 1.8以后  元空间（metaspcae）独立出来空间，使用的本地内存，理论上系统内存有多大元空间就多大。 本地方法栈（nativ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="INTERVIEW">
 <meta property="og:url" content="http://example.com/2022/11/17/INTERVIEW/index.html">
 <meta property="og:site_name" content="PPStudy">
-<meta property="og:description" content="Java集合Collection体系  Map体系  数据库MySql的系统框架连接池起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。 后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。 SQL解析&#x2F;优化SQL接口：接受sql文件。 SQL解析器：解析sql语句。 SQL优化器：调整sql语句执行顺序，配合索引等进行优化。 存储">
+<meta property="og:description" content="Java集合Collection体系  Map体系  JVM内存结构 堆（heap）： 栈（stack）： 程序计数器（pc register)：记录程序执行到哪里 方法区：运行时常量池，类信息。  方法区是jvm抽象的规范。 永久代（permgen）是堆空间的一部分 1.8以后  元空间（metaspcae）独立出来空间，使用的本地内存，理论上系统内存有多大元空间就多大。 本地方法栈（nativ">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Collection%E4%BD%93%E7%B3%BB.jpeg?raw=true">
 <meta property="og:image" content="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Map%E4%BD%93%E7%B3%BB.jpeg?raw=true">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-22%20at%2010.25.43.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-22%20at%2010.20.52.png">
+<meta property="og:image" content="https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/java/jvm/java-runtime-data-areas-jdk1.8.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-23%20at%2010.42.21.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-23%20at%2010.46.01.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-23%20at%2010.54.38.png">
 <meta property="og:image" content="https://cdn.jsdeliver.net/gh/PanyuHaa/PicGo/img/Screen%20Shot%202022-11-17%20at%2018.21.29.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-18%20at%2019.48.37.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-18%20at%2020.05.31.png">
@@ -37,6 +43,7 @@
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2009.54.41.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2009.55.31.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-21%20at%2010.00.27.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-23%20at%2010.26.02.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-19%20at%2016.05.43.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/image-20221119162231298.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/738439/1663979614062-f3219a07-0815-4b0d-9b63-750219d9e59c.png">
@@ -47,7 +54,7 @@
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-20%20at%2010.34.25.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-11-20%20at%2010.34.51.png">
 <meta property="article:published_time" content="2022-11-17T02:21:22.000Z">
-<meta property="article:modified_time" content="2022-11-21T03:00:24.534Z">
+<meta property="article:modified_time" content="2022-11-24T02:49:04.079Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Back-End Engineer">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +230,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.3k 字
+      9k 字
     </span>
   
 
@@ -232,7 +239,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      70 分钟
+      76 分钟
     </span>
   
 
@@ -268,21 +275,40 @@
 <p><img src="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Collection%E4%BD%93%E7%B3%BB.jpeg?raw=true" srcset="/img/loading.gif" lazyload alt="Collection体系.jpeg"></p>
 <p><strong>Map体系</strong></p>
 <p><img src="https://github.com/gorhaf/2021-Java-Collection-Tutorial/blob/main/part01/Map%E4%BD%93%E7%B3%BB.jpeg?raw=true" srcset="/img/loading.gif" lazyload alt="Map体系.jpeg"></p>
-<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="MySql的系统框架"><a href="#MySql的系统框架" class="headerlink" title="MySql的系统框架"></a>MySql的系统框架</h2><h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><p>起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。</p>
+<h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><h2 id="内存结构"><a href="#内存结构" class="headerlink" title="内存结构"></a>内存结构</h2><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-22 at 10.25.43.png" srcset="/img/loading.gif" lazyload alt="jvm"></p>
+<p><strong>堆（heap）</strong>：</p>
+<p><strong>栈（stack）</strong>：</p>
+<p><strong>程序计数器（pc register)</strong>：记录程序执行到哪里</p>
+<p><strong>方法区</strong>：运行时常量池，类信息。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-22 at 10.20.52.png" srcset="/img/loading.gif" lazyload alt="方法区"></p>
+<p>方法区是jvm抽象的规范。</p>
+<p>永久代（permgen）是堆空间的一部分</p>
+<p><strong>1.8以后</strong></p>
+<p><img src="https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/java/jvm/java-runtime-data-areas-jdk1.8.png" srcset="/img/loading.gif" lazyload alt="Java 运行时数据区域（JDK1.8 之后）"></p>
+<p>元空间（metaspcae）独立出来空间，使用的本地内存，理论上系统内存有多大元空间就多大。</p>
+<p><strong>本地方法栈（native method stack）</strong>：本地方法，其他语言编写的，java运行的。native关键字标记的，比如<code>thread.sleep()</code>。</p>
+<h2 id="Java中jvm虚拟机栈"><a href="#Java中jvm虚拟机栈" class="headerlink" title="Java中jvm虚拟机栈"></a>Java中jvm虚拟机栈</h2><p>jvm内存结构</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-23 at 10.42.21.png" srcset="/img/loading.gif" lazyload alt="jvm虚拟机栈"></p>
+<p>虚拟机栈</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-23 at 10.46.01.png" srcset="/img/loading.gif" lazyload alt="栈"></p>
+<p>对象方法之间的调用通过栈，这样弹出栈顶（也就是gc不要的对象），所以jvm以方法作为最基本的执行单位，一个方法对应一个栈帧。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-23 at 10.54.38.png" srcset="/img/loading.gif" lazyload alt="对应解释"></p>
+<p>具体看视频例子<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ET4y1Z711/?spm_id_from=333.999.0.0&amp;vd_source=77c4f2aaa0a307827d6898104835a353">https://www.bilibili.com/video/BV1ET4y1Z711/?spm_id_from=333.999.0.0&amp;vd_source=77c4f2aaa0a307827d6898104835a353</a></p>
+<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="原理-结构"><a href="#原理-结构" class="headerlink" title="原理+结构"></a>原理+结构</h2><h3 id="MySql的系统框架"><a href="#MySql的系统框架" class="headerlink" title="MySql的系统框架"></a>MySql的系统框架</h3><h4 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h4><p>起初：通过对接模块和连接驱动进行连接，然后频繁的断开和连接相当于网络的疯狂IO，非常浪费资源。</p>
 <p>后来：连接池的出现解决了这个问题，可以设置最大连接数量，单词最大数据报文。</p>
-<h3 id="SQL解析-优化"><a href="#SQL解析-优化" class="headerlink" title="SQL解析/优化"></a>SQL解析/优化</h3><p>SQL接口：接受sql文件。</p>
+<h4 id="SQL解析-优化"><a href="#SQL解析-优化" class="headerlink" title="SQL解析/优化"></a>SQL解析/优化</h4><p>SQL接口：接受sql文件。</p>
 <p>SQL解析器：解析sql语句。</p>
 <p>SQL优化器：调整sql语句执行顺序，配合索引等进行优化。</p>
-<h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><p>MyISAM或者InnoDB，sql5.7版本以后开始默认为InnoDB。</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>安全、恢复、集群、缓存</p>
-<h2 id="MySql数据写入原理"><a href="#MySql数据写入原理" class="headerlink" title="MySql数据写入原理"></a>MySql数据写入原理</h2><p>InnoDB引擎简介：事务控制、读写效率、多用户并发、索引搜索等众方面均很优秀。</p>
+<h4 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h4><p>MyISAM或者InnoDB，sql5.7版本以后开始默认为InnoDB。</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>安全、恢复、集群、缓存</p>
+<h3 id="MySql数据写入原理"><a href="#MySql数据写入原理" class="headerlink" title="MySql数据写入原理"></a>MySql数据写入原理</h3><p>InnoDB引擎简介：事务控制、读写效率、多用户并发、索引搜索等众方面均很优秀。</p>
 <p>通过内部的执行器对内存和磁盘中的数据进行写入或读取。</p>
 <p>1、sql语句优化，将优化后的执行计划传送给存储引擎</p>
 <p>2、执行器按照命令执行。内存的IO速度远大于磁盘，所以操作都在内存中执行，这个内存缓存区叫buffer pool。（为了方便回滚，将这些指令记录到Undo Log中。）</p>
 <p>写入分为两部分：提高写入速度（buffer pool），保证写入可靠性（redo log）</p>
 <p>总结：主要涉及到四大部分：执行器 <strong>—&gt;</strong> 内存（Buffer Pool，IO 线程， Redo Log Buffer） <strong>—&gt;</strong> 操作系统 &amp; 指令 <strong>—&gt;</strong> 磁盘（磁盘文件.ibd，Redo Log，Undo Log）</p>
-<h3 id="Buffer-Pool"><a href="#Buffer-Pool" class="headerlink" title="Buffer Pool"></a>Buffer Pool</h3><p>作为一个数据的缓冲区提高读写效率，然后再用另外一个IO线程统一写入磁盘文件，以.ibd为结尾。</p>
-<h3 id="Redo-Log"><a href="#Redo-Log" class="headerlink" title="Redo Log"></a>Redo Log</h3><p>会将“更新写入信息”放入内存中的另一个区域<strong>Redo Log Buffer</strong>，在进行刷盘，刷盘策略有三种。这个Redo Log Buffer就是用户态内存？然后所以需要先写入到系统内存中再操作磁盘文件。</p>
+<h4 id="Buffer-Pool"><a href="#Buffer-Pool" class="headerlink" title="Buffer Pool"></a>Buffer Pool</h4><p>作为一个数据的缓冲区提高读写效率，然后再用另外一个IO线程统一写入磁盘文件，以.ibd为结尾。</p>
+<h4 id="Redo-Log"><a href="#Redo-Log" class="headerlink" title="Redo Log"></a>Redo Log</h4><p>会将“更新写入信息”放入内存中的另一个区域<strong>Redo Log Buffer</strong>，在进行刷盘，刷盘策略有三种。这个Redo Log Buffer就是用户态内存？然后所以需要先写入到系统内存中再操作磁盘文件。</p>
 <ul>
 <li><strong>0</strong> ：设置为 0 的时候，表示每次事务<strong>提交时不进行</strong>刷盘操作</li>
 </ul>
@@ -301,12 +327,12 @@
 <p>​                如果仅仅只是<code>MySQL</code>挂了不会有任何数据丢失，但是宕机可能会有<code>1</code>秒数据的丢失。</p>
 <p>​                （不主动刷盘，只记录在了文件系统缓冲中，所以不宕机就还能继续又后台线程刷盘写入）</p>
 <p>整体分为，提交事务后做动作（1和2），和不提交事务也提交。1和2的区别是策略2是提交的时候先放入buffer中，这样降低了数据的损失为1s，降低了提交事务后的数据的丢失。而1不能够解决事务提交之后的数据损失，只能解决事务运行时的。</p>
-<h3 id="Bin-Log"><a href="#Bin-Log" class="headerlink" title="Bin Log"></a>Bin Log</h3><p><img src="https://cdn.jsdeliver.net/gh/PanyuHaa/PicGo/img/Screen%20Shot%202022-11-17%20at%2018.21.29.png" srcset="/img/loading.gif" lazyload alt="执行原理"></p>
+<h4 id="Bin-Log"><a href="#Bin-Log" class="headerlink" title="Bin Log"></a>Bin Log</h4><p><img src="https://cdn.jsdeliver.net/gh/PanyuHaa/PicGo/img/Screen%20Shot%202022-11-17%20at%2018.21.29.png" srcset="/img/loading.gif" lazyload alt="执行原理"></p>
 <p><code>redo log</code>（重做日志）让<code>InnoDB</code>存储引擎拥有了<strong>崩溃恢复</strong>能力。</p>
 <p><code>binlog</code>（归档日志）保证了<code>MySQL</code>集群架构的数据<strong>一致性</strong>。</p>
 <p>虽然它们都属于持久化的保证，但是侧重点不同。</p>
 <p>在执行更新语句过程，会记录<code>redo log</code>与<code>binlog</code>两块日志，以<strong>基本的事务为单位</strong>，<code>redo log</code>在事务执行过程中可以不断写入，而<code>binlog</code>只有在提交事务时才写入，所以<code>redo log</code>与<code>binlog</code>的写入时机不一样。</p>
-<h2 id="MySql的存储结构"><a href="#MySql的存储结构" class="headerlink" title="MySql的存储结构"></a>MySql的存储结构</h2><p>主要在磁盘和内存中，使用内存的原因是为了提升读写速度。</p>
+<h3 id="MySql的存储结构"><a href="#MySql的存储结构" class="headerlink" title="MySql的存储结构"></a>MySql的存储结构</h3><p>主要在磁盘和内存中，使用内存的原因是为了提升读写速度。</p>
 <p>创建文件，t.frm 存储表结构等信息，t.ibd 表空间（存储数据和索引），5.7以后才生成独立表空间。独立表空间可以传输和压缩。</p>
 <p><strong>页</strong>，InnoDB中内存和磁盘交互的最小存储单元。页内部的地址是连续的，因为通常要查的数据都会连续存在（固定大小16KB，与B+树的索引对应）。页是核心存储结构，其他的都是在他的基础上进行划分。</p>
 <p><strong>行</strong>，记录数据行的具体数据，最大8KB。</p>
@@ -316,18 +342,18 @@
 <p>避免浪费空间，新创建表的时候只会创建6个页，16*6 共 96KB，8.0版本后会创建7个页，零散的页会放在表空间中一个叫碎片区的地方，前四个分别记录了表空间和区组条目信息，Change buffer相关信息，段信息，索引根信息，后两个页为空闲页（可用页）。经典到容量一半的时候进行扩容，增加一个完整的区。</p>
 <p><strong>组</strong>，管理256个区，即256M，区中的前四个信息页都是记录基础信息。</p>
 <p><strong>段</strong>，逻辑分区，区分不同功能的区和在碎片区中的页，就是段页式存储的那个段，叶子结点段（存储和管理实际数据），非叶子结点段（存储和管理索引树）。非叶子结点段+叶子结点段组成独立表空间，即t.ibd</p>
-<h2 id="MySql的执行原理"><a href="#MySql的执行原理" class="headerlink" title="MySql的执行原理"></a>MySql的执行原理</h2><h3 id="发出请求"><a href="#发出请求" class="headerlink" title="发出请求"></a>发出请求</h3><p>连接驱动（ORM）和连接池之间是半双工的。查询语句如果超过了mysql连接池设定的数据包上限，那么就会拒绝接受。</p>
-<h3 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h3><p>Map结构，key是sql语句，value是查询结果。5.7版本默认关闭，8.0版本直接删除了。每次都要先查询一下缓存，命中率低的话就会占用很多空间，还有速度慢，反而效率降低。</p>
-<h3 id="SQL解析器"><a href="#SQL解析器" class="headerlink" title="SQL解析器"></a>SQL解析器</h3><p>词法分析 sql/sql_lex.cc。拆分成关键字和非关键字。</p>
+<h3 id="MySql的执行原理"><a href="#MySql的执行原理" class="headerlink" title="MySql的执行原理"></a>MySql的执行原理</h3><h4 id="发出请求"><a href="#发出请求" class="headerlink" title="发出请求"></a>发出请求</h4><p>连接驱动（ORM）和连接池之间是半双工的。查询语句如果超过了mysql连接池设定的数据包上限，那么就会拒绝接受。</p>
+<h4 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h4><p>Map结构，key是sql语句，value是查询结果。5.7版本默认关闭，8.0版本直接删除了。每次都要先查询一下缓存，命中率低的话就会占用很多空间，还有速度慢，反而效率降低。</p>
+<h4 id="SQL解析器"><a href="#SQL解析器" class="headerlink" title="SQL解析器"></a>SQL解析器</h4><p>词法分析 sql/sql_lex.cc。拆分成关键字和非关键字。</p>
 <p>bison语法分析器 sql/sql_yacc.cc。sql就被解析成一颗语法树。</p>
-<h3 id="预处理器"><a href="#预处理器" class="headerlink" title="预处理器"></a>预处理器</h3><p>提交SQL模版语句，提交参数进行执行。这样可以复用模版，一种多路复用的思想。</p>
-<h3 id="SQL优化器"><a href="#SQL优化器" class="headerlink" title="SQL优化器"></a>SQL优化器</h3><p>CBO，运用成本最低的方式执行sql语句。成本指的是体内的数据表、数据量、索引等等信息算出来SQL语句对应的IO成本消耗值和CPU成本消耗值。</p>
+<h4 id="预处理器"><a href="#预处理器" class="headerlink" title="预处理器"></a>预处理器</h4><p>提交SQL模版语句，提交参数进行执行。这样可以复用模版，一种多路复用的思想。</p>
+<h4 id="SQL优化器"><a href="#SQL优化器" class="headerlink" title="SQL优化器"></a>SQL优化器</h4><p>CBO，运用成本最低的方式执行sql语句。成本指的是体内的数据表、数据量、索引等等信息算出来SQL语句对应的IO成本消耗值和CPU成本消耗值。</p>
 <p>有个优化轨迹的工具Optimizer_trace，展示任意一条语句的优化，记得关闭。</p>
-<h3 id="执行器"><a href="#执行器" class="headerlink" title="执行器"></a>执行器</h3><p>执行器为每一个表创建一个Handler实例。优化器根据实例来获取表的信息。将执行计划送给存储引擎，然后返回结果</p>
+<h4 id="执行器"><a href="#执行器" class="headerlink" title="执行器"></a>执行器</h4><p>执行器为每一个表创建一个Handler实例。优化器根据实例来获取表的信息。将执行计划送给存储引擎，然后返回结果</p>
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-18 at 19.48.37.png" srcset="/img/loading.gif" lazyload alt="Screen Shot 2022-11-18 at 19.48.37"></p>
-<h2 id="MySql的运行原理"><a href="#MySql的运行原理" class="headerlink" title="MySql的运行原理"></a>MySql的运行原理</h2><h3 id="存储引擎InnoDB"><a href="#存储引擎InnoDB" class="headerlink" title="存储引擎InnoDB"></a>存储引擎InnoDB</h3><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-18 at 20.05.31.png" srcset="/img/loading.gif" lazyload alt="mysql运行原理"></p>
-<h2 id="Mysql“页”结构解析"><a href="#Mysql“页”结构解析" class="headerlink" title="Mysql“页”结构解析"></a>Mysql“页”结构解析</h2><p>数据页（索引页）</p>
-<h3 id="页头、页尾"><a href="#页头、页尾" class="headerlink" title="页头、页尾"></a>页头、页尾</h3><p><strong>页头</strong>（校验和、页号、上页页号、下页页号、页类型、表空间ID，【最近一次修改的LSN，已被刷到磁盘的LSN，（日志序列号）】），里面包含了页之间关系，页自己的属性，还有具体存储的逻辑表空间的ID。</p>
+<h3 id="MySql的运行原理"><a href="#MySql的运行原理" class="headerlink" title="MySql的运行原理"></a>MySql的运行原理</h3><h4 id="存储引擎InnoDB"><a href="#存储引擎InnoDB" class="headerlink" title="存储引擎InnoDB"></a>存储引擎InnoDB</h4><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-18 at 20.05.31.png" srcset="/img/loading.gif" lazyload alt="mysql运行原理"></p>
+<h3 id="Mysql“页”结构解析"><a href="#Mysql“页”结构解析" class="headerlink" title="Mysql“页”结构解析"></a>Mysql“页”结构解析</h3><p>数据页（索引页）</p>
+<h4 id="页头、页尾"><a href="#页头、页尾" class="headerlink" title="页头、页尾"></a>页头、页尾</h4><p><strong>页头</strong>（校验和、页号、上页页号、下页页号、页类型、表空间ID，【最近一次修改的LSN，已被刷到磁盘的LSN，（日志序列号）】），里面包含了页之间关系，页自己的属性，还有具体存储的逻辑表空间的ID。</p>
 <p>ps：日志序号(LSN) <strong>表示从数据库日志文件开头开始计算的日志记录的位移（以字节计）</strong>。</p>
 <p><strong>页尾</strong>（校验和、最近一次修改的LSN）</p>
 <p>crc32作为校验和来拯救一些没有写入完成的数据。</p>
@@ -337,14 +363,14 @@
 <p><img src="/Users/peterpan/Desktop/Screen Shot 2022-11-18 at 20.21.36.png" srcset="/img/loading.gif" lazyload alt="Screen Shot 2022-11-18 at 20.21.36"></p>
 <p>最小行和最大行用来制作一个可控的循环链表。</p>
 <p>数据区分为用户区和空闲区。</p>
-<h3 id="页目录"><a href="#页目录" class="headerlink" title="页目录"></a>页目录</h3><p>这部分建议看原视频。<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1pG4y1o7n3/?spm_id_from=333.788&amp;vd_source=77c4f2aaa0a307827d6898104835a353">https://www.bilibili.com/video/BV1pG4y1o7n3/?spm_id_from=333.788&amp;vd_source=77c4f2aaa0a307827d6898104835a353</a></p>
-<h3 id="数据页头"><a href="#数据页头" class="headerlink" title="数据页头"></a>数据页头</h3><p>用来记录该页的所有基础信息，实时统计。</p>
+<h4 id="页目录"><a href="#页目录" class="headerlink" title="页目录"></a>页目录</h4><p>这部分建议看原视频。<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1pG4y1o7n3/?spm_id_from=333.788&amp;vd_source=77c4f2aaa0a307827d6898104835a353">https://www.bilibili.com/video/BV1pG4y1o7n3/?spm_id_from=333.788&amp;vd_source=77c4f2aaa0a307827d6898104835a353</a></p>
+<h4 id="数据页头"><a href="#数据页头" class="headerlink" title="数据页头"></a>数据页头</h4><p>用来记录该页的所有基础信息，实时统计。</p>
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-18 at 20.27.21.png" srcset="/img/loading.gif" lazyload alt="数据页头"></p>
-<h2 id="Mysql-行结构"><a href="#Mysql-行结构" class="headerlink" title="Mysql 行结构"></a>Mysql 行结构</h2><p>行数据dynamic类型，分为额外信息和真实数据。</p>
+<h3 id="Mysql-行结构"><a href="#Mysql-行结构" class="headerlink" title="Mysql 行结构"></a>Mysql 行结构</h3><p>行数据dynamic类型，分为额外信息和真实数据。</p>
 <p>null值列表用8位为单位去统计对应行列的信息，看起来是倒置的因为低位在右侧。</p>
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-19 at 12.06.52.png" srcset="/img/loading.gif" lazyload alt="dynamic数据行"> </p>
 <p>剩下的看原视频</p>
-<h2 id="MySql-为什么要有索引"><a href="#MySql-为什么要有索引" class="headerlink" title="MySql 为什么要有索引"></a>MySql 为什么要有索引</h2><h3 id="索引的问题"><a href="#索引的问题" class="headerlink" title="索引的问题"></a>索引的问题</h3><p>首先我们采用红黑树（一种自适应平衡二叉树）来构造索引，那么我们索引值就很容易了，从原来的4000次变成了log2（4000）= 11次的IO操作。二分查找的时间复杂度就是log2^(N)。</p>
+<h3 id="MySql-为什么要有索引"><a href="#MySql-为什么要有索引" class="headerlink" title="MySql 为什么要有索引"></a>MySql 为什么要有索引</h3><h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><p>首先我们采用红黑树（一种自适应平衡二叉树）来构造索引，那么我们索引值就很容易了，从原来的4000次变成了log2（4000）= 11次的IO操作。二分查找的时间复杂度就是log2^(N)。</p>
 <p>为了减少IO操作所造成的磁头转换让资源开销变大，使用了B树或者B+树（多插树）来存储可以降低很多层。少了层树就减少了IO开销。</p>
 <p>B树有顺序，所以内部每一层也是用的二叉树。</p>
 <p>B树有个缺点就是</p>
@@ -353,12 +379,12 @@
 <li>查询效率不稳定</li>
 <li>树高度还有下降空间</li>
 </ul>
-<h2 id="MySql-B-树索引"><a href="#MySql-B-树索引" class="headerlink" title="MySql B+树索引"></a>MySql B+树索引</h2><h3 id="磁盘原理"><a href="#磁盘原理" class="headerlink" title="磁盘原理"></a>磁盘原理</h3><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.52.25.png" srcset="/img/loading.gif" lazyload alt="磁盘原理"></p>
+<h3 id="MySql-B-树索引"><a href="#MySql-B-树索引" class="headerlink" title="MySql B+树索引"></a>MySql B+树索引</h3><h4 id="磁盘原理"><a href="#磁盘原理" class="headerlink" title="磁盘原理"></a>磁盘原理</h4><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.52.25.png" srcset="/img/loading.gif" lazyload alt="磁盘原理"></p>
 <p>因为频繁的利用数据所以我们不一次提取4kb，而一次提取8kb，这样效率更高。</p>
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.53.46.png" srcset="/img/loading.gif" lazyload alt="Screen Shot 2022-11-21 at 09.53.46"></p>
-<h3 id="树节点-“页”"><a href="#树节点-“页”" class="headerlink" title="树节点 = “页”"></a>树节点 = “页”</h3><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.54.41.png" srcset="/img/loading.gif" lazyload alt="树节点为页"></p>
+<h4 id="树节点-“页”"><a href="#树节点-“页”" class="headerlink" title="树节点 = “页”"></a>树节点 = “页”</h4><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.54.41.png" srcset="/img/loading.gif" lazyload alt="树节点为页"></p>
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-21 at 09.55.31.png" srcset="/img/loading.gif" lazyload alt="实际数据"></p>
-<h3 id="B-树的由来"><a href="#B-树的由来" class="headerlink" title="B+树的由来"></a>B+树的由来</h3><p>B树有个缺点就是</p>
+<h4 id="B-树的由来"><a href="#B-树的由来" class="headerlink" title="B+树的由来"></a>B+树的由来</h4><p>B树有个缺点就是</p>
 <ul>
 <li>无法批量查找</li>
 <li>查询效率不稳定</li>
@@ -372,6 +398,14 @@
 <p>解决办法：我们都将非叶子结点的数据都往下冗余一层，这样的话可以保证叶子结点包含所有的数据，查询都要到达底层。空间方面，我们在非叶子结点之间只存储指向下一个页的地址。</p>
 <p><strong>树高度还有下降空间：</strong></p>
 <p>解决办法：非叶子结点（目录结点）不再存储真实数据信息了，所以我们有了更多空间存储key和下一页地址空间，这样就变相的降低了树高。通常情况，一个16KB的”页“可以存储300～400个key和下一页地址空间的行。即使是2000w的数据，log以400为底，2000万的对数，log400（2000w）= 2.69 最多也就需要3层。  </p>
+<h3 id="MySql中“聚簇索引”不是索引？"><a href="#MySql中“聚簇索引”不是索引？" class="headerlink" title="MySql中“聚簇索引”不是索引？"></a>MySql中“聚簇索引”不是索引？</h3><p>如果表里没有主键，则将表里第一个唯一索引作为主键。如果都没有那么会自动弄一个自增序列作为聚簇索引。</p>
+<h2 id="MySql高频面试题"><a href="#MySql高频面试题" class="headerlink" title="MySql高频面试题"></a>MySql高频面试题</h2><h3 id="Q001-varchar字段长度有上限吗？为什么是奇怪的16383？"><a href="#Q001-varchar字段长度有上限吗？为什么是奇怪的16383？" class="headerlink" title="Q001. varchar字段长度有上限吗？为什么是奇怪的16383？"></a>Q001. varchar字段长度有上限吗？为什么是奇怪的16383？</h3><p>除了text、blob等无长度限制字段之外，其他列长度加起来不能超过64KB，即65535字节。</p>
+<p>按最大4字节一个字符算65535/4 = 16383个字符。</p>
+<p><strong>一个页也就16KB，一行数据就要占用4个页吗？</strong></p>
+<p>每个数据行不能超过页大小16KB的一半，大概8000多字节，多出来的放在溢出页（只针对个别字段）。</p>
+<p>每个页至少有两行。</p>
+<p>官网规定每个表最多4096个字段（列）。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-11-23 at 10.26.02.png" srcset="/img/loading.gif" lazyload alt="最多4096个字段"></p>
 <h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><h2 id="Redis缓存管理机制"><a href="#Redis缓存管理机制" class="headerlink" title="Redis缓存管理机制"></a>Redis缓存管理机制</h2><h3 id="淘汰策略"><a href="#淘汰策略" class="headerlink" title="淘汰策略"></a>淘汰策略</h3><p>由于缓存是有上限的，所以有了淘汰机制，最简单的淘汰机制就是定时删除。</p>
 <p>惰性删除，只有在查询到的时候才删除。</p>
 <p>定期删除对内存更加友好，惰性删除对 CPU 更加友好。两者各有千秋，所以 Redis 采用的是 <strong>定期删除+惰性/懒汉式删除</strong> 。 </p>
@@ -512,6 +546,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/11/22/community-project/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">community-project</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
