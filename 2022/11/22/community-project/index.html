@@ -51,7 +51,7 @@
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-01%20at%2017.12.06.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-01%20at%2017.17.55.png">
 <meta property="article:published_time" content="2022-11-22T03:01:35.000Z">
-<meta property="article:modified_time" content="2022-12-05T08:10:21.784Z">
+<meta property="article:modified_time" content="2022-12-06T09:25:06.815Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Java-Project">
 <meta name="twitter:card" content="summary_large_image">
@@ -227,7 +227,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      18k 字
+      21k 字
     </span>
   
 
@@ -236,7 +236,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      151 分钟
+      175 分钟
     </span>
   
 
@@ -680,6 +680,60 @@
 <p>​    处理“查询关注的人”、“查询粉丝”请求。</p>
 <p>​    编写“查询关注的人”、“查询粉丝”模版。</p>
 <p>zSet对比Set可以排序，可以按照关注的时间进行排序（因为本身默认从高到低就是越新的越高，越靠前），所以取出来的就是这样正确的排行。之前我go写的那个是用默认id来判断的，其实也可以哈哈哈哈我很聪明。</p>
+<h2 id="优化登陆模块"><a href="#优化登陆模块" class="headerlink" title="优化登陆模块"></a>优化登陆模块</h2><p>使用Redis存储验证码</p>
+<p>​    验证码需要频繁的访问与刷新，对性能要求较高</p>
+<p>​    验证码不需永久保存，通常在很短的时间后就会失效（session不能失效）</p>
+<p>​    分布式部署时，存在session问题</p>
+<p>使用Redis存储登陆凭证</p>
+<p>​    处理每次请求时，都要查询用户的登录凭证，访问的频率非常高（原来是mysql里面，压力大）</p>
+<p>使用Redis缓存用户信息</p>
+<p>​    处理每次请求时，都要根据凭证查询用户信息，访问的频率非常高（用户信息，每次在mysql里面，压力大）</p>
+<ul>
+<li>Cookie保存在客户端浏览器，Session保存在服务器。</li>
+<li>Cookie可以设置过期时间。<ul>
+<li><strong>如果Cookie不包含到期日期，则可视为会话Cookie（Session Cookie）</strong>。会话Cookie存储在客户端的内存（浏览器占用的内存）中，决不会写入磁盘。当浏览器关闭时，Cookie将从此永久丢失。</li>
+<li><strong>如果Cookie包含到期日期，则可视为持久性Cookie，存储在客户端的磁盘中</strong>。在指定的到期日期，Cookie将从磁盘中删除。</li>
+</ul>
+</li>
+<li><strong>客户端请求服务端时，如果客户端的Cookie中没有当前会话的SessionId，则服务端会新分配一个Session，同时通过算法生成一个唯一的（不重复的）sessionId，并将与该Session对应的SessionId存到Cookie中发回给客户端浏览器。</strong></li>
+<li>由于大部分的网站在发回SessionId时使用了会话Cookie（即没有设置过期时间），导致该Cookie存在客户端内存中，所以关闭浏览器即丢失了SessionId信息，再次访问服务端时才找不到对应的Session，于是才有了“关闭浏览器则Session过期”的说法！</li>
+<li>服务端在保存Session时也可以设置该Session的过期时间，服务端的Web服务容器通常也有一个默认的过期时间。若访问服务器后，保持不关闭浏览器一段时间，超过Session过期时间后再次访问，会发现依然Session过期找不到了（比如表现为跳转到登录页面），则是“没有关浏览器但Session过期了”！</li>
+<li><strong>当（存放着SessionId的）Cookie和Session中两者有任一过期，即宣告会话过期。</strong></li>
+</ul>
+<p><strong>验证码：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 验证码的归属</span><br><span class="hljs-type">String</span> <span class="hljs-variable">kaptchaOwner</span> <span class="hljs-operator">=</span> CommunityUtil.generateUUID();<br><span class="hljs-type">Cookie</span> <span class="hljs-variable">cookie</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cookie</span>(<span class="hljs-string">&quot;kaptchaOwner&quot;</span>, kaptchaOwner);<br><span class="hljs-comment">// cookie 60s失效</span><br>cookie.setMaxAge(<span class="hljs-number">60</span>);<br><span class="hljs-comment">// cookie 生效的路径</span><br>cookie.setPath(contextPath);<br>response.addCookie(cookie);<br><span class="hljs-comment">// 将验证码存入Redis</span><br><span class="hljs-type">String</span> <span class="hljs-variable">redisKey</span> <span class="hljs-operator">=</span> RedisKeyUtil.getKaptchaKey(kaptchaOwner);<br><span class="hljs-comment">// redis中也是60s失效</span><br>redisTemplate.opsForValue().set(redisKey, text, <span class="hljs-number">60</span>, TimeUnit.SECONDS);<br></code></pre></td></tr></table></figure>
+<p>原来从session中取，现在从redis中取。原来是持久化到session中（maybe 有过期时间）现在是存在redis里面设置了过期时间，但不同的是redis的访问效率高。</p>
+<p>kaptchaOwner是一个用户的身份，由服务端颁发给浏览器的。它是密文的（如果裸露在外面你的user信息都不好），这样安全。</p>
+<p>其中“@Deprecated”意在——-这个方法或类不再建议使用。在新版本中有其他方法或类可以代替这个使用，以后的版本也不会再更新这个方法或类</p>
+<p>旁路缓存模式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 1.优先从缓存中取值</span><br><span class="hljs-keyword">private</span> User <span class="hljs-title function_">getCache</span><span class="hljs-params">(<span class="hljs-type">int</span> userId)</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">redisKey</span> <span class="hljs-operator">=</span> RedisKeyUtil.getUserKey(userId);<br>    <span class="hljs-keyword">return</span> (User) redisTemplate.opsForValue().get(redisKey);<br>&#125;<br><br><span class="hljs-comment">// 2.取不到时初始化缓存数据</span><br><span class="hljs-keyword">private</span> User <span class="hljs-title function_">initCache</span><span class="hljs-params">(<span class="hljs-type">int</span> userId)</span> &#123;<br>    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userMapper.selectById(userId);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">redisKey</span> <span class="hljs-operator">=</span> RedisKeyUtil.getUserKey(userId);<br>    redisTemplate.opsForValue().set(redisKey, user, <span class="hljs-number">3600</span>, TimeUnit.SECONDS);<br>    <span class="hljs-keyword">return</span> user;<br>&#125;<br><br><span class="hljs-comment">// 3.数据变更时清除缓存数据</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">clearCache</span><span class="hljs-params">(<span class="hljs-type">int</span> userId)</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">redisKey</span> <span class="hljs-operator">=</span> RedisKeyUtil.getUserKey(userId);<br>    redisTemplate.delete(redisKey);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>Q1: 关键来了，为什么要删除cache，而不是更新cache呢？</strong></p>
+<p>主要原因有两个：</p>
+<p><strong>1、对服务端资源造成浪费：</strong>删除cache更直接，第一，相比更新cache存放的一些数据需要服务端通过计算得出，会消耗服务端的资源（更新就会消耗计算资源，比如hash存储，你得计算他在哪个位置吧？）；第二呢，因为你这么更新同步的话很可能cache中的数据进入cache后还没有被访问的就已经被删除了，妥妥的浪费。</p>
+<p><strong>2、产生数据不一致的问题：</strong>并发场景下，更新cache产生数据不一致性问题的概率更大。</p>
+<p><strong>Q2: 在写数据的过程中，可以先删除cache后更新db吗？</strong></p>
+<p>不行的，因为数据的持久化是在db中做的，你要以db为标准，所以只有先更新了db以后，确认了某些数据更新了你才能删除之前的cache，这些cache才算是过去式了。</p>
+<p>举个例子，请求1先写数据A，请求2随后读数据A的话，就会产生不一致的问题。</p>
+<p>1、请求1先将cache中的A数据删除；</p>
+<p>2、请求2从db中读取数据；</p>
+<p>3、请求1再把db中的A数据更新；</p>
+<p>这会导致请求2读取到的是旧值。</p>
+<p><strong>Q3: 在写数据的过程中，先更新db，后删除cache就没有问题了吗？</strong></p>
+<p>理论上是会出现数据不一致，概率小，因为缓存的写入速度是比数据库的写入速度快很多。所以你先删了缓存没有用，你还是会刷新到旧值。</p>
+<p><strong>Q4: Cache Aside Pattern的缺陷</strong></p>
+<p><strong>缺陷1: 首次请求数据一定不在cache的问题</strong></p>
+<p>解决办法：将热点数据提前放入cache中（提前准备热点数据）</p>
+<p><strong>缺陷2: 写操作比较频繁的话导致cache中的数据会被频繁被删除，这样会影响缓存命中率</strong></p>
+<h1 id="Kafka，构建TB级异步消息系统"><a href="#Kafka，构建TB级异步消息系统" class="headerlink" title="Kafka，构建TB级异步消息系统"></a>Kafka，构建TB级异步消息系统</h1><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><p>BlockingQueue</p>
+<p>​    解决线程通信的问题</p>
+<p>​    阻塞方法：put、take</p>
+<p>生产者消费者模式</p>
+<p>​    生产者：产生数据的线程</p>
+<p>​    消息者：使用数据的线程</p>
+<p>实现类</p>
+<p>​    ArrayBlockingQueue</p>
+<p>​    LinkedBlockingQueue</p>
+<p>​    PriorityBlockingQueue、SynchronousQueue、DelayQueue等</p>
 
             </div>
             <hr>
