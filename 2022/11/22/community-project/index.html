@@ -16,12 +16,12 @@
   <meta name="author" content="Peter Pan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初识Spring Boot，开发社区首页Spring入门IoC：通过管理bean管理一切  IoC就是一个工厂 用户只需要配置bean之间的关系，实例化完全交由spring容器去做。bean的耦合就拆分了。 就是将bean独立出来，用注解来实现一个概括性的关系，这样就比如原来是一个教室里来很多人开会，教室也需要现场布置，所有的都需要重新设计，而IoC提供了会议室的场所，让大家来直接使用，我只需要让">
+    <meta name="description" content="第1章 初识Spring Boot，开发社区首页Spring入门IoC：通过管理bean管理一切  IoC就是一个工厂 用户只需要配置bean之间的关系，实例化完全交由spring容器去做。bean的耦合就拆分了。 就是将bean独立出来，用注解来实现一个概括性的关系，这样就比如原来是一个教室里来很多人开会，教室也需要现场布置，所有的都需要重新设计，而IoC提供了会议室的场所，让大家来直接使用，我">
 <meta property="og:type" content="article">
 <meta property="og:title" content="community-project">
 <meta property="og:url" content="http://example.com/2022/11/22/community-project/index.html">
 <meta property="og:site_name" content="PPStudy">
-<meta property="og:description" content="初识Spring Boot，开发社区首页Spring入门IoC：通过管理bean管理一切  IoC就是一个工厂 用户只需要配置bean之间的关系，实例化完全交由spring容器去做。bean的耦合就拆分了。 就是将bean独立出来，用注解来实现一个概括性的关系，这样就比如原来是一个教室里来很多人开会，教室也需要现场布置，所有的都需要重新设计，而IoC提供了会议室的场所，让大家来直接使用，我只需要让">
+<meta property="og:description" content="第1章 初识Spring Boot，开发社区首页Spring入门IoC：通过管理bean管理一切  IoC就是一个工厂 用户只需要配置bean之间的关系，实例化完全交由spring容器去做。bean的耦合就拆分了。 就是将bean独立出来，用注解来实现一个概括性的关系，这样就比如原来是一个教室里来很多人开会，教室也需要现场布置，所有的都需要重新设计，而IoC提供了会议室的场所，让大家来直接使用，我">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://docs.spring.io/spring-framework/docs/current/reference/html/images/container-magic.png">
 <meta property="og:image" content="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview/http-layers.png">
@@ -67,8 +67,34 @@
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-17%20at%2017.01.06.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-18%20at%2020.02.08.png">
 <meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-18%20at%2022.40.15.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-19%20at%2010.17.05.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-19%20at%2010.19.12.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-19%20at%2017.05.36.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-19%20at%2017.09.18.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-19%20at%2017.34.05.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-19%20at%2019.31.48.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-19%20at%2019.33.34.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.07.36.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.10.45.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.13.13.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.17.58.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.35.04.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.36.59.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.37.51.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Desktop/Screen%20Shot%202022-12-21%20at%2016.38.34.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.44.29.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.45.53.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.47.26.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.49.08.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.55.40.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.57.51.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2016.58.37.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2017.32.57.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2017.36.27.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2017.38.59.png">
+<meta property="og:image" content="http://example.com/Users/peterpan/Library/Application%20Support/typora-user-images/Screen%20Shot%202022-12-21%20at%2017.39.17.png">
 <meta property="article:published_time" content="2022-11-22T03:01:35.000Z">
-<meta property="article:modified_time" content="2022-12-18T14:45:16.381Z">
+<meta property="article:modified_time" content="2023-03-05T14:28:06.393Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Java-Project">
 <meta name="twitter:card" content="summary_large_image">
@@ -244,7 +270,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      27k 字
+      30k 字
     </span>
   
 
@@ -253,7 +279,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      227 分钟
+      251 分钟
     </span>
   
 
@@ -285,7 +311,7 @@
             <h1 style="display: none">community-project</h1>
             
             <div class="markdown-body">
-              <h1 id="初识Spring-Boot，开发社区首页"><a href="#初识Spring-Boot，开发社区首页" class="headerlink" title="初识Spring Boot，开发社区首页"></a>初识Spring Boot，开发社区首页</h1><h2 id="Spring入门"><a href="#Spring入门" class="headerlink" title="Spring入门"></a>Spring入门</h2><p>IoC：通过管理bean管理一切</p>
+              <h1 id="第1章-初识Spring-Boot，开发社区首页"><a href="#第1章-初识Spring-Boot，开发社区首页" class="headerlink" title="第1章 初识Spring Boot，开发社区首页"></a>第1章 初识Spring Boot，开发社区首页</h1><h2 id="Spring入门"><a href="#Spring入门" class="headerlink" title="Spring入门"></a>Spring入门</h2><p>IoC：通过管理bean管理一切</p>
 <p><img src="https://docs.spring.io/spring-framework/docs/current/reference/html/images/container-magic.png" srcset="/img/loading.gif" lazyload alt="container magic"></p>
 <p>IoC就是一个工厂</p>
 <p>用户只需要配置bean之间的关系，实例化完全交由spring容器去做。bean的耦合就拆分了。</p>
@@ -372,7 +398,7 @@
 <p><strong>远程仓库管理</strong>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">git remote add origin &#123;url以.git结尾&#125; <span class="hljs-comment"># 创建远程仓库</span><br>git push -u origin master<br>...<br></code></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>主要是有一个分页的知识，是通过mybatis自带的分页功能实现的，标记好offset和limit（起始和数量）就能实现</p>
-<h1 id="Spring-Boot实践，开发社区登录模块"><a href="#Spring-Boot实践，开发社区登录模块" class="headerlink" title="Spring Boot实践，开发社区登录模块"></a>Spring Boot实践，开发社区登录模块</h1><h2 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h2><p><strong>邮箱设置</strong>：</p>
+<h1 id="第2章-Spring-Boot实践，开发社区登录模块"><a href="#第2章-Spring-Boot实践，开发社区登录模块" class="headerlink" title="第2章 Spring Boot实践，开发社区登录模块"></a>第2章 Spring Boot实践，开发社区登录模块</h1><h2 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h2><p><strong>邮箱设置</strong>：</p>
 <p>​    启动客户端SMTP服务</p>
 <p><strong>Spring Email</strong>：</p>
 <p>​    导入 jar 包</p>
@@ -509,7 +535,7 @@
 <p>关于重定向：</p>
 <p>在controller方法里，通过返回以redirect开头的字符串实现重定向</p>
 <p>在拦截器中，通过response对象的sendRedirect方法实现重定向</p>
-<h1 id="Spring-Boot实践，开发社区核心功能"><a href="#Spring-Boot实践，开发社区核心功能" class="headerlink" title="Spring Boot实践，开发社区核心功能"></a>Spring Boot实践，开发社区核心功能</h1><h2 id="敏感词过滤"><a href="#敏感词过滤" class="headerlink" title="敏感词过滤"></a>敏感词过滤</h2><p>过滤敏感词</p>
+<h1 id="第3章-Spring-Boot实践，开发社区核心功能"><a href="#第3章-Spring-Boot实践，开发社区核心功能" class="headerlink" title="第3章 Spring Boot实践，开发社区核心功能"></a>第3章 Spring Boot实践，开发社区核心功能</h1><h2 id="敏感词过滤"><a href="#敏感词过滤" class="headerlink" title="敏感词过滤"></a>敏感词过滤</h2><p>过滤敏感词</p>
 <p>​    名称：Trie、字典树、查找树</p>
 <p>​    特点：查找效率高，消耗内存大</p>
 <p>​    应用：字符串检索、词频统计、字符串排序等</p>
@@ -635,7 +661,7 @@
 <p>Spring AOP限制了连接点必须是方法执行级别</p>
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-01 at 17.17.55.png" srcset="/img/loading.gif" lazyload alt="Spring AOP"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.nowcoder.community.aspect;<br><br><span class="hljs-keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;<br><span class="hljs-keyword">import</span> org.aspectj.lang.annotation.*;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-comment">//@Component</span><br><span class="hljs-comment">//@Aspect</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AlphaAspect</span> &#123;<br><br>    <span class="hljs-meta">@Pointcut(&quot;execution(* com.nowcoder.community.service.*.*(..))&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pointcut</span><span class="hljs-params">()</span> &#123;<br><br>    &#125;<br><br>    <span class="hljs-meta">@Before(&quot;pointcut()&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">before</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;before&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@After(&quot;pointcut()&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">after</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;after&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@AfterReturning(&quot;pointcut()&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterRetuning</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;afterRetuning&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@AfterThrowing(&quot;pointcut()&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterThrowing</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;afterThrowing&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Around(&quot;pointcut()&quot;)</span><br>    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">around</span><span class="hljs-params">(ProceedingJoinPoint joinPoint)</span> <span class="hljs-keyword">throws</span> Throwable &#123;<br>        System.out.println(<span class="hljs-string">&quot;around before&quot;</span>);<br>        <span class="hljs-type">Object</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> joinPoint.proceed();<br>        System.out.println(<span class="hljs-string">&quot;around after&quot;</span>);<br>        <span class="hljs-keyword">return</span> obj;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<h1 id="Redis，一站式高性能存储方案"><a href="#Redis，一站式高性能存储方案" class="headerlink" title="Redis，一站式高性能存储方案"></a>Redis，一站式高性能存储方案</h1><h2 id="Redis入门"><a href="#Redis入门" class="headerlink" title="Redis入门"></a>Redis入门</h2><p>Redis是一款基于键值对的NoSQL数据库，它的值支持多种数据结构：</p>
+<h1 id="第4章-Redis，一站式高性能存储方案"><a href="#第4章-Redis，一站式高性能存储方案" class="headerlink" title="第4章 Redis，一站式高性能存储方案"></a>第4章 Redis，一站式高性能存储方案</h1><h2 id="Redis入门"><a href="#Redis入门" class="headerlink" title="Redis入门"></a>Redis入门</h2><p>Redis是一款基于键值对的NoSQL数据库，它的值支持多种数据结构：</p>
 <p>字符串（strings）、哈希（hashes）、列表（lists）、集合（sets）、有序集合（sorted sets）等</p>
 <p>Redis将所有的数据都存放在内存中，所以它的读写性能十分惊人</p>
 <p>同时，Redis还可以将内存中的数据存放在内存中，所以的它的读写性能十分惊人</p>
@@ -741,7 +767,7 @@
 <p><strong>缺陷1: 首次请求数据一定不在cache的问题</strong></p>
 <p>解决办法：将热点数据提前放入cache中（提前准备热点数据）</p>
 <p><strong>缺陷2: 写操作比较频繁的话导致cache中的数据会被频繁被删除，这样会影响缓存命中率</strong></p>
-<h1 id="Kafka，构建TB级异步消息系统"><a href="#Kafka，构建TB级异步消息系统" class="headerlink" title="Kafka，构建TB级异步消息系统"></a>Kafka，构建TB级异步消息系统</h1><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><p>BlockingQueue</p>
+<h1 id="第5章-Kafka，构建TB级异步消息系统"><a href="#第5章-Kafka，构建TB级异步消息系统" class="headerlink" title="第5章 Kafka，构建TB级异步消息系统"></a>第5章 Kafka，构建TB级异步消息系统</h1><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><p>BlockingQueue</p>
 <p>​    解决线程通信的问题</p>
 <p>​    阻塞方法：put、take</p>
 <p>生产者消费者模式</p>
@@ -814,7 +840,7 @@
 <p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-08 at 19.31.17.png" srcset="/img/loading.gif" lazyload alt="三种通知"></p>
 <p>拦截器是切面在所有的handle中</p>
 <p>而AOP是切面在所有的代码中，不同的mvc层中</p>
-<h1 id="Elasticsearch，分布式搜索引擎"><a href="#Elasticsearch，分布式搜索引擎" class="headerlink" title="Elasticsearch，分布式搜索引擎"></a>Elasticsearch，分布式搜索引擎</h1><h2 id="Elasticsearch入门"><a href="#Elasticsearch入门" class="headerlink" title="Elasticsearch入门"></a>Elasticsearch入门</h2><p>Elasticsearch简介（可以看成一种带搜索引擎的数据库）</p>
+<h1 id="第6章-Elasticsearch，分布式搜索引擎"><a href="#第6章-Elasticsearch，分布式搜索引擎" class="headerlink" title="第6章 Elasticsearch，分布式搜索引擎"></a>第6章 Elasticsearch，分布式搜索引擎</h1><h2 id="Elasticsearch入门"><a href="#Elasticsearch入门" class="headerlink" title="Elasticsearch入门"></a>Elasticsearch入门</h2><p>Elasticsearch简介（可以看成一种带搜索引擎的数据库）</p>
 <p>​    一个分布式的、Restful风格的搜索引擎</p>
 <p>​    支持对各种类型的数据的检索</p>
 <p>​    搜索速度快，可以提供实时的搜索服务</p>
@@ -852,7 +878,7 @@
 <p>显示结果</p>
 <p>​    在控制器中处理搜索请求，在HTML上显示搜索结果</p>
 <p>评论和发帖子都会修改es里面的帖子的数据。</p>
-<h1 id="项目进阶，构建安全高效的企业服务"><a href="#项目进阶，构建安全高效的企业服务" class="headerlink" title="项目进阶，构建安全高效的企业服务"></a>项目进阶，构建安全高效的企业服务</h1><h2 id="Spring-Security"><a href="#Spring-Security" class="headerlink" title="Spring Security"></a>Spring Security</h2><p>简介</p>
+<h1 id="第7章-项目进阶，构建安全高效的企业服务"><a href="#第7章-项目进阶，构建安全高效的企业服务" class="headerlink" title="第7章 项目进阶，构建安全高效的企业服务"></a>第7章 项目进阶，构建安全高效的企业服务</h1><h2 id="Spring-Security"><a href="#Spring-Security" class="headerlink" title="Spring Security"></a>Spring Security</h2><p>简介</p>
 <p>​    Spring Security 是一个专注于为Java应用程序提供身份认证和授权的框架，它的强大之处在于它可以轻松扩展以满足自定义的需求</p>
 <p>特征</p>
 <p>​    对身份的认证和授权提供全面的、可扩展的支持。</p>
@@ -947,13 +973,76 @@
 <p>/setting里面有凭证，然后带着凭证uploadtoken发出去，通过前端的form来调用/header/url从而进行更新。</p>
 <h2 id="优化网站的性能"><a href="#优化网站的性能" class="headerlink" title="优化网站的性能"></a>优化网站的性能</h2><p>本地缓存</p>
 <p>​    将数据缓存到应用服务器上，性能最好</p>
-<p>​    常用缓存工具：Ehcache、Guava、Caffeine等</p>
-<p>分布式缓存</p>
+<p>​    常用缓存工具：Ehcache、Guava、Caffeine（目前最好的）等</p>
+<p>分布式缓存（用来跨服务器）</p>
 <p>​    将数据缓存在NoSQL数据库上，跨服务器</p>
 <p>​    常用缓存工具：MemCache、Redis等</p>
 <p>多级缓存</p>
 <p>​    &gt; 一级缓存（本地缓存） &gt; 二级缓存（分布式缓存） &gt; DB</p>
 <p>​    避免缓存雪崩（缓存失效，大量请求直接打到DB），提高系统的可用性。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-19 at 10.17.05.png" srcset="/img/loading.gif" lazyload alt="本地缓存和分布式缓存的区别"></p>
+<p>分布式可以保持一致性但是缺点就是，有网络开销。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-19 at 10.19.12.png" srcset="/img/loading.gif" lazyload alt="三级缓存结构"></p>
+<p>本地缓存占用内存较小，会通过淘汰机制存储更多的热点数据。避免直接雪崩。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># caffeine</span><br><span class="hljs-attr">caffeine.posts.max-size</span>=<span class="hljs-string">15</span><br><span class="hljs-attr">caffeine.posts.expire-seconds</span>=<span class="hljs-string">180</span><br></code></pre></td></tr></table></figure>
+<p>caffeine.${名字}.${属性}</p>
+<p>缓存15个帖子，有效时间180s（3分钟）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 初始化帖子列表缓存</span><br>        postListCache = Caffeine.newBuilder()<br>            .maximumSize(maxSize)<br>            .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)<br>            .build(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheLoader</span>&lt;String, List&lt;DiscussPost&gt;&gt;() &#123;<br>                <span class="hljs-meta">@Nullable</span><br>                <span class="hljs-meta">@Override</span><br>                <span class="hljs-keyword">public</span> List&lt;DiscussPost&gt; <span class="hljs-title function_">load</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> String key)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>                    <span class="hljs-keyword">if</span> (key == <span class="hljs-literal">null</span> || key.length() == <span class="hljs-number">0</span>) &#123;<br>                        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;参数错误!&quot;</span>);<br>                    &#125;<br><br>                    String[] params = key.split(<span class="hljs-string">&quot;:&quot;</span>);<br>                    <span class="hljs-keyword">if</span> (params == <span class="hljs-literal">null</span> || params.length != <span class="hljs-number">2</span>) &#123;<br>                        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;参数错误!&quot;</span>);<br>                    &#125;<br><br>                    <span class="hljs-type">int</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> Integer.valueOf(params[<span class="hljs-number">0</span>]);<br>                    <span class="hljs-type">int</span> <span class="hljs-variable">limit</span> <span class="hljs-operator">=</span> Integer.valueOf(params[<span class="hljs-number">1</span>]);<br><br>                    <span class="hljs-comment">// 二级缓存: Redis -&gt; mysql</span><br><br>                    logger.debug(<span class="hljs-string">&quot;load post list from DB.&quot;</span>);<br>                    <span class="hljs-keyword">return</span> discussPostMapper.selectDiscussPosts(<span class="hljs-number">0</span>, offset, limit, <span class="hljs-number">1</span>);<br>                &#125;<br>            &#125;);<br>        <span class="hljs-comment">// 初始化帖子总数缓存</span><br>        postRowsCache = Caffeine.newBuilder()<br>            .maximumSize(maxSize)<br>            .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)<br>            .build(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheLoader</span>&lt;Integer, Integer&gt;() &#123;<br>                <span class="hljs-meta">@Nullable</span><br>                <span class="hljs-meta">@Override</span><br>                <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">load</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Integer key)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>                    logger.debug(<span class="hljs-string">&quot;load post rows from DB.&quot;</span>);<br>                    <span class="hljs-keyword">return</span> discussPostMapper.selectDiscussPostRows(key);<br>                &#125;<br>            &#125;);<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>Caffeine 固定的初始化方式</p>
+<p>JMeter压力测试环境</p>
+<p>200个线程，统一随机定时器（0-1s发出请求），查看聚合报告</p>
+<p>（无缓存）吞吐量5.1/sec</p>
+<p>（有缓存）吞吐量20.6/sec</p>
+<p>提升了4倍的吞吐量</p>
+<p>在本节课中老师提到了可以用Caffeine+Redis实现多级缓存来缓存热点帖子，我思考了一下发现，老师使用的是Caffeine中LoadingCache（同步缓存），即多个线程线程访问缓存时，若缓存没有对应的数据，只允许一个线程去数据库中取数据，其他线程则排队等候。由于LoadingCache是线程同步的，所以即使Caffeine中的缓存同时失效了（他会等待把缓存弄好的时候再放开阻塞），有大量请求访问热点帖子的时候，它也不会出现缓存雪崩的问题。因此我认为对于缓存热点帖子这一功能而言，应该只需要用Caffeine做缓存就足够了，可以不使用Redis作二级缓存，毕竟热点贴的更新频率慢。如果有其他合适的需求，可以再考虑使用多级缓存的策略。也希望和其他学习的小伙伴交流一下这个问题。</p>
+<p>分布式缓存也可以用但是不一定，看场景，实在不行还可以开启消息队列。</p>
+<p>caffeine缓存</p>
+<p>资料1<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9a80c662dac4">https://www.jianshu.com/p/9a80c662dac4</a></p>
+<p>资料2<a target="_blank" rel="noopener" href="https://www.cnblogs.com/rickiyang/p/11074158.html">https://www.cnblogs.com/rickiyang/p/11074158.html</a></p>
+<p>get 方法将一个参数为 key 的 Function (createExpensiveGraph) 作为参数传入。如果缓存中不存在该键，则调用这个 Function 函数，并将返回值作为该缓存的值插入缓存中。get 方法是以阻塞方式执行调用，即使多个线程同时请求该值也只会调用一次Function方法。这样可以避免与其他线程的写入竞争，这也是为什么使用 get 优于 getIfPresent 的原因。</p>
+<h1 id="第8章-项目发布与总结"><a href="#第8章-项目发布与总结" class="headerlink" title="第8章 项目发布与总结"></a>第8章 项目发布与总结</h1><h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><h2 id="项目监控"><a href="#项目监控" class="headerlink" title="项目监控"></a>项目监控</h2><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-19 at 17.05.36.png" srcset="/img/loading.gif" lazyload alt="项目监控"></p>
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-19 at 17.09.18.png" srcset="/img/loading.gif" lazyload alt="项目部署"></p>
+<h2 id="项目总结"><a href="#项目总结" class="headerlink" title="项目总结"></a>项目总结</h2><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-19 at 17.34.05.png" srcset="/img/loading.gif" lazyload alt="项目总结"></p>
+<p>关注一下会话管理 cookie session不用了session（分布式部署的问题）存在redis里面。</p>
+<p>事务底层依赖aop？</p>
+<p>spring事务和mysql的事务的区别？</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-19 at 19.31.48.png" srcset="/img/loading.gif" lazyload alt="架构"></p>
+<h2 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h2><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-19 at 19.33.34.png" srcset="/img/loading.gif" lazyload alt="常见面试题"></p>
+<h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h3><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.07.36.png" srcset="/img/loading.gif" lazyload alt="mysql锁"></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.10.45.png" srcset="/img/loading.gif" lazyload alt="mysql锁2"></p>
+<p>DML就是增删改（Data Manipulation Language 数据操控语言) 用于操作数据库对象对象中包含的数据</p>
+<p>DQL就是查询 (Data Query Language 数据查询语言 )用于查询数据</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.13.13.png" srcset="/img/loading.gif" lazyload alt="mysql锁3"></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.17.58.png" srcset="/img/loading.gif" lazyload alt="mysql锁4"></p>
+<p>A上锁，B也要资源，但我是循环等待A解锁，频率很高，CPU消耗大，其实就是循环非阻塞IO模型。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.35.04.png" srcset="/img/loading.gif" lazyload alt="mysql锁5"></p>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.36.59.png" srcset="/img/loading.gif" lazyload alt="redis1"></p>
+<p>过期策略</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.37.51.png" srcset="/img/loading.gif" lazyload alt="redis2"></p>
+<p><img src="/Users/peterpan/Desktop/Screen Shot 2022-12-21 at 16.38.34.png" srcset="/img/loading.gif" lazyload alt="redis3"></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.44.29.png" srcset="/img/loading.gif" lazyload alt="redis4"></p>
+<p>缓存穿透（没有命中缓存，直达存储层）</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.45.53.png" srcset="/img/loading.gif" lazyload alt="redis5"></p>
+<p>缓存击穿（热点失效，到达存储层）</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.47.26.png" srcset="/img/loading.gif" lazyload alt="redis6"></p>
+<p>缓存雪崩（大量的缓存击穿）</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.49.08.png" srcset="/img/loading.gif" lazyload alt="redis7"></p>
+<p>分布式锁</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.55.40.png" srcset="/img/loading.gif" lazyload alt="redis8"></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.57.51.png" srcset="/img/loading.gif" lazyload alt="redis9"></p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 16.58.37.png" srcset="/img/loading.gif" lazyload alt="redis10"></p>
+<p>lua脚本实现分布式锁<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44259720/article/details/121968837">https://blog.csdn.net/weixin_44259720/article/details/121968837</a></p>
+<p>lua脚本实现了它本身没有原子性。</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 17.32.57.png" srcset="/img/loading.gif" lazyload alt="redis11"></p>
+<h3 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h3><p>spring IOC（控制反转，通过减少类之间的耦合，我们只需要编写谁依赖谁就行。这样他bean实例的创建不会重复，占用多余的资源）</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 17.36.27.png" srcset="/img/loading.gif" lazyload alt="spring1"></p>
+<p>spring AOP（减少耦合的一个统一切面思想）</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 17.38.59.png" srcset="/img/loading.gif" lazyload alt="spring2"></p>
+<p>spring MVC（就是个mvc架构的调度中心）</p>
+<p><img src="/Users/peterpan/Library/Application Support/typora-user-images/Screen Shot 2022-12-21 at 17.39.17.png" srcset="/img/loading.gif" lazyload alt="spring3"></p>
+<p>HandlerMapping：应该跟gin框架一样，包含了路由路径</p>
+<p>HandlerExecutionChain：包含拦截器和controller，类似中间件的洋葱模型编排，但不执行。具体的执行在5、6、7中？</p>
+<p>HandlerAdapter：包含具体的controller的适配器进行执行preHandle（）和postHandler（）就是拦截器的执行，跟代码是同步的。</p>
 
             </div>
             <hr>
@@ -987,6 +1076,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/12/21/%E6%89%8B%E5%86%99grpc/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
