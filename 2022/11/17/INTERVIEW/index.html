@@ -108,7 +108,7 @@
 <meta property="og:image" content="https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/cs-basics/network/tcp-shakes-hands-three-times.png">
 <meta property="og:image" content="https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/cs-basics/network/tcp-waves-four-times.png">
 <meta property="article:published_time" content="2022-11-17T02:21:22.000Z">
-<meta property="article:modified_time" content="2023-03-08T13:01:20.762Z">
+<meta property="article:modified_time" content="2023-03-09T07:02:21.807Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Back-End Engineer">
 <meta name="twitter:card" content="summary_large_image">
@@ -293,7 +293,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      256 分钟
+      260 分钟
     </span>
   
 
@@ -1610,7 +1610,33 @@
 <li>为什么服务端响应不能把ACK和FIN合并？</li>
 </ul>
 <p>客户端发送的FIN请求只是不再发送更多的消息，但消息可能还有在缓冲区中未送达，如果此时合并了ACK和FIN请求，将会丢失数据</p>
-<h2 id="IP篇"><a href="#IP篇" class="headerlink" title="IP篇"></a>IP篇</h2><h2 id="网络综合篇"><a href="#网络综合篇" class="headerlink" title="网络综合篇"></a>网络综合篇</h2>
+<h2 id="IP篇"><a href="#IP篇" class="headerlink" title="IP篇"></a>IP篇</h2><h3 id="IP-的基本认识"><a href="#IP-的基本认识" class="headerlink" title="IP 的基本认识"></a>IP 的基本认识</h3><p>IP在网络层：实现主机和主机之间的通信，也叫点对点通信。</p>
+<ul>
+<li>网络层与数据链路层有什么关系呢？</li>
+</ul>
+<p>​        IP（网络层）和MAC（数据链路层）之间的区别和关系，MAC直连两个设备之间的通信，IP没有直接链接两个网络之间的通信。mac是物理上的通信，IP是逻辑上的通信。</p>
+<h3 id="IP-地址的基础知识"><a href="#IP-地址的基础知识" class="headerlink" title="IP 地址的基础知识"></a>IP 地址的基础知识</h3><p>IPv4地址由32位正整数表示，IP地址在计算机是以二进制的方式处理的。每8位为一组，共分为4组。</p>
+<ul>
+<li>什么是A、B、C类地址？</li>
+</ul>
+<p>​        对于A、B、C类地址分为两部分，分别是网络号和主机号</p>
+<ul>
+<li>广播地址用于什么？</li>
+</ul>
+<p>​        广播地址用于在同一个链路中相互连接的主机之间发送数据包。在本网络内广播的叫做本地广播，在不同网络之间的广播叫做直接广播。</p>
+<ul>
+<li>多播地址用于什么？</li>
+</ul>
+<p>​        多播用于将包发送给特定组内的所有主机。</p>
+<ul>
+<li>怎么划分网络号和主机号？</li>
+</ul>
+<p>​        表示形式<code>a.b.c.d/x</code>其中<code>/x</code>表示前x位属于网络号，x的范围是0-32。比如10.100.122.2/24这种形式就是CIDR（无分类地址），/24表示前24位是网络号，剩余的8位是主机号。</p>
+<ul>
+<li>为什么分离网络号和主机号？</li>
+<li></li>
+</ul>
+<h2 id="网络综合篇"><a href="#网络综合篇" class="headerlink" title="网络综合篇"></a>网络综合篇</h2>
             </div>
             <hr>
             <div>
