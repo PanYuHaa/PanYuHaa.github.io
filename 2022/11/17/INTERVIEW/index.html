@@ -107,8 +107,9 @@
 <meta property="og:image" content="https://img2018.cnblogs.com/blog/443934/201912/443934-20191212153101669-1128929789.png">
 <meta property="og:image" content="https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/cs-basics/network/tcp-shakes-hands-three-times.png">
 <meta property="og:image" content="https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/cs-basics/network/tcp-waves-four-times.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/464291/201707/464291-20170703113844956-354755333.jpg">
 <meta property="article:published_time" content="2022-11-17T02:21:22.000Z">
-<meta property="article:modified_time" content="2023-03-09T07:02:21.807Z">
+<meta property="article:modified_time" content="2023-03-09T07:50:35.829Z">
 <meta property="article:author" content="Peter Pan">
 <meta property="article:tag" content="Back-End Engineer">
 <meta name="twitter:card" content="summary_large_image">
@@ -284,7 +285,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      31k 字
+      32k 字
     </span>
   
 
@@ -293,7 +294,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      260 分钟
+      265 分钟
     </span>
   
 
@@ -1634,9 +1635,41 @@
 <p>​        表示形式<code>a.b.c.d/x</code>其中<code>/x</code>表示前x位属于网络号，x的范围是0-32。比如10.100.122.2/24这种形式就是CIDR（无分类地址），/24表示前24位是网络号，剩余的8位是主机号。</p>
 <ul>
 <li>为什么分离网络号和主机号？</li>
-<li></li>
 </ul>
-<h2 id="网络综合篇"><a href="#网络综合篇" class="headerlink" title="网络综合篇"></a>网络综合篇</h2>
+<p>​        两台计算机要通讯，首先判断是否处于同一个广播域内，即网络地址是否相同。如果网络地址相同，表明可以直接发送数据包（因为在同一个网段内）</p>
+<h3 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h3><ul>
+<li>域名解析的流程</li>
+</ul>
+<p><img src="https://images2015.cnblogs.com/blog/464291/201707/464291-20170703113844956-354755333.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>1、本地DNS服务器是否有缓存</p>
+<p>2、本地DNS服务器回去问根域名服务器</p>
+<p>3、根DNS收到来自本地DNS的请求后，判别尾部是什么区域，返回对应的顶级域名服务器的地址给本地DNS。</p>
+<p>4、本地DNS收到以后继续向顶级域名服务器发送请求，然后回应给他具体域名的权威DNS服务器的地址。</p>
+<p>5、本地DNS收到后直接找权威DNS服务器的询问ip。</p>
+<p>6、权威DNS服务器给予回应。</p>
+<p>本地DNS —&gt; 根域名服务器 —&gt; 顶级域名服务器 —&gt; 权威DNS服务器</p>
+<ul>
+<li>ARP？</li>
+</ul>
+<p>​        由于主机的路由表中可以找到下一跳的IP地址，所以可以通过ARP协议，求得下一跳的MAC地址。ARP协议解析IP变成MAC地址。ARP是通过广播的方式告知其他主机各自的MAC地址。先通过ARP解析IP地址然后再根据MAC表查找目的地。</p>
+<ul>
+<li>ICMP功能都有啥？</li>
+</ul>
+<p>ICMP主要的功能包括：确认IP包是否成功送达目标地址、报告发送过程中IP包被废弃的原因和改善网络设置等。</p>
+<h2 id="网络综合篇"><a href="#网络综合篇" class="headerlink" title="网络综合篇"></a>网络综合篇</h2><ul>
+<li>输入网址到网页显示，期间发生了什么？</li>
+</ul>
+<ol>
+<li>解析URL，分析我们请求了啥，从而发送给Web服务器的请求信息。</li>
+<li>确定web服务器和文件名，生成HTTP请求信息</li>
+<li>发送之前，查询服务器域名对应的IP地址。</li>
+<li>通过DNS获取到IP后，把HTTP的传输工作交给os中的协议栈。</li>
+<li>……</li>
+</ol>
+<ul>
+<li>linux系统是如何首发网络包的？</li>
+</ul>
+
             </div>
             <hr>
             <div>
